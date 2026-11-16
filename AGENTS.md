@@ -73,7 +73,7 @@ The `.cursor` folder exists and currently contains these persona/rule files:
 - Do not fix unrelated failing tests as part of a focused task.
 
 ## Environment Notes
-- Node.js 18+ is required.
+- Node.js 26+ is required (see `.nvmrc`).
 - Main runtime configuration is validated in `src/libs/Env.ts`.
 - Key integrations include Clerk, Stripe, OpenWeatherMap, and optional hosted Postgres.
 
@@ -81,3 +81,13 @@ The `.cursor` folder exists and currently contains these persona/rule files:
 - Do not commit build output, coverage artifacts, or dependency directories.
 - Do not remove localization structure or flatten locale-aware routes.
 - Do not add broad formatting-only churn unless the task explicitly asks for it.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

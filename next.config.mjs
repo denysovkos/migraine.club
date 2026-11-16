@@ -2,7 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import withBundleAnalyzer from '@next/bundle-analyzer';
-import { withSentryConfig } from '@sentry/nextjs';
+import { withSentryConfig } from '@sentry/nextjs/config';
 import { createJiti } from 'jiti';
 import withNextIntl from 'next-intl/plugin';
 
@@ -101,15 +101,13 @@ export default withSentryConfig(
     // side errors will fail.
     tunnelRoute: '/monitoring',
 
-    // Hides source maps from generated client bundles
-    hideSourceMaps: true,
-
     // Disable Sentry telemetry
     telemetry: false,
 
-    webpack: {
-      // Automatically tree-shake Sentry logger statements to reduce bundle size
-      disableLogger: true,
+    // Tree-shake Sentry SDK debug logger statements to reduce bundle size.
+    // Works for both webpack and Turbopack builds.
+    bundleSizeOptimizations: {
+      excludeDebugStatements: true,
     },
   },
 );

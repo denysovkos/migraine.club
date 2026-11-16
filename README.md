@@ -86,7 +86,7 @@ After successful sign-in or sign-up, users are automatically redirected to the d
 
 Prerequisites
 
-- Node.js 18+
+- Node.js 26+ (see `.nvmrc`)
 - Clerk application (publishable + secret keys)
 - Optional for production DB: Postgres connection string
 - OpenWeatherMap API key (to enable WPI)

@@ -1,11 +1,8 @@
 'use client';
 
-import type { ColumnDef } from '@tanstack/react-table';
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
+import type { ColumnDef, RowData } from '@tanstack/react-table';
+import type { BasicTableFeatures } from '@/components/ui/table-features';
+import { flexRender, useTable } from '@tanstack/react-table';
 import { useTranslations } from 'next-intl';
 
 import {
@@ -17,21 +14,23 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-type ClickableDataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[];
+import { basicTableFeatures } from '@/components/ui/table-features';
+
+type ClickableDataTableProps<TData extends RowData> = {
+  columns: ColumnDef<BasicTableFeatures, TData, unknown>[];
   data: TData[];
   onRowClick?: (row: TData) => void;
 };
 
-export function ClickableDataTable<TData, TValue>({
+export function ClickableDataTable<TData extends RowData>({
   columns,
   data,
   onRowClick,
-}: ClickableDataTableProps<TData, TValue>) {
-  const table = useReactTable({
+}: ClickableDataTableProps<TData>) {
+  const table = useTable({
+    features: basicTableFeatures,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   });
   const t = useTranslations('DataTable');
 
@@ -62,7 +61,6 @@ export function ClickableDataTable<TData, TValue>({
                 table.getRowModel().rows.map(row => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
                     onClick={onRowClick ? () => onRowClick(row.original) : undefined}
                     className={
                       onRowClick
@@ -82,7 +80,7 @@ export function ClickableDataTable<TData, TValue>({
                         : undefined
                     }
                   >
-                    {row.getVisibleCells().map(cell => (
+                    {row.getAllCells().map(cell => (
                       <TableCell key={cell.id} className="whitespace-nowrap">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>

@@ -9,6 +9,11 @@ failOnConsole({
   shouldFailOnInfo: true,
   shouldFailOnLog: true,
   shouldFailOnWarn: true,
+  // React 19.3 logs an error when a client render creates a <script> element.
+  // next-themes injects its anti-flash script that way; in the app it is
+  // server-rendered, so the warning only shows up in client-only test renders.
+  silenceMessage: message =>
+    message.includes('Encountered a script tag while rendering React component'),
 });
 
 // Ensure no DOM leaks between tests across files.
