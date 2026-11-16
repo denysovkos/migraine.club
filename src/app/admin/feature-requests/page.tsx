@@ -1,11 +1,12 @@
-import { auth } from '@clerk/nextjs/server';
 import { desc } from 'drizzle-orm';
 import Link from 'next/link';
 
 import { AdminFeatureRequestActions } from '@/features/admin/AdminFeatureRequestActions';
+import { requireUserOrRedirect } from '@/libs/AuthGuard';
 import { db } from '@/libs/DB';
 import { featureRequestSchema } from '@/models/Schema';
 import { moderationService } from '@/services/ModerationService';
+import { AppConfig } from '@/utils/AppConfig';
 
 const getResolutionLabelKey = (resolution: string) => {
   if (resolution === 'SENT') {
@@ -21,14 +22,8 @@ const getResolutionLabelKey = (resolution: string) => {
 };
 
 export default async function AdminFeatureRequestsPage() {
-  const { userId } = await auth();
-  if (!userId) {
-    return (
-      <main className="mx-auto max-w-4xl p-6">
-        <h1 className="text-lg font-semibold">Unauthorized</h1>
-      </main>
-    );
-  }
+  // Admin routes are not localized; signed-out visitors go to the default-locale sign-in.
+  const userId = await requireUserOrRedirect(AppConfig.defaultLocale);
 
   const isAdmin = await moderationService.isAdmin(userId);
   if (!isAdmin) {

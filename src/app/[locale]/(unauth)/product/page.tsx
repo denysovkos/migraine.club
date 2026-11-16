@@ -66,26 +66,29 @@ async function ProductContent() {
     { question: t('faq_q4_question'), answer: t('faq_q4_answer') },
   ];
 
-  const jsonLd = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'SoftwareApplication',
-      'name': 'Migrennity',
-      'applicationCategory': 'HealthApplication',
-      'operatingSystem': 'iOS, Android, Web',
-      'description': t('schema_app_description'),
-      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      'mainEntity': faqItems.map(item => ({
-        '@type': 'Question',
-        'name': item.question,
-        'acceptedAnswer': { '@type': 'Answer', 'text': item.answer },
-      })),
-    },
-  ];
+  // One object with @graph rather than a top-level array: equally valid JSON-LD,
+  // but consumers that read `data['@context']` directly crash on an array.
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SoftwareApplication',
+        'name': 'Migrennity',
+        'applicationCategory': 'HealthApplication',
+        'operatingSystem': 'iOS, Android, Web',
+        'description': t('schema_app_description'),
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+      },
+      {
+        '@type': 'FAQPage',
+        'mainEntity': faqItems.map(item => ({
+          '@type': 'Question',
+          'name': item.question,
+          'acceptedAnswer': { '@type': 'Answer', 'text': item.answer },
+        })),
+      },
+    ],
+  };
 
   return (
     <main className={`pb-24 md:pb-0 ${fraunces.variable}`}>
@@ -742,7 +745,7 @@ async function ProductContent() {
         </div>
       </section>
 
-      {/* eslint-disable-next-line react/dom-no-dangerously-set-innerhtml */}
+      { }
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -1,5 +1,5 @@
 import type { NextFetchEvent, NextRequest } from 'next/server';
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 
@@ -12,14 +12,16 @@ const intlMiddleware = createMiddleware({
   defaultLocale: AppConfig.defaultLocale,
 });
 
-const isProtectedRoute = createRouteMatcher([
-  '/dashboard(.*)',
-  '/:locale/dashboard(.*)',
-  '/admin(.*)',
-  '/:locale/admin(.*)',
-  '/api(.*)',
-  '/:locale/api(.*)',
-]);
+// Auth is enforced where the data lives, not here: every API route handler
+// checks `auth()` and returns 401, and protected pages/layouts call
+// `requireUserOrRedirect` (src/libs/AuthGuard.ts). This proxy only has to make
+// sure `clerkMiddleware` runs on the requests whose server code calls `auth()`.
+// See https://clerk.com/docs/guides/development/upgrading/upgrade-guides/migrate-from-create-route-matcher
+const DASHBOARD_PATH = /^(?:\/[^/]+)?\/dashboard(?:\/|$)/;
+
+// clerkMiddleware with no auth checks: it only attaches the auth state that
+// `auth()` reads. `auth()` throws on requests clerkMiddleware didn't run on.
+const withClerk = clerkMiddleware();
 
 export default function proxy(
   request: NextRequest,
@@ -63,54 +65,23 @@ export default function proxy(
       return NextResponse.next();
     }
 
-    // MCP endpoint - authenticated by a Clerk OAuth bearer token, not a session
-    // cookie. `auth.protect()` would reject the bearer token before the route's
-    // own `withMcpAuth` could verify it, so the handler owns authorization here.
-    // clerkMiddleware still has to run: `auth()` throws without it.
-    if (request.nextUrl.pathname.startsWith('/api/mcp')) {
-      return clerkMiddleware(async () => NextResponse.next())(request, event);
-    }
-
-    return clerkMiddleware(async (auth, req) => {
-      if (isProtectedRoute(req)) {
-        // For API routes, protect() will automatically return 401 if unauthenticated
-        await auth.protect();
-      }
-      // Continue to the API route handler
-      return NextResponse.next();
-    })(request, event);
+    // Everything else, including the MCP endpoint (Clerk OAuth bearer token,
+    // verified by the route's own `withMcpAuth`), authenticates in the handler.
+    return withClerk(request, event);
   }
 
   // Admin routes are not localized; avoid next-intl rewrites/redirects.
+  // The admin pages check auth and the admin role themselves.
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    return clerkMiddleware(async (auth, req) => {
-      if (isProtectedRoute(req)) {
-        await auth.protect();
-      }
-      return NextResponse.next();
-    })(request, event);
+    return withClerk(request, event);
   }
 
   if (
     request.nextUrl.pathname.includes('/sign-in')
     || request.nextUrl.pathname.includes('/sign-up')
-    || isProtectedRoute(request)
+    || DASHBOARD_PATH.test(request.nextUrl.pathname)
   ) {
-    return clerkMiddleware(async (auth, req) => {
-      if (isProtectedRoute(req)) {
-        const locale
-          = req.nextUrl.pathname.match(/(\/.*)\/dashboard/)?.at(1) ?? '';
-
-        const signInUrl = new URL(`${locale}/sign-in`, req.url);
-
-        await auth.protect({
-          // `unauthenticatedUrl` is needed to avoid error: "Unable to find `next-intl` locale because the middleware didn't run on this request"
-          unauthenticatedUrl: signInUrl.toString(),
-        });
-      }
-
-      return intlMiddleware(req);
-    })(request, event);
+    return clerkMiddleware(async (_auth, req) => intlMiddleware(req))(request, event);
   }
 
   return intlMiddleware(request);

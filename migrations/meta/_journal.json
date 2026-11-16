@@ -138,75 +138,145 @@
     {
       "idx": 19,
       "version": "7",
+      "when": 1766600000000,
+      "tag": "0019_pain_scale_1_5",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1766700000000,
+      "tag": "0020_insights_and_stale_episode_reminder",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1766800000000,
+      "tag": "0021_fix_weather_pain_index_snapshot_missing_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1766900000000,
+      "tag": "0022_daily_diary_entry",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1767000000000,
+      "tag": "0023_unified_diary_day_and_attack_type",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1767100000000,
+      "tag": "0024_preventive_plans",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1767200000000,
+      "tag": "0025_insights_test_plan_and_stale",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1767300000000,
+      "tag": "0026_acute_meds_and_moh_guardrails",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1767400000000,
+      "tag": "0027_user_med_last_used_dose",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1767500000000,
+      "tag": "0028_cycle_hormones",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
       "when": 1772385672094,
       "tag": "0029_add_feature_requests",
       "breakpoints": true
     },
     {
-      "idx": 20,
+      "idx": 30,
       "version": "7",
       "when": 1774800000000,
       "tag": "0030_add_theme_preference",
       "breakpoints": true
     },
     {
-      "idx": 21,
+      "idx": 31,
       "version": "7",
       "when": 1775349600000,
       "tag": "0031_episode_protectors",
       "breakpoints": true
     },
     {
-      "idx": 22,
+      "idx": 32,
       "version": "7",
       "when": 1775349600000,
       "tag": "0032_appointment_prep",
       "breakpoints": true
     },
     {
-      "idx": 23,
+      "idx": 33,
       "version": "7",
       "when": 1777652029442,
       "tag": "0033_programs_module",
       "breakpoints": true
     },
     {
-      "idx": 24,
+      "idx": 34,
       "version": "7",
       "when": 1777963571862,
       "tag": "0034_programs_notification_log",
       "breakpoints": true
     },
     {
-      "idx": 25,
+      "idx": 35,
       "version": "7",
       "when": 1777984194453,
       "tag": "0035_episode_onset_at",
       "breakpoints": true
     },
     {
-      "idx": 26,
+      "idx": 36,
       "version": "7",
       "when": 1789023723683,
       "tag": "0036_cron_run_lock",
       "breakpoints": true
     },
     {
-      "idx": 27,
+      "idx": 37,
       "version": "7",
       "when": 1789040933290,
       "tag": "0037_medication_reminders",
       "breakpoints": true
     },
     {
-      "idx": 28,
+      "idx": 38,
       "version": "7",
       "when": 1789051374182,
       "tag": "0038_baseline_intake",
       "breakpoints": true
     },
     {
-      "idx": 29,
+      "idx": 39,
       "version": "7",
       "when": 1789640352281,
       "tag": "0039_mcp_tool_call_audit",

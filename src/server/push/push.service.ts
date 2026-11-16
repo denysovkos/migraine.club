@@ -1,6 +1,6 @@
 import type { PushSubscription, SendResult } from 'web-push';
 import { eq } from 'drizzle-orm';
-import webpush from 'web-push';
+import { sendNotification, setVapidDetails } from 'web-push';
 
 import { db } from '@/libs/DB';
 import { Env } from '@/libs/Env';
@@ -64,7 +64,7 @@ function initializeWebPush(): boolean {
     return false;
   }
 
-  webpush.setVapidDetails(subject, publicKey, privateKey);
+  setVapidDetails(subject, publicKey, privateKey);
   return true;
 }
 
@@ -335,7 +335,7 @@ export class PushService {
     subscription: PushSubscription,
     payload: string,
   ): Promise<SendResult> {
-    return webpush.sendNotification(subscription, payload, {
+    return sendNotification(subscription, payload, {
       TTL: 60 * 60 * 24, // 24 hours
       urgency: 'normal',
       // Without this the socket can stay open indefinitely and stall the whole cron run

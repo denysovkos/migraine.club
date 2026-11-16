@@ -153,7 +153,7 @@ docs/             Feature notes
 
 ### Prerequisites
 
-- Node.js 20.9 or newer (22 is what CI uses)
+- Node.js 26 or newer (see `.nvmrc`; CI uses 26)
 - A Postgres database. Any Postgres works; production runs on Neon.
 - A [Clerk](https://clerk.com) application
 - [Stripe](https://stripe.com) test keys. They are required by env validation even if you do not touch billing.

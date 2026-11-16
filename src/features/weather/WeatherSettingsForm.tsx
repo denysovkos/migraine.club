@@ -47,7 +47,7 @@ export function WeatherSettingsForm({ onSuccess }: Props) {
       lat: 0,
       lon: 0,
       locationLabel: '',
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timezone: new Intl.DateTimeFormat().resolvedOptions().timeZone,
       units: 'metric',
     },
   });
@@ -63,7 +63,7 @@ export function WeatherSettingsForm({ onSuccess }: Props) {
             lat: data.lat,
             lon: data.lon,
             locationLabel: data.locationLabel || '',
-            timezone: data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+            timezone: data.timezone || new Intl.DateTimeFormat().resolvedOptions().timeZone,
             units: data.units || 'metric',
           });
         }

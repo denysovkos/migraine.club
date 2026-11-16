@@ -1,3 +1,4 @@
+import { auth } from '@clerk/nextjs/server';
 import { and, count, eq, gte } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
@@ -15,6 +16,12 @@ type CommunityStatsResponse = {
 // GET /api/community/stats - get community stats and trending tags
 export async function GET() {
   try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Calculate date boundaries
     const now = new Date();
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());

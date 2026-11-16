@@ -1,20 +1,15 @@
-import { auth } from '@clerk/nextjs/server';
 import { and, desc, eq, isNotNull } from 'drizzle-orm';
 import Link from 'next/link';
 
+import { requireUserOrRedirect } from '@/libs/AuthGuard';
 import { db } from '@/libs/DB';
 import { doctorVerificationApplicationSchema } from '@/models/Schema';
 import { moderationService } from '@/services/ModerationService';
+import { AppConfig } from '@/utils/AppConfig';
 
 export default async function AdminDoctorVerificationsPage() {
-  const { userId } = await auth();
-  if (!userId) {
-    return (
-      <main className="mx-auto max-w-3xl p-6">
-        <h1 className="text-lg font-semibold">Unauthorized</h1>
-      </main>
-    );
-  }
+  // Admin routes are not localized; signed-out visitors go to the default-locale sign-in.
+  const userId = await requireUserOrRedirect(AppConfig.defaultLocale);
 
   const isAdmin = await moderationService.isAdmin(userId);
   if (!isAdmin) {

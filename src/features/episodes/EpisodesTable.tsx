@@ -1,6 +1,7 @@
 'use client';
 
 import type { ColumnDef } from '@tanstack/react-table';
+import type { BasicTableFeatures } from '@/components/ui/table-features';
 import type { Episode } from '@/types/Episode';
 import { formatDistanceToNow } from 'date-fns';
 import { ChevronRight, Clock } from 'lucide-react';
@@ -33,7 +34,7 @@ export function EpisodesTable({ episodes, onRowClick }: EpisodesTableProps) {
     }
   };
 
-  const columns = useMemo<ColumnDef<Episode>[]>(
+  const columns = useMemo<ColumnDef<BasicTableFeatures, Episode, unknown>[]>(
     () => [
       {
         accessorKey: 'startTime',

@@ -15,6 +15,10 @@ export async function GET(request: Request) {
   try {
     const { userId } = await auth();
 
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const pageParam = searchParams.get('page');
     const limitParam = searchParams.get('limit');
@@ -43,10 +47,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const posts = await communityService.listPosts(
-      userId ?? null,
-      parsed.data,
-    );
+    const posts = await communityService.listPosts(userId, parsed.data);
 
     return NextResponse.json<{ posts: CommunityPostSummary[] }>({ posts });
   } catch (error) {
