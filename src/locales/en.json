@@ -2552,5 +2552,31 @@
     "trouble_stale_body": "Remove the connector and add it again. That issues a fresh sign-in and usually clears it.",
     "disclaimer": "Migraine.Club is not a medical device and does not provide medical advice. An AI assistant can make mistakes, including when reading or recording your health records — always check anything important in the app, and talk to your clinician about treatment decisions.",
     "eyebrow": "MCP connector"
+  },
+  "OfflineSync": {
+    "saved_offline": "Saved on this device. It will sync when you're back online.",
+    "status_offline": "Offline. You can still log.",
+    "status_offline_pending": "Offline · {count, plural, one {# entry} other {# entries}} waiting to sync",
+    "status_syncing": "Syncing {count, plural, one {# entry} other {# entries}}…",
+    "status_failed": "{count, plural, one {# entry} other {# entries}} couldn't sync",
+    "sheet_title": "Saved on this device",
+    "sheet_sub": "These entries are stored on this device and sync to your account automatically. Closing the app doesn't lose them.",
+    "kind_attack": "Attack",
+    "kind_attack_update": "Attack update",
+    "kind_dose": "Medication",
+    "kind_diary": "Diary",
+    "kind_factor": "Trigger or protector",
+    "captured_at": "Logged {time}",
+    "state_pending": "Waiting to sync",
+    "state_failed": "Couldn't sync",
+    "retry": "Retry",
+    "discard": "Discard",
+    "discard_confirm": "Discard this entry? It hasn't been saved to your account yet.",
+    "sync_now": "Sync now",
+    "syncing": "Syncing…",
+    "waiting_for_connection": "Waiting for a connection",
+    "signin_needed": "Sign in again to sync the entries saved on this device.",
+    "synced_toast": "{count, plural, one {# offline entry synced} other {# offline entries synced}}",
+    "failed_toast": "Some offline entries couldn't sync. Tap the banner at the top to review them."
   }
 }

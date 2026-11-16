@@ -25,13 +25,14 @@ import {
 import { fetchIntake } from '@/features/intake/intakeApi';
 import { fetchProgramDetail, fetchProgramSettings } from '@/features/programs/programsApi';
 import { EditMedicationIntakeSheet } from '@/features/quickAdd/EditMedicationIntakeSheet';
+import { quickAddStartEpisodeNow } from '@/features/quickAdd/quickAddApi';
 import { showSnackbar } from '@/features/snackbar';
 import { getBuiltInFactorsByType } from '@/services/factors/factorCatalog';
 import { sortTriggersByIntake } from '@/services/intake/intakeTriggerPriority';
 import { isEditableLocalDate } from '@/services/localDate';
 
 import { cn } from '@/utils/Helpers';
-import { fetchDiaryDayDetail, fetchDiaryRange, fetchTodayDiary, upsertDiaryEntry } from './diaryApi';
+import { applyQueuedDiaryPatch, fetchDiaryDayDetail, fetchDiaryRange, fetchTodayDiary, upsertDiaryEntry } from './diaryApi';
 
 type Entry = NonNullable<DiaryRangeResponse['entries'][number]>;
 
@@ -76,6 +77,7 @@ export function DiaryView() {
   const tCycle = useTranslations('CycleSettings');
   const tFactors = useTranslations('Factors' as never) as (key: string) => string;
   const tSleep = useTranslations('DiarySleepSection');
+  const tOffline = useTranslations('OfflineSync');
   const searchParams = useSearchParams();
 
   const [timezone, setTimezone] = useState<string | null>(null);
@@ -495,10 +497,21 @@ export function DiaryView() {
     setSaving(true);
     setSaveError(null);
     try {
-      const saved = await upsertDiaryEntry({ localDate: editor.localDate, patch });
+      const result = await upsertDiaryEntry({ localDate: editor.localDate, patch });
+      if (!result) {
+        showSnackbar({ message: tOffline('saved_offline') });
+      }
       // Update local cache (range)
       setRange((prev) => {
         if (!prev) {
+          return prev;
+        }
+        const saved = result ?? applyQueuedDiaryPatch(
+          (prev.entries ?? []).find(e => e?.localDate === editor.localDate),
+          editor.localDate,
+          patch,
+        );
+        if (!saved) {
           return prev;
         }
         const without = (prev.entries ?? []).filter(e => e && e.localDate !== saved.localDate);
@@ -534,17 +547,12 @@ export function DiaryView() {
     if (startAttackToggle) {
       try {
         const isToday = !!(todayLocalDate && editor?.localDate === todayLocalDate);
-        const res = await fetch('/api/quick-add/episode', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            attackType: suggestedAttackType,
-            ...(isToday ? {} : { localDate: editor?.localDate }),
-          }),
+        const started = await quickAddStartEpisodeNow({
+          attackType: suggestedAttackType,
+          ...(isToday ? {} : { localDate: editor?.localDate }),
         });
-        if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
-          throw Object.assign(new Error(body?.error ?? 'Failed to start attack'), { code: body?.code });
+        if (started.queued) {
+          showSnackbar({ message: tOffline('saved_offline') });
         }
         setLastAttackType(suggestedAttackType);
         setLastAttackTypeState(suggestedAttackType);

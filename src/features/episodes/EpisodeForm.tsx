@@ -28,6 +28,7 @@ import { EditMedicationIntakeSheet } from '@/features/quickAdd/EditMedicationInt
 import { quickAddUndoIntake } from '@/features/quickAdd/quickAddApi';
 import { TakeMedicationSheet } from '@/features/quickAdd/TakeMedicationSheet';
 import { showSnackbar } from '@/features/snackbar';
+import { sendOrQueue } from '@/libs/offline/outbox';
 import { getBuiltInFactorsByType } from '@/services/factors/factorCatalog';
 import { sortTriggersByIntake } from '@/services/intake/intakeTriggerPriority';
 import {
@@ -82,6 +83,7 @@ export function EpisodeForm({ episode, onSuccess, onRefreshEpisode, onDelete, is
   const t = useTranslations('EpisodeForm');
   const tDetail = useTranslations('EpisodeDetail');
   const tEpisodes = useTranslations('Episodes');
+  const tOffline = useTranslations('OfflineSync');
   const tFactors = useTranslations('Factors' as never) as (key: string) => string;
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -189,18 +191,21 @@ export function EpisodeForm({ episode, onSuccess, onRefreshEpisode, onDelete, is
       const url = isEditing
         ? `/api/episodes/${episode.id}`
         : '/api/episodes';
-      const method = isEditing ? 'PATCH' : 'POST';
+      const method: 'PATCH' | 'POST' = isEditing ? 'PATCH' : 'POST';
 
-      const response = await fetch(url, {
+      // Queued on the device when offline; the form already carries explicit
+      // start/end times, so a late sync stores exactly what was entered.
+      const result = await sendOrQueue({
+        url,
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(cleanData),
+        body: cleanData,
+        kind: isEditing ? 'attack_update' : 'attack',
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (result.queued) {
+        showSnackbar({ message: tOffline('saved_offline') });
+      } else if (!result.response.ok) {
+        const errorData = await result.response.json().catch(() => ({}));
         throw new Error(errorData.error || 'Failed to save episode');
       }
 

@@ -18,6 +18,7 @@ export function NotesModal({
   onSaved?: () => void;
 }) {
   const t = useTranslations('DashboardHome');
+  const tOffline = useTranslations('OfflineSync');
   const [today, setToday] = useState<DiaryTodayResponse | null>(null);
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(true);
@@ -62,11 +63,11 @@ export function NotesModal({
     }
     setSaving(true);
     try {
-      await upsertDiaryEntry({
+      const saved = await upsertDiaryEntry({
         localDate: today.todayLocalDate,
         patch: { notes: value.trim() ? value.trim() : null },
       });
-      showSnackbar({ message: t('note_saved') });
+      showSnackbar({ message: saved ? t('note_saved') : tOffline('saved_offline') });
       onSaved?.();
       onClose();
     } catch (e: any) {

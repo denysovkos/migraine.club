@@ -101,7 +101,7 @@ vi.mock('@/services/programs/recordAcuteAdherence', () => ({
   recordAcuteAdherenceForAttack: vi.fn(async () => undefined),
 }));
 
-const { EpisodeError, episodeService } = await import('@/services/episodes/EpisodeService');
+const { EpisodeError, episodeService, resolveEndNowTime } = await import('@/services/episodes/EpisodeService');
 
 describe('episodeService.create', () => {
   beforeEach(() => {
@@ -179,5 +179,23 @@ describe('episodeService.create', () => {
 
     expect(past.isOngoing).toBe(false);
     expect(store.inserted).toHaveLength(2);
+  });
+});
+
+describe('resolveEndNowTime', () => {
+  const start = new Date('2026-11-16T08:00:00Z');
+  const now = new Date('2026-11-16T12:00:00Z');
+
+  it('uses now without a device time', () => {
+    expect(resolveEndNowTime(undefined, start, now)).toBe(now);
+  });
+
+  it('keeps the device time of an end queued offline', () => {
+    expect(resolveEndNowTime('2026-11-16T10:15:00Z', start, now)).toEqual(new Date('2026-11-16T10:15:00Z'));
+  });
+
+  it('never ends before the attack started or in the future', () => {
+    expect(resolveEndNowTime('2026-11-16T07:00:00Z', start, now)).toBe(start);
+    expect(resolveEndNowTime('2026-11-16T13:00:00Z', start, now)).toBe(now);
   });
 });

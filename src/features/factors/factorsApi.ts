@@ -1,3 +1,5 @@
+import { sendOrQueue } from '@/libs/offline/outbox';
+
 type FactorType = 'trigger' | 'protector' | 'symptom';
 
 type BuiltInFactorOption = Readonly<{
@@ -64,22 +66,28 @@ export async function fetchFactorOptions(localDate?: string): Promise<FactorOpti
   return res.json();
 }
 
+/** Log a trigger/protector. Works offline: queued with its time. */
 export async function logFactorEvent(args: {
   displayName: string;
   type: FactorType;
   localDate?: string;
 }) {
-  const occurredAt = args.localDate ? toOccurredAtIso(args.localDate) : undefined;
-  const res = await fetch('/api/factors/log', {
+  const occurredAt = args.localDate ? toOccurredAtIso(args.localDate) : new Date().toISOString();
+  const result = await sendOrQueue({
+    url: '/api/factors/log',
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+    body: {
       displayName: args.displayName,
       type: args.type,
       occurredAt,
-    }),
+    },
+    kind: 'factor',
+    label: args.displayName,
   });
-
+  if (result.queued) {
+    return { queued: true as const };
+  }
+  const res = result.response;
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(body?.error ?? 'Failed to log factor');

@@ -41,6 +41,7 @@ export function PinnedMedsQuickKit(props: {
 }) {
   const router = useRouter();
   const tHome = useTranslations('DashboardHome');
+  const tOffline = useTranslations('OfflineSync');
   const [loading, setLoading] = useState(true);
   const [pinned, setPinned] = useState<PinnedMed[]>([]);
   const [mohLine, setMohLine] = useState<string | null>(null);
@@ -96,18 +97,24 @@ export function PinnedMedsQuickKit(props: {
 
   async function logPinned(med: PinnedMed) {
     try {
-      await createAcuteDose({
+      const result = await createAcuteDose({
         medicationId: med.id,
         dose: med.defaultDose ?? undefined,
         unit: med.defaultUnit ?? undefined,
         unitIsCustom: med.defaultUnitIsCustom ? true : undefined,
+        label: med.label,
       });
       showSnackbar({
-        message: tHome('snackbar_logged_med', { name: med.label, dose: suffix(med.defaultDose, med.defaultUnit) }),
+        message: result.queued
+          ? `${med.label}: ${tOffline('saved_offline')}`
+          : tHome('snackbar_logged_med', { name: med.label, dose: suffix(med.defaultDose, med.defaultUnit) }),
       });
       await refreshMohLine();
       props.onDidLog?.();
-      router.refresh();
+      // Offline, a refresh would hard-navigate (RSC fetch fails) and drop the snackbar.
+      if (!result.queued) {
+        router.refresh();
+      }
     } catch (e: any) {
       showSnackbar({ message: e?.message || tHome('error_log_medication') });
     }

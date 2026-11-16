@@ -181,4 +181,73 @@ describe('PATCH /api/episodes/[id]', () => {
     });
     expect((capturedUpdateData?.endTime as Date).toISOString()).toBe('2026-04-12T08:21:00.000Z');
   });
+
+  it('ends at the device time sent with endNow (an end queued offline)', async () => {
+    authMock.mockResolvedValue({ userId: 'user-1' });
+    getUserTimezoneMock.mockResolvedValue('UTC');
+    getAttackTreatmentModelMock.mockResolvedValue(null);
+    selectResults.push([existingEpisode], []);
+
+    const mod = await import('./route');
+    const res = await mod.PATCH(
+      new Request('http://localhost/api/episodes/42', {
+        method: 'PATCH',
+        body: JSON.stringify({ endNow: true, endedAt: '2026-04-13T10:45:00.000Z' }),
+        headers: { 'Content-Type': 'application/json' },
+      }),
+      { params: Promise.resolve({ id: '42' }) },
+    );
+
+    expect(res.status).toBe(200);
+    expect((capturedUpdateData?.endTime as Date).toISOString()).toBe('2026-04-13T10:45:00.000Z');
+  });
+
+  it('never ends before the attack started, whatever the device clock says', async () => {
+    authMock.mockResolvedValue({ userId: 'user-1' });
+    getUserTimezoneMock.mockResolvedValue('UTC');
+    getAttackTreatmentModelMock.mockResolvedValue(null);
+    existingEpisode = { ...existingEpisode, startTime: new Date('2026-04-13T09:00:00.000Z') };
+    selectResults.push([existingEpisode], []);
+
+    const mod = await import('./route');
+    await mod.PATCH(
+      new Request('http://localhost/api/episodes/42', {
+        method: 'PATCH',
+        body: JSON.stringify({ endNow: true, endedAt: '2026-04-12T23:00:00.000Z' }),
+        headers: { 'Content-Type': 'application/json' },
+      }),
+      { params: Promise.resolve({ id: '42' }) },
+    );
+
+    expect((capturedUpdateData?.endTime as Date).toISOString()).toBe('2026-04-13T09:00:00.000Z');
+  });
+
+  it('refuses an edit captured by another account on the device', async () => {
+    authMock.mockResolvedValue({ userId: 'user-1' });
+
+    const mod = await import('./route');
+    const res = await mod.PATCH(
+      new Request('http://localhost/api/episodes/42', {
+        method: 'PATCH',
+        body: JSON.stringify({ endNow: true }),
+        headers: { 'Content-Type': 'application/json', 'X-Offline-User': 'user-2' },
+      }),
+      { params: Promise.resolve({ id: '42' }) },
+    );
+
+    expect(res.status).toBe(409);
+    expect(dbMock.select).not.toHaveBeenCalled();
+  });
+
+  it('requires a session', async () => {
+    authMock.mockResolvedValue({ userId: null });
+
+    const mod = await import('./route');
+    const res = await mod.PATCH(
+      new Request('http://localhost/api/episodes/42', { method: 'PATCH', body: '{}' }),
+      { params: Promise.resolve({ id: '42' }) },
+    );
+
+    expect(res.status).toBe(401);
+  });
 });

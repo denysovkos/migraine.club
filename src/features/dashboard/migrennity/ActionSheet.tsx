@@ -38,6 +38,7 @@ export function ActionSheet({
   onDidChange?: () => void;
 }) {
   const t = useTranslations('DashboardHome');
+  const tOffline = useTranslations('OfflineSync');
   const router = useRouter();
   const [ongoing, setOngoing] = useState<Episode | null>(null);
   const [today, setToday] = useState<DiaryTodayResponse | null>(null);
@@ -151,11 +152,11 @@ export function ActionSheet({
       }
       setMarkingFree(true);
       try {
-        await upsertDiaryEntry({
+        const saved = await upsertDiaryEntry({
           localDate: today.todayLocalDate,
           patch: { dayType: 'headache_free' },
         });
-        showSnackbar({ message: t('marked_pain_free') });
+        showSnackbar({ message: saved ? t('marked_pain_free') : tOffline('saved_offline') });
         onDidChange?.();
         onClose();
       } catch (e: any) {

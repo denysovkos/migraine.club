@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 
 import { setLastAttackType } from '@/features/episodes/attackTypePrefs';
-import { fetchTodayDiary, upsertDiaryEntry } from './diaryApi';
+import { applyQueuedDiaryPatch, fetchTodayDiary, upsertDiaryEntry } from './diaryApi';
 
 type ViewState
   = | { kind: 'loading' }
@@ -63,10 +63,10 @@ export function TodayCheckInCard() {
     setStartAttackToggle(false);
 
     try {
-      const saved = await upsertDiaryEntry({
+      const saved = (await upsertDiaryEntry({
         localDate: prev.todayLocalDate,
         patch: { dayType },
-      });
+      })) ?? applyQueuedDiaryPatch(prev.entry, prev.todayLocalDate, { dayType });
       setState({
         kind: 'ready',
         data: { ...prev, entry: saved },

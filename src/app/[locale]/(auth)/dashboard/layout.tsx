@@ -3,6 +3,7 @@ import { RedirectToSignIn, Show } from '@clerk/nextjs';
 import { getTranslations } from 'next-intl/server';
 import { DashboardChrome } from '@/features/dashboard/migrennity/DashboardChrome';
 import { IntakeGate } from '@/features/intake/IntakeGate';
+import { OfflineSyncProvider } from '@/features/offline/OfflineSyncProvider';
 import { SnackbarViewport } from '@/features/snackbar';
 import { AuthenticatedThemeProvider } from '@/features/theme';
 import { requireUserOrRedirect } from '@/libs/AuthGuard';
@@ -74,13 +75,15 @@ export default async function DashboardLayout(props: {
       <Show when="signed-out">
         <RedirectToSignIn />
       </Show>
-      <DashboardChrome menu={menu}>
-        <IntakeGate>
-          <div className="px-4 pt-4 md:px-8 md:pt-6 xl:px-10">
-            {props.children}
-          </div>
-        </IntakeGate>
-      </DashboardChrome>
+      <OfflineSyncProvider>
+        <DashboardChrome menu={menu}>
+          <IntakeGate>
+            <div className="px-4 pt-4 md:px-8 md:pt-6 xl:px-10">
+              {props.children}
+            </div>
+          </IntakeGate>
+        </DashboardChrome>
+      </OfflineSyncProvider>
       <SnackbarViewport />
     </AuthenticatedThemeProvider>
   );

@@ -2755,5 +2755,31 @@
     "trouble_stale_body": "Supprimez le connecteur et ajoutez-le à nouveau. Une nouvelle connexion est alors demandée, ce qui règle généralement le problème.",
     "disclaimer": "Migraine.Club n’est pas un dispositif médical et ne fournit pas d’avis médical. Un assistant IA peut se tromper, y compris en lisant ou en enregistrant vos données de santé — vérifiez toujours dans l’application ce qui est important, et parlez à votre médecin de vos décisions de traitement.",
     "eyebrow": "Connecteur MCP"
+  },
+  "OfflineSync": {
+    "saved_offline": "Enregistré sur cet appareil. La synchronisation se fera au retour de la connexion.",
+    "status_offline": "Hors ligne. Vous pouvez quand même noter.",
+    "status_offline_pending": "Hors ligne · {count, plural, one {# entrée} other {# entrées}} en attente de synchronisation",
+    "status_syncing": "Synchronisation de {count, plural, one {# entrée} other {# entrées}}…",
+    "status_failed": "{count, plural, one {# entrée non synchronisée} other {# entrées non synchronisées}}",
+    "sheet_title": "Enregistré sur cet appareil",
+    "sheet_sub": "Ces entrées sont stockées sur cet appareil et se synchronisent automatiquement avec votre compte. Fermer l'application ne les efface pas.",
+    "kind_attack": "Crise",
+    "kind_attack_update": "Mise à jour de crise",
+    "kind_dose": "Médicament",
+    "kind_diary": "Journal",
+    "kind_factor": "Déclencheur ou facteur protecteur",
+    "captured_at": "Noté le {time}",
+    "state_pending": "En attente de synchronisation",
+    "state_failed": "Synchronisation impossible",
+    "retry": "Réessayer",
+    "discard": "Supprimer",
+    "discard_confirm": "Supprimer cette entrée ? Elle n'a pas encore été enregistrée dans votre compte.",
+    "sync_now": "Synchroniser",
+    "syncing": "Synchronisation…",
+    "waiting_for_connection": "En attente de connexion",
+    "signin_needed": "Reconnectez-vous pour synchroniser les entrées enregistrées sur cet appareil.",
+    "synced_toast": "{count, plural, one {# entrée hors ligne synchronisée} other {# entrées hors ligne synchronisées}}",
+    "failed_toast": "Certaines entrées hors ligne n'ont pas pu être synchronisées. Touchez le bandeau en haut pour les voir."
   }
 }

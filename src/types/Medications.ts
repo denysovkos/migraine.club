@@ -78,6 +78,12 @@ export const CreateQuickMedicationIntakeSchema = z
     // Optional explicit episode linkage (used by Episode Edit screen).
     // If not provided, server will auto-link to ongoing episode when available.
     episodeId: z.number().int().positive().optional(),
+    // When the dose was taken, as captured on the device. Doses queued offline
+    // are synced later and must keep this time. Defaults to server time.
+    takenAt: z.string().datetime().optional(),
+    // Also record the dose in the acute-dose ledger (MOH counting, outcomes)
+    // in the same request, so one offline queue entry covers the whole log.
+    recordAcuteDose: z.boolean().optional(),
   })
   .refine(
     d => !!d.userMedicationId || !!d.catalogMedicationId || !!d.customName,
@@ -92,6 +98,7 @@ export const CreateQuickMedicationIntakeResponseSchema = z.object({
   intakeId: z.string().guid(),
   linkedEpisodeId: z.number().int().optional(),
   userMedicationId: z.string().guid(),
+  acuteDoseId: z.string().guid().optional(),
 });
 export type CreateQuickMedicationIntakeResponse = z.infer<
   typeof CreateQuickMedicationIntakeResponseSchema

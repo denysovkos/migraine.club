@@ -4,7 +4,7 @@ import type {
   UpdateMedicationIntakeInput,
 } from '@/types/Medications';
 
-import { and, desc, eq, gte, inArray, isNotNull, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, inArray, isNotNull, lte, sql } from 'drizzle-orm';
 import { db } from '@/libs/DB';
 import { acuteDosesSchema, episodeSchema, medicationIntakesSchema, medicationsCatalogSchema, userMedicationsSchema } from '@/models/Schema';
 
@@ -63,6 +63,26 @@ export class QuickAddService {
       .select({ id: episodeSchema.id })
       .from(episodeSchema)
       .where(and(eq(episodeSchema.userId, userId), eq(episodeSchema.isOngoing, true)))
+      .orderBy(desc(episodeSchema.startTime))
+      .limit(1);
+
+    return row?.id ?? null;
+  }
+
+  /**
+   * The ongoing episode, but only if it had already started at `at`. A dose
+   * synced late from the offline queue must not attach to an attack that
+   * began after the dose was actually taken.
+   */
+  async getOngoingEpisodeIdAt(userId: string, at: Date): Promise<number | null> {
+    const [row] = await db
+      .select({ id: episodeSchema.id })
+      .from(episodeSchema)
+      .where(and(
+        eq(episodeSchema.userId, userId),
+        eq(episodeSchema.isOngoing, true),
+        lte(episodeSchema.startTime, at),
+      ))
       .orderBy(desc(episodeSchema.startTime))
       .limit(1);
 
@@ -279,7 +299,7 @@ export class QuickAddService {
     linkedEpisodeId: number | null;
     userMedicationId: string;
   }> {
-    const takenAt = new Date();
+    const takenAt = args.input.takenAt ? new Date(args.input.takenAt) : new Date();
 
     let userMedicationId = args.input.userMedicationId;
     if (!userMedicationId && args.input.catalogMedicationId) {
@@ -320,7 +340,7 @@ export class QuickAddService {
       }
       episodeId = ep.id;
     } else {
-      episodeId = await this.getOngoingEpisodeId(args.userId);
+      episodeId = await this.getOngoingEpisodeIdAt(args.userId, takenAt);
     }
 
     const [created] = await db
@@ -346,7 +366,8 @@ export class QuickAddService {
     await db
       .update(userMedicationsSchema)
       .set({
-        lastUsedAt: takenAt,
+        // A dose synced late from the offline queue must not move lastUsedAt backwards.
+        lastUsedAt: sql`greatest(coalesce(${userMedicationsSchema.lastUsedAt}, ${takenAt}), ${takenAt})`,
         lastUsedDose: normalizedDose === null ? undefined : normalizedDose,
         lastUsedUnit: normalizedUnit === null ? undefined : normalizedUnit,
         lastUsedUnitIsCustom:

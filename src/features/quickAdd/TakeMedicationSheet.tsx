@@ -3,12 +3,12 @@
 import type { MedicationPickerMyMedication } from '@/components/medications/MedicationPickerSheet';
 
 import type { CreateQuickMedicationIntakeInput } from '@/types/Medications';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
 
   MedicationPickerSheet,
 } from '@/components/medications/MedicationPickerSheet';
-import { createAcuteDose } from '@/features/quickAdd/acuteMedsApi';
 import { EditMedicationIntakeSheet } from '@/features/quickAdd/EditMedicationIntakeSheet';
 import {
   fetchMedicationPickerIndex,
@@ -18,6 +18,7 @@ import {
   searchMedications,
 } from '@/features/quickAdd/quickAddApi';
 import { showSnackbar } from '@/features/snackbar';
+import { removeOutboxItem } from '@/libs/offline/outbox';
 
 export type TakeMedicationSelection = {
   label: string;
@@ -48,6 +49,7 @@ export function TakeMedicationSheet(props: {
   episodeId?: number | null;
   onDidLog?: () => void;
 }) {
+  const tOffline = useTranslations('OfflineSync');
   const [pinnedMeds, setPinnedMeds] = useState<MedicationPickerMyMedication[]>([]);
   const [recentMeds, setRecentMeds] = useState<MedicationPickerMyMedication[]>([]);
   const [myMeds, setMyMeds] = useState<MedicationPickerMyMedication[]>([]);
@@ -142,30 +144,52 @@ export function TakeMedicationSheet(props: {
     };
 
     let intakeId: string | null = null;
+    let outboxId: string | null = null;
     let undone = false;
+    let settled = false;
     const abort = new AbortController();
     const loggedAt = new Date();
 
     const label = args.medication.medication.label;
 
-    const commit = quickAddCreateIntake(payload, { signal: abort.signal })
+    // One request writes both the intake and the acute dose, so it can be
+    // queued as a single unit when offline and keep the time of this tap.
+    const commit = quickAddCreateIntake(
+      { ...payload, takenAt: loggedAt.toISOString(), recordAcuteDose: true },
+      { signal: abort.signal, label },
+    )
       .then(async (result) => {
+        if (result.queued) {
+          outboxId = result.outboxId;
+          if (undone) {
+            await removeOutboxItem(result.outboxId).catch(() => {});
+            return;
+          }
+          const queuedId = result.outboxId;
+          showSnackbar({
+            message: `${label}: ${tOffline('saved_offline')}`,
+            actions: [{
+              label: 'Undo',
+              onClick: async () => {
+                await removeOutboxItem(queuedId);
+                props.onDidLog?.();
+              },
+            }],
+          });
+          return;
+        }
         intakeId = result.intakeId;
-        await createAcuteDose({
-          medicationId: result.userMedicationId,
-          attackId: props.episodeId ?? result.linkedEpisodeId ?? null,
-          dose: args.dose,
-          unit: args.unit,
-          unitIsCustom: args.unitIsCustom,
-        }).catch(() => {});
         if (undone && intakeId) {
           await quickAddUndoIntake(intakeId).catch(() => {});
         }
       })
       .catch((error: any) => {
-        showSnackbar({ message: error?.message || 'Failed to log medication' });
+        if (error?.name !== 'AbortError') {
+          showSnackbar({ message: error?.message || 'Failed to log medication' });
+        }
       })
       .finally(() => {
+        settled = true;
         props.onDidLog?.();
         loadPickerData();
       });
@@ -177,23 +201,24 @@ export function TakeMedicationSheet(props: {
         {
           label: 'Undo',
           onClick: async () => {
+            // Before the write settles, the .then above undoes it; after, do it here.
+            const alreadySettled = settled;
             undone = true;
             abort.abort();
-            if (intakeId) {
+            await commit;
+            if (alreadySettled && intakeId) {
               await quickAddUndoIntake(intakeId);
-              props.onDidLog?.();
-              loadPickerData();
-            } else {
-              await commit;
+            } else if (alreadySettled && outboxId) {
+              await removeOutboxItem(outboxId);
             }
+            props.onDidLog?.();
+            loadPickerData();
           },
         },
         {
           label: 'Edit',
           onClick: async () => {
-            if (!intakeId) {
-              await commit;
-            }
+            await commit;
             if (!intakeId) {
               return;
             }

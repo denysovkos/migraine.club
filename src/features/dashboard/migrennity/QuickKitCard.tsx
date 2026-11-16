@@ -39,6 +39,7 @@ function classLabel(medicationClass: string): string {
 
 export function QuickKitCard({ refreshToken, onDidLog }: { refreshToken?: number; onDidLog?: () => void }) {
   const t = useTranslations('DashboardHome');
+  const tOffline = useTranslations('OfflineSync');
   const router = useRouter();
   const [pinned, setPinned] = useState<PinnedMed[]>([]);
   const [loading, setLoading] = useState(true);
@@ -94,16 +95,24 @@ export function QuickKitCard({ refreshToken, onDidLog }: { refreshToken?: number
 
   async function logPinned(med: PinnedMed) {
     try {
-      await createAcuteDose({
+      const result = await createAcuteDose({
         medicationId: med.id,
         dose: med.defaultDose ?? undefined,
         unit: med.defaultUnit ?? undefined,
         unitIsCustom: med.defaultUnitIsCustom ? true : undefined,
+        label: med.label,
       });
       const suffix = [med.defaultDose, med.defaultUnit].filter(Boolean).join(' ');
-      showSnackbar({ message: t('snackbar_logged_med', { name: med.label, dose: suffix ? ` ${suffix}` : '' }) });
+      showSnackbar({
+        message: result.queued
+          ? `${med.label}: ${tOffline('saved_offline')}`
+          : t('snackbar_logged_med', { name: med.label, dose: suffix ? ` ${suffix}` : '' }),
+      });
       onDidLog?.();
-      router.refresh();
+      // Offline, a refresh would hard-navigate (RSC fetch fails) and drop the snackbar.
+      if (!result.queued) {
+        router.refresh();
+      }
     } catch (e: any) {
       showSnackbar({ message: e?.message ?? t('failed_log_medication') });
     }

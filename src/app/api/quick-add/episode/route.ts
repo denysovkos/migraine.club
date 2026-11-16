@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 import { hasHealthDataConsent } from '@/app/api/_helpers/healthDataConsent';
+import { resolveCapturedAt, withIdempotency } from '@/app/api/_helpers/idempotency';
 import { computeEpisodeWeatherContext } from '@/app/api/episodes/helpers';
 import { db } from '@/libs/DB';
 import { logger } from '@/libs/Logger';
@@ -16,7 +17,7 @@ import { PainLocation, PainType } from '@/types/Episode';
 
 // POST /api/quick-add/episode
 // Creates an "attack" immediately (no picker); user can edit later.
-export async function POST(request: Request) {
+async function handlePost(request: Request) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -44,6 +45,9 @@ export async function POST(request: Request) {
     localDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     // Optional: true onset time, distinct from log time. Used by acute-med-timing.
     onsetAt: z.string().datetime().optional().nullable(),
+    // When the user tapped "start" on their device. Entries queued offline are
+    // synced later, and must keep this time rather than the sync time.
+    startedAt: z.string().datetime().optional(),
   });
   const parsed = BodySchema.safeParse(body);
   if (!parsed.success) {
@@ -120,7 +124,11 @@ export async function POST(request: Request) {
     }
   }
 
-  const startTime = now;
+  const captured = resolveCapturedAt(parsed.data.startedAt, now, { maxAgeDays: 7 });
+  if ('error' in captured) {
+    return NextResponse.json({ error: captured.error, code: 'INVALID_STARTED_AT' }, { status: 400 });
+  }
+  const startTime = captured;
 
   // Enforce: only one ongoing attack at a time.
   const ongoing = await db
@@ -283,6 +291,15 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ episodeId: episode.id }, { status: 201 });
+}
+
+// Wrapped so entries queued offline can be replayed safely (see _helpers/idempotency).
+export async function POST(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return withIdempotency(request, userId, 'quick-add/episode', () => handlePost(request));
 }
 
 export const dynamic = 'force-dynamic';

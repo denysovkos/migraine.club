@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { withIdempotency } from '@/app/api/_helpers/idempotency';
 import { logger } from '@/libs/Logger';
 import {
   AcuteDoseError,
@@ -9,7 +10,7 @@ import {
   acuteDoseService,
 } from '@/services/acuteMedications/AcuteDoseService';
 
-export async function POST(request: Request) {
+async function handlePost(request: Request) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -44,6 +45,15 @@ export async function POST(request: Request) {
     logger.error({ error, userId }, 'Failed to log acute dose');
     return NextResponse.json({ error: error?.message ?? 'Internal server error' }, { status: 500 });
   }
+}
+
+// Wrapped so entries queued offline can be replayed safely (see _helpers/idempotency).
+export async function POST(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return withIdempotency(request, userId, 'acute-doses', () => handlePost(request));
 }
 
 export const dynamic = 'force-dynamic';

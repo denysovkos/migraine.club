@@ -9,6 +9,7 @@ import { BottomSheet } from '@/components/ui/bottom-sheet';
 import { Button } from '@/components/ui/button';
 import { CycleToggleChip } from '@/features/cycle/CycleToggleChip';
 import { setLastAttackType } from '@/features/episodes/attackTypePrefs';
+import { quickAddStartEpisodeNow } from '@/features/quickAdd/quickAddApi';
 import { TakeMedicationSheet } from '@/features/quickAdd/TakeMedicationSheet';
 import { showSnackbar } from '@/features/snackbar';
 import { cn } from '@/utils/Helpers';
@@ -41,24 +42,23 @@ export function TodayActions(props: {
   const router = useRouter();
   const tHome = useTranslations('DashboardHome');
   const tEpisodes = useTranslations('Episodes');
+  const tOffline = useTranslations('OfflineSync');
   const [takeOpen, setTakeOpen] = useState(false);
   const [startOpen, setStartOpen] = useState(false);
 
   async function startAttack(attackType: 'migraine' | 'headache') {
     try {
-      const res = await fetch('/api/quick-add/episode', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ attackType }),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.error ?? 'Failed to start attack');
+      const started = await quickAddStartEpisodeNow({ attackType });
+      if (started.queued) {
+        showSnackbar({ message: tOffline('saved_offline') });
       }
       setLastAttackType(attackType);
       setStartOpen(false);
       props.onDidLog?.();
-      router.refresh();
+      // Offline, a refresh would hard-navigate (RSC fetch fails) and drop the snackbar.
+      if (!started.queued) {
+        router.refresh();
+      }
     } catch (e: any) {
       showSnackbar({ message: e?.message ?? 'Failed to start attack' });
     }

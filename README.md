@@ -56,7 +56,7 @@ It does not diagnose, recommend treatment or predict attacks. It summarises what
 | **Community** | Moderated posts with anonymous posting and verified-doctor replies. |
 | **Notifications** | Web Push for daily risk alerts, medication and program reminders, and stale ongoing attacks. See [docs/PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md). |
 | **AI connector** | An MCP server that lets Claude, ChatGPT and other clients read your history and log entries for you. See [docs/MCP_SERVER.md](docs/MCP_SERVER.md). |
-| **PWA** | Installable on iOS, Android and desktop. |
+| **PWA and offline logging** | Installable on iOS, Android and desktop. Attacks, doses and diary entries logged offline are kept on the device and synced in order when the connection returns, with their original times. See [docs/OFFLINE_LOGGING.md](docs/OFFLINE_LOGGING.md). |
 | **Languages** | English, French and Ukrainian. |
 
 ## Tech stack

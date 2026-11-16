@@ -63,6 +63,7 @@ async function reset() {
     schema.communityCommentSchema,
     schema.communityPostSchema,
     schema.doctorVerificationApplicationSchema,
+    schema.idempotentRequestSchema,
   ];
 
   for (const table of tablesWithUserId) {

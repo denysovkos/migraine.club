@@ -281,6 +281,13 @@
       "when": 1789640352281,
       "tag": "0039_mcp_tool_call_audit",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1794867162447,
+      "tag": "0040_offline_idempotency",
+      "breakpoints": true
     }
   ]
 }
