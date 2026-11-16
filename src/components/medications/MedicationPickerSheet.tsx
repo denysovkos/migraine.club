@@ -127,11 +127,17 @@ export function MedicationPickerSheet(props: {
   }, [open]);
 
   useEffect(() => {
+    const next = query.trim();
+    // Nothing to debounce when the value is already current. Without this the
+    // timer also fires 200ms after mount and sets state to the value it has.
+    if (next === debouncedQuery) {
+      return;
+    }
     const timeout = window.setTimeout(() => {
-      setDebouncedQuery(query.trim());
+      setDebouncedQuery(next);
     }, 200);
     return () => window.clearTimeout(timeout);
-  }, [query]);
+  }, [query, debouncedQuery]);
 
   const myMatches = useMemo(() => {
     const needle = normalizeSearchText(debouncedQuery);
