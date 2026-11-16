@@ -1,3 +1,9 @@
+# 1.0.0 (2026-11-16)
+
+### Bug Fixes
+
+* skip no-op search debounce in medication picker ([8f6ebe0](https://github.com/denysovkos/migraine.club/commit/8f6ebe074ef4b750efd61621d1b96e9aa6096a4b))
+
 ## [1.7.6](https://github.com/ixartz/SaaS-Boilerplate/compare/v1.7.5...v1.7.6) (2025-05-01)
 
 
