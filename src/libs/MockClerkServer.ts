@@ -111,10 +111,6 @@ export const clerkMiddleware = (
   };
 };
 
-export const createRouteMatcher = (_patterns: string[]) => {
-  return (_req: NextRequest) => true;
-};
-
 // Stub clerkClient for any callers that use it (e.g. admin).
 export const clerkClient = async () => ({
   users: {

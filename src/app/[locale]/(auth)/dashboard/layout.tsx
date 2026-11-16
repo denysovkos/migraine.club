@@ -1,11 +1,11 @@
 import type { MenuItem } from '@/features/dashboard/DashboardHeader';
-import { useTranslations } from 'next-intl';
-
+import { RedirectToSignIn, Show } from '@clerk/nextjs';
 import { getTranslations } from 'next-intl/server';
 import { DashboardChrome } from '@/features/dashboard/migrennity/DashboardChrome';
 import { IntakeGate } from '@/features/intake/IntakeGate';
 import { SnackbarViewport } from '@/features/snackbar';
 import { AuthenticatedThemeProvider } from '@/features/theme';
+import { requireUserOrRedirect } from '@/libs/AuthGuard';
 import { Env } from '@/libs/Env';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
@@ -24,10 +24,19 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   };
 }
 
-export default function DashboardLayout(props: { children: React.ReactNode }) {
-  const t = useTranslations('DashboardLayout');
-  const tMod = useTranslations('Moderation');
-  const tAdmin = useTranslations('Admin');
+export default async function DashboardLayout(props: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await props.params;
+
+  // Resource-based auth (replaces the proxy's createRouteMatcher check).
+  // The data itself is guarded by the API routes the pages call.
+  await requireUserOrRedirect(locale);
+
+  const t = await getTranslations({ locale, namespace: 'DashboardLayout' });
+  const tMod = await getTranslations({ locale, namespace: 'Moderation' });
+  const tAdmin = await getTranslations({ locale, namespace: 'Admin' });
 
   const insightsEnabled = !!Env.ENABLE_F39_INSIGHTS;
   const menu: MenuItem[] = [
@@ -60,6 +69,11 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
 
   return (
     <AuthenticatedThemeProvider>
+      {/* Layouts don't re-render on client-side navigation, so also redirect
+          if the session ends while the dashboard is open. */}
+      <Show when="signed-out">
+        <RedirectToSignIn />
+      </Show>
       <DashboardChrome menu={menu}>
         <IntakeGate>
           <div className="px-4 pt-4 md:px-8 md:pt-6 xl:px-10">

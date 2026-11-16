@@ -12,6 +12,10 @@ export async function GET(
 ) {
   try {
     const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = await params;
 
     // Basic UUID sanity check; CommunityService will enforce visibility
@@ -19,7 +23,7 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid post ID' }, { status: 400 });
     }
 
-    const post = await communityService.getPostWithComments(userId ?? null, id);
+    const post = await communityService.getPostWithComments(userId, id);
 
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
