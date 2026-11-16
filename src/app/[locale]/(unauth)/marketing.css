@@ -1,0 +1,15 @@
+/* Marketing-only CSS utilities
+   Scoped to (unauth)/ pages only — never touches global.css or tailwind.config.ts.
+   Loaded by page.tsx and product/page.tsx via next/font + direct import. */
+
+/* Display font — Fraunces serif via CSS variable set by next/font/google */
+.font-display {
+  font-family: var(--font-fraunces, Georgia, 'Times New Roman', serif);
+}
+
+/* Soft ambient shadow — used on badge pills and cards */
+.shadow-soft {
+  box-shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.06),
+    0 1px 2px -1px rgb(0 0 0 / 0.04);
+}

@@ -1,0 +1,10017 @@
+[
+  {
+    "name": "Eletriptan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ergotamine, combinations excl. psycholeptics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CA5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fremanezumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Frovatriptan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Rizatriptan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Sumatriptan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Zolmitriptan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "АДЖОВІ™",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CD0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "АМІГРЕН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "АНТИМІГРЕН-ЗДОРОВ'Я",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "ЕЛЬПТАН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "ЗОЛМІГРЕН®",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "ЗОЛМІГРЕН® СПРЕЙ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "НОМІГРЕН БОСНАЛЕК®",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CA5"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "РАПІМІГ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "РИЗАТРИПТАН-ФАРМАТЕН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "РІЗАМІГРЕН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "РІЗОПТАН®",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "СТОПМІГРЕН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "СУМАМІГРЕН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "СУМАФІКС",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "ФРОВАМІГРАН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02CC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "1-МЕТИЛ-2-((ФЕНІЛТІО)МЕТИЛ)-3-КАРБЕТОКСИ-4-((ДИМЕТИЛАМІНО) МЕТИЛ)-5-ГІДРОКСИ-6-БРОМІНДОЛ ГІДРОХЛОРИД (УМІФЕНОВІРУ ГІДРОХЛОРИД)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "13C-urea",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V04CX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "2,3,4,5,6-ПЕНТАГІДРОКСИКАПРОНОВА КИСЛОТА, КАЛІЄВА СІЛЬ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "2,3,4,5,6-ПЕНТАГІДРОКСИКАПРОНОВА КИСЛОТА, МАГНІЄВА СІЛЬ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "3-(2,2,2-ТРИМЕТИЛГІДРАЗИНІЙ) ПРОПІОНАТУ ДИГІДРАТ (МЕЛЬДОНІЙ)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "3-ДІНІР",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD1"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "3-МЕТИЛБУТИРОВА КИСЛОТА",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "5-ФТОРУРАЦИЛ \"ЕБЕВЕ\"",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "5-ФУ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "6-МЕТИЛУРАЦИЛ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Abacavir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Abiraterone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Abrocitinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D11AH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Acalabrutinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EL0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aceclofenac",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M02AA2",
+      "M01AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Acetazolamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Acetylcysteine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Acetylsalicylic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AC0",
+      "N02BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Acetylsalicylic acid, combinations excl. psycholeptics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02BA5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Achillea millefolium**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aciclovir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D06BB0",
+      "J05AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aciclovir, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D06BB5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aclidinium bromide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aconitum**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01CX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Acorus calamus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A15"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Adalimumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AB0",
+      "L04A"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Adapalene",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D10AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Adapalene, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D10AD5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ademetionine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Adenoprosin*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Adenosine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aervae lanatae**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aescin*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aethonium*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AJ"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Afatinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aflibercept",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01LA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Agalsidase alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Agalsidase beta",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Agni casti fructus",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03X",
+      "G02CX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Agomelatine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alanine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Albendazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "P02CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Albumin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alclometasone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alectinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE3",
+      "L01ED0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alemtuzumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AA3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alendronic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M05BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alendronic acid and colecalciferol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M05BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alfacalcidol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A11CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alfuzosin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alginic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alglucosidase alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allantoin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allantoin*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allergen extracts",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V01AA",
+      "V01AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allergen extracts: animals*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V01AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allergen extracts: feather, house dust mites*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allergen extracts: food*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allergen extracts: grass pollen, tree pollen*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alloferon*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Allopurinol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M04AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alnus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aloe**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alpelisib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EM0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alprazolam",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alprostadil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Altabor**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Altan**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02X"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alteplase",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Althaea officinalis**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA0",
+      "R05CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Althea root",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aluminium hydroxide, combinations*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aluminium phosphate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Alverine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03AX5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amantadine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N04BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ambazone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R02AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ambrisentan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C02KX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ambroxol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amikacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01GB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amino acids",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aminobutyric acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aminocaproic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aminolevulinic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amiodarone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amisulpride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AL0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amitriptyline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amlodipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C08CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amlodipine and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C08GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ammonia*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R07AB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amorolfine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01AE1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amoxicillin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amoxicillin and beta-lactamase inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01CR0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Amphotericin B",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J02AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ampicillin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ampicillin and beta-lactamase inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01CR0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Anagrelide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XX3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Anakinra",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Anastrozole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Anethum graveolens**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02X"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Anidulafungin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J02AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Anisum vulgare**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Anti-D (rh) immunoglobulin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J06BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Antiinfectives, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S02AA3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Antilymphocyte immunoglobulin (horse)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Antithrombin III",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Antithymocyte immunoglobulin (rabbit)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Antral*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A05BA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Apixaban",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Apomorphine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N04BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aprepitant",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A04AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aprotinin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aqua pro injectioni*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V07AB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aralia**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A13A"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Arctostaphyos uva-ursi**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03BX",
+      "G04BP0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Arginine aspartate*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01E"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Arginine glutamate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A05BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Arginine hydrochloride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05XB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aripiprazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Armodafinil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aronia melanocarpa**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Artemether and lumefantrine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "P01BF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Artemisia absinthium**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A15"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Artesunate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "P01BE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Articaine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Articaine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01BB5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Artificial tears and other indifferent preparations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01XA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ascorbic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ascorbic acid (vit C)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A11GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Asparaginase",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XX2",
+      "L01XX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ataluren",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M09AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atazanavir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atazanavir and ritonavir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atenolol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atenolol and other antihypertensives",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07FB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atenolol and other diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atezolizumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01FF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atomoxetine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atorvastatin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atorvastatin and amlodipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atorvastatin and ezetimibe",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atorvastatin, acetylsalicylic acid and ramipril",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atorvastatin, amlodipine and perindopril",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10BX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atosiban",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02CX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atracurium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M03AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atropa belladonna**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05AX",
+      "C05AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Atropine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03BA0",
+      "S01FA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Avanafil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04BE1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Avocado and soyabean oil, unsaponifiables",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Axitinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azacitidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azapentacene*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01XA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azathioprine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azelaic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D10AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azelastine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01GX0",
+      "R01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azilsartan medoxomil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azilsartan medoxomil and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Azithromycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01FA1",
+      "S01AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Aztreonam",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "b-ЕСЦИН АМОРФНИЙ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Bacitracin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Baclofen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M03BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Baloxavir marboxil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Barbiturates in combination with other drugs",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Barium sulfate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Barium sulfate without suspending agents",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Basiliximab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "BAT® [БОТУЛІНІЧНИЙ АНТИТОКСИН ҐЕПТАВАЛЕНТНИЙ (A, B, C, D, E, F, G) - (КІНСЬКИЙ)] (BAT® [BOTULISM ANTITOXIN HEPTAVALENT (A, B, C, D, E, F, G) - (EQUINE)])",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J06AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "BCG vaccine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Beclometasone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03BA0",
+      "R01AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Beclometasone and antibiotics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bedaquiline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04AK0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bemiparin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bendamustine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bendazol*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C04AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benfotiamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benzalkonium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02BB",
+      "D08AJ0",
+      "G02BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benzobarbital*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benzocaine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01BA0",
+      "C05AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benzoyl peroxide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D10AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benzydamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A01AD0",
+      "R02AX0",
+      "G02CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benzyl benzoate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "P03AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Benzylpenicillin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01CE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Betacarotene",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Betahistine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Betamethasone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07AC0",
+      "H02AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Betamethasone and antibiotics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Betamethasone and antiseptics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07BC0",
+      "D07XC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Betaxolol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07AB0",
+      "S01ED0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Betula**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bevacizumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01FG0",
+      "L01XC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bibrocathol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bicalutamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Biclotymol*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R02A"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bicyclol*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A05B"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bidens tripartia**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D11AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bifonazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01AC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bifonazole, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01AC6"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bilastine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bimatoprost",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Biotin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A11HA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Biperiden",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N04AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bisacodyl",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bismuth subcitrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bismuth subgalate*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bismuth subnitrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bismuth tribromophenate*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bisoprolol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bisoprolol and amlodipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07FB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bisoprolol and other antihypertensives",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07FB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Blastolen*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bleomycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01DC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Boric acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AD"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bortezomib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XG0",
+      "L01XX3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bosentan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C02KX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bosutinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE1",
+      "L01EA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Botulinum antitoxin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Botulinum toxin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M03AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Brentuximab vedotin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XC1",
+      "L01FX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Brexpiprazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Brigatinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE4"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Brimonidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Brinzolamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Brinzolamide, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EC5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Brolucizumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01LA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bromelains",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D03BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bromfenac",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01BC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bromhexine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bromocriptine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02CB0",
+      "N04BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Budesonide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03BA0",
+      "A07EA0",
+      "R01AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bufexamac",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bupivacaine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bupivacaine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01BB5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Buprenorphine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02AE0",
+      "N07BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Buprenorphine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07BC5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Bupropion",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Buspirone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Busulfan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Butamirate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05DB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Butorphanol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Butylscopolamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "C1-inhibitor, plasma derived",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B06AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cabazitaxel",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01CD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cabergoline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cabozantinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Caffeine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Caffeine and sodium benzoate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calamagrostis epigeios*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcipotriol, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D05AX5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcitriol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D05AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcium carbonate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcium chloride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05XA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcium folinate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V03AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcium gluconate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A12AA0",
+      "B05BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcium laevulate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcium pantothenate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calcium, combinations with vitamin D and/or other drugs",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A12AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Calendula officinalis**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02CC",
+      "D03AX",
+      "R02AA2",
+      "D03AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Camphora",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M02AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Canakinumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Candesartan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Candesartan and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cangrelor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AC2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Capecitabine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Capreomycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04AB3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Capsella bursa-pastoris**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Capsicum annuum**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M02AB",
+      "A01AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Captopril",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Captopril and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carbamazepine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carbamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D02AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carbetocin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H01BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carbidopa*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carbimazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carbocisteine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carbomer*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01XA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carboplatin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carfilzomib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cariprazine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carmustine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carnitine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carum carvi**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Carvedilol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07AG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Caspofungin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J02AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Castor oil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefalexin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefazolin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefdinir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefditoren",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefepime",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefepime and amikacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefixime",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefoperazone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefoperazone and beta-lactamase inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD6"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefotaxime",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefpodoxime",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ceftazidime",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ceftazidime and beta-lactamase inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ceftolozane and beta-lactamase inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DI5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ceftriaxone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ceftriaxone and beta-lactamase inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD6"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ceftriaxone, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DD5",
+      "J01D"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cefuroxime",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DC0",
+      "S01AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Celecoxib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Centaurium**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A15"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ceritinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01ED0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cerliponase alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cetirizine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cetrorelix",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H01CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cetuximab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01FE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cetylpyridinium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chelidonium majus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorambucil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chloramphenicol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01AA0",
+      "J01BA0",
+      "D06AX0",
+      "G01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorhexidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AX",
+      "R02AA0",
+      "D08AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorhexidine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AC5",
+      "R02AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlormadinone and ethinylestradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlornitrophenol*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01AE"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorophyllipt*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R02AA2",
+      "G01AX",
+      "J01XX",
+      "D08AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chloropyramine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorotrianisene",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01X"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorphenamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorpromazine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorprothixene",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlorquinaldol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chlortalidone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chole medicata*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M02AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Choline alfoscerate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Choline fenofibrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Choline salicylate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S02D"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chondroitin sulfate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Choriogonadotropin alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chorionic gonadotrophin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Chymotrypsin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D03B"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cianamid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07BB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ciclopirox",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01AE1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ciclosporin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AD0",
+      "S01XA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cilostazol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AC2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cimicifugae rhizoma",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02CX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cinacalcet",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H05BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cinchocaine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cineole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cinnarizine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cinnarizine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07CA5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ciprofloxacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01MA0",
+      "S03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ciprofloxacin and ornidazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01RA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ciprofloxacin and tinidazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01RA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cisatracurium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M03AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cisplatin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Citalopram",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Citicoline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Citrulline*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16A",
+      "A16AA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cladribine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BB0",
+      "L04AA4"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clarithromycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01FA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clavulanic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clavulanic acid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clemastine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clindamycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AA1",
+      "J01FF0",
+      "D10AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clindamycin, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D10AF5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clobetasol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clofarabine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clofazimine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clomifene",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clomipramine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clonazepam",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clonidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C02AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clopidogrel",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clotrimazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01AC0",
+      "A01AB1",
+      "G01AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Clozapine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Coagulation factor IX",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Coagulation factor IX, II, VII and X in combination",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Coagulation factor VIII",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cobamamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cobimetinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cocarboxylase*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A11DA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Codeine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Colchicine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M04AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Colecalciferol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A11CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Colestyramine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Colistin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01XB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Comb drug",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EX",
+      "A11JA",
+      "D03AX",
+      "G04BX",
+      "R01AB",
+      "N05CM",
+      "M02AX1",
+      "A05AX",
+      "R05CA1",
+      "A02BX",
+      "M02AA6",
+      "R02A",
+      "R02AA2",
+      "C05AD",
+      "V07AC",
+      "R05X",
+      "N07XX",
+      "C05AX0",
+      "A15",
+      "G04BC",
+      "M09AX",
+      "M01AX",
+      "M01B",
+      "A10X",
+      "A11GB",
+      "B01AC3",
+      "N02BA0",
+      "J07AX",
+      "B05DB",
+      "A16A",
+      "D08AX",
+      "D06AX",
+      "A03ED",
+      "A03DB",
+      "D07XC0",
+      "A12AX",
+      "A12CC",
+      "A16AX",
+      "A13A",
+      "J01CE3",
+      "M02AC",
+      "D08AD",
+      "R07AX",
+      "R03CC",
+      "R05DB",
+      "R05CA",
+      "G01A",
+      "G02CX",
+      "N06BX",
+      "C05CX",
+      "D11AF",
+      "R01AB0",
+      "J05AR",
+      "A11DB",
+      "B05XC",
+      "B06AA",
+      "M09AB",
+      "B05AA0",
+      "A02BX1",
+      "A03AX",
+      "A02AD0",
+      "B05AA",
+      "A11BA",
+      "R02AX",
+      "C05AD0",
+      "D06C",
+      "A16AA",
+      "A05BA",
+      "A05",
+      "R05C",
+      "G01AX1",
+      "R01AD",
+      "M01AX0",
+      "G04",
+      "G04C",
+      "A11AB",
+      "A11EA",
+      "M01AH",
+      "A01AD1",
+      "A01AB",
+      "G01AX",
+      "D07XC",
+      "D01AC",
+      "D02AX",
+      "A03DC",
+      "M02AA",
+      "M02AA1",
+      "M02AX",
+      "B05D",
+      "J01XX",
+      "B01AD",
+      "S02DA3",
+      "B05DA",
+      "N01BB2",
+      "A06AG2",
+      "A09AA",
+      "A09AA0",
+      "A07AX",
+      "L03AX",
+      "M02AB",
+      "R01AX3",
+      "D04AX",
+      "A03",
+      "D07XA0",
+      "A07CA",
+      "B05BA1",
+      "S02CA",
+      "D01AC2",
+      "D11AX",
+      "A02AX",
+      "N05CX",
+      "A11JC",
+      "V06DD",
+      "A11GA0",
+      "G03CA5",
+      "R05DA2",
+      "N02B",
+      "J04AM",
+      "R05DA",
+      "A12CX",
+      "V07AB",
+      "V01AA",
+      "R02AA0",
+      "A02",
+      "S01XA",
+      "R02AA",
+      "S01CA",
+      "A11EC",
+      "J05AP0",
+      "G01AA5",
+      "N07BB",
+      "G01BF",
+      "M03BX0",
+      "R05CB1",
+      "M01BX",
+      "R05CA0",
+      "C01EB",
+      "M01A",
+      "J01RA",
+      "J01DA",
+      "R01B07",
+      "A02BC",
+      "A02X",
+      "M05BX",
+      "D06BX",
+      "S01XA2",
+      "C04AX",
+      "D11AA",
+      "A02AF",
+      "A06AB",
+      "C05AA",
+      "B05ZB",
+      "A07FA",
+      "A06AX",
+      "G04CX",
+      "J05AX",
+      "C10AX",
+      "C05AA0",
+      "V04CL",
+      "D02AF",
+      "R03AK0",
+      "N05C",
+      "R02AX0",
+      "A11EB",
+      "G04B",
+      "B03AE1",
+      "A08A",
+      "D02AB",
+      "R07AA3",
+      "B02BC3",
+      "J07BC2",
+      "B05XB",
+      "R05FB",
+      "G04BX5",
+      "G03FB0",
+      "A03AX1",
+      "C05A",
+      "R07A",
+      "A01AD0",
+      "D03AX0",
+      "A01AD",
+      "R06A",
+      "S01AX0",
+      "A03B"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Combinations of imidazole derivatives",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AF2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Combinations of vitamins",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A11JA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Corglycon*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Coriandrum sativum**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Corifollitropin alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cough suppressants and expectorants",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05FB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cough suppressants and mucolytics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05FB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "COVID-19 Vaccine (Vero Cell), Inactivated*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Covid-19 vaccines",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Crataegus glycosides",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cridanimod",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Crizotinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cromoglicic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01GX0",
+      "R01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cucurbita pero**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10AX",
+      "G04BX",
+      "G04CX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Curcuma longa*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyanocobalamin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyclamen europaeum**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R01AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyclobenzaprine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M03BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyclopentolate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01FA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyclophosphamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cycloserine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cynara scolymus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A05AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyproheptadine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyproterone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03HA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cyproterone and estrogen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03HB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cysteine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cytarabine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cytisine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cytisinicline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Cytochrom C*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "D-БІОТИН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "D-ГЛЮКОЗАМІНУ ГІДРОХЛОРИД",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Dabigatran etexilate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dabrafenib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dacarbazine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Daclatasvir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AP0",
+      "J05AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dactinomycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dalargin*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dapagliflozin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10BK0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dapoxetine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04BX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Daptomycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01XX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Daratumumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XC2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Darbepoetin alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03XA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Darifenacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04BD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Darunavir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AE1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dasatinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Daucus carota*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Daunorubicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Decamethoxine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S02AA",
+      "D08AJ1",
+      "G01AX",
+      "D08A",
+      "S01AX",
+      "R02AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Decitabine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Deferasirox",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V03AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Degarelix",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Delamanid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04AK0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Demoxytocin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H01BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Denosumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M05BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Denotivir*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D06BB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dequalinium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Deschampsia caespitosa*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Desloratadine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Desmopressin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H01BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Desogestrel",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Desogestrel and ethinylestradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Desvenlafaxine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexamethasone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H02AB0",
+      "S01BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexamethasone and antiinfectives",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01CA0",
+      "S03CA0",
+      "S02CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexamethasone, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R01AD5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexibuprofen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AE1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexketoprofen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AE1",
+      "M02AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexlansoprazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexmedetomidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05CM1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dexpanthenol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D03AX0",
+      "S01XA1",
+      "A11HA3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dextran",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dextromethorphan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diacerein",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diatrizoic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diazepam",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diclofenac",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AB0",
+      "M02AA1",
+      "S01BC0",
+      "D11AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diclofenac, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AB5",
+      "M02AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dicycloverine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dienogest",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dienogest and estradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dienogest and ethinylestradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "DIFTET (DT VACCINE) DIPHTHERIA AND TETANUS VACCINE (ADSORBED) / ДІФТЕТ (ДП ВАКЦИНА) ВАКЦИНА ДЛЯ ПРОФІЛАКТИКИ ДИФТЕРІЇ ТА ПРАВЦЯ (АДСОРБОВАНА)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07AM5"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Digoxin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diltiazem",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C08DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dimenhydrinate*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AA0",
+      "N07CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dimethyl fumarate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dimethyl sulfoxide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M02AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dimetindene",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D04AA1",
+      "R06AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dinalbuphine sebacate*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02AF"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dinoprostone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diosmectite",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A07BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diosmin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diosmin, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05CA5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dioxydine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01XX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diphenhydramine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D04AA3",
+      "R06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diphtheria antitoxin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diphtheria Antitoxin I.P. / Дифтерійний Антитоксин І.Р.",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J06AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Diphtheria toxoid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diphtheria-haemophilus influenzae B-pertussis-poliomyelitis-tetanus",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diphtheria-haemophilus influenzae B-pertussis-poliomyelitis-tetanus-hepatitis B",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diphtheria-haemophilus influenzae B-pertussis-tetanus-hepatitis B",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07CA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Diphtheria-pertussis-poliomyelitis-tetanus",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dipyridamole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Disulfiram",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "DL--ТОКОФЕРОЛУ АЦЕТАТ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "DL-КАРНІТИНУ ГІДРОХЛОРИД",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "DL-МЕТІОНІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "DL-СЕРИН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "DL-СУЛЬФОКАМФОРНА КИСЛОТА",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Dobutamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Docetaxel",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01CD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Docosanol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D06BB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Docusate sodium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AA0",
+      "A06AG1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dolutegravir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Domperidone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03FA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Donepezil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dopamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doravirine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dornase alfa (desoxyribonuclease)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dorzolamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doxazosin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C02CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doxepin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doxofylline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03DA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doxorubicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doxycycline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doxylamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05CM",
+      "R06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Doxylamine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05CM5",
+      "R06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dronedarone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Drospirenone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Drospirenone and estetrol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Drospirenone and estrogen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03FA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Drospirenone and ethinylestradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Drotaverine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Duloxetine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Durvalumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XC2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dutasteride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dydrogesterone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Dydrogesterone and estrogen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03FA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ebastine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Echinacea purpurea**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Econazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01AC0",
+      "G01AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Edaravone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07XX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Edoxaban",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Efavirenz",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Electrolytes",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Electrolytes in combination with other drugs",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05XA3",
+      "B05BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Electrolytes with carbohydrates",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eleutherococcus senticosus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A13A"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Elosulfase alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eltrombopag",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Emicizumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Emoxypin*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05CX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Empagliflozin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10BK0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Emtricitabine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Emtricitabine, tenofovir alafenamide, elvitegravir and cobicistat",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Emtricitabine, tenofovir disoproxil and efavirenz",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Enalapril",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Enalapril and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Enalapril and lercanidipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Enalapril and nitrendipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Encad*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Encephalitis, tick borne, inactivated, whole virus",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Enisamium iodide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX",
+      "J05AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Enoxaparin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Entecavir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AF1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Entrectinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Enzalutamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ephedrine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Epinephrine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01CA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Epirubicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eplerenone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eprosartan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eptacog alfa (activated)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eptifibatide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Equisetum arvense**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Erdosteine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "ERELZI® / ЕРЕЛЗІ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AB0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Ergocalciferol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A11CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Erlotinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EB0",
+      "L01XE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ertapenem",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Erythromycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01FA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Erythromycin, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D10AF5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Erythropoietin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03XA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Escitalopram",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Esketamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eslicarbazepine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Esmolol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C07AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Esomeprazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Estradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Estriol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Etamsylate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Etanercept",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Etelcalcetide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H05BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ethacizine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ethambutol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04AK0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ethanol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AX",
+      "D08AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ethionamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Etifoxine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Etodolac",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Etoposide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Etoricoxib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Eucalyptus vitaminalis**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R02AA2",
+      "A01AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Everolimus",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EG0",
+      "L01XE1",
+      "L04AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Exemestane",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ezetimibe",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fabomotizole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Factor VIII inhibitor bypassing activity",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Famciclovir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Famotidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Faricimab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01LA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fasudil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fat emulsions",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Favipiravir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Febuxostat",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M04AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Felodipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C08CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fenofibrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fenoterol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fenoterol and ipratropium bromide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AL0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fenpiverinium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fenspiride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03DX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fentanyl",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N02AB0",
+      "N01AH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fenticonazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AF1",
+      "D01AC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferric oxide dextran complex*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferric oxide polymaltose complexes",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AB0",
+      "B03AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferric oxide polymaltose complexes and folic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferric oxide polymaltose complexes with folic acid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferrous citrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferrous fumarate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferrous sulfate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ferrous sulfate with folic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fexofenadine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fibrinogen, human",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fidaxomicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A07AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Filgrastim",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Finasteride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Finerenone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fingolimod",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Flecainide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Flores helianthi**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R02AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluconazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J02AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fludarabine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fludrocortisone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H02AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Flumazenil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V03AB2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Flumetasone and antiseptics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluocinolone acetonide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluocinolone acetonide and antibiotics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluocinolone acetonide and antiinfectives",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S02CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluocinonide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluocinonide and antibiotics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluorouracil",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluoxetine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Flupentixol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluphenazine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Flurbiprofen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R02AX0",
+      "M01AE0",
+      "S01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Flutamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluticasone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07AC1",
+      "R01AD0",
+      "R03BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluticasone furoate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R01AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluticasone, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R01AD5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fluvoxamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Foeniculum vulgare**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Folic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Follitropin alfa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Follitropin beta",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Follitropin delta",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fondaparinux",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Formic acid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M02AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Formoterol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Formoterol and aclidinium bromide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AL0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Formoterol and beclometasone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AK0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Formoterol and budesonide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AK0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Formoterol, glycopyrronium bromide and budesonide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AL1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fosfocreatine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fosfomycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01XX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Framycetin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R01AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Frangula alnus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AB",
+      "A06AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fructose",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fulvestrant",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "FULVESTRANT SANDOZ® ФУЛВЕСТРАНТ САНДОЗ®",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Furazidin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01XE0",
+      "J01XE",
+      "R02AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Furazolidone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Furosemide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Fusidic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D06AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "G-strophanthin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gabapentin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gabexate*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B02AB4"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gadobutrol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gadoteric acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gadoxetic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08CA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Galantamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Galsulfase",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ganciclovir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01AD0",
+      "J05AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ganirelix",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H01CC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gatifloxacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01MA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gefitinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gelatin agents",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gemcitabine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gemtuzumab ozogamicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gentamicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01GB0",
+      "D06AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gestodene and ethinylestradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gilteritinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ginkgo folium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06DX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glatiramer acetate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glaucine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05DB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glecaprevir and pibrentasvir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AP5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glibenclamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gliclazide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glimepiride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10BB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gliquidone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glucagon",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H04AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glucosamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glucose",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05CX0",
+      "V06DC0",
+      "A16AX",
+      "V04CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glutamic acid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07XX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glutathione",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V03AB3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glutoxim*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glycerol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D02AX",
+      "A06AX0",
+      "A06AG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glyceryl trinitrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glycine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07XX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glycine max**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02CX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glycopyrronium bromide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glycyrrhiza**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Glycyrrhizinic acid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D06BB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Golimumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Gonadotropins, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Goserelin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Granisetron",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Griseofulvin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D01BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Guaifenesin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Guanfacine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C02AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Haemophilus influenzae B, purified antigen conjugated",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07AG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Haloperidol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Harpagophytum procumbens**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M09AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hederae helicis folium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA1",
+      "R05CA",
+      "R05C"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Helichrysum arenarium**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A05AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Heparin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05BA0",
+      "B01AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Heparin, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05BA5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hepatitis A, inactivated, whole virus",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hepatitis B, purified antigen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Herba Thermopsidis Lanceolatae**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Herba Violae**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hexamethonium bromide*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C02BC"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hexamidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hexetidine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A01AB1",
+      "R02AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hexoprenaline",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G02CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hibiscus sabdariffa**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hidrosmin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hippocastani semen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05CX0",
+      "C05CX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hippophae rhamnoides**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX",
+      "A02X",
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Histamine dihydrochloride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V04CL"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Histidine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hopantenic acid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "House dust mites",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Human menopausal gonadotrophin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03GA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Human plasma proteins*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05AA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Humulus lupulus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hyaluronic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M09AX0",
+      "D10AX",
+      "S01XA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hyaluronidase",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydazepam*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydrochlorothiazide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydrochlorothiazide and potassium-sparing agents",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03EA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydrocortisone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07AA0",
+      "S01BA0",
+      "H02AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydrocortisone and antibiotics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydrocortisone butyrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D07AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydrogen peroxide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydrotalcite",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydroxycarbamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydroxychloroquine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "P01BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydroxyethylstarch",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydroxyprogesterone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hydroxyzine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hymecromone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A05AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hyperici herba",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hypericine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hypericum perforatum**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A01AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Hypromellose",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01XA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ibandronic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M05BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ibrutinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ibuprofen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AE0",
+      "G02CC0",
+      "M02AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ibuprofen, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AE5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ichthammol*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AX",
+      "C05AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Idarubicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Idarucizumab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V03AB3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Idebenone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Idursulfase",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ifosfamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iloprost",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B01AC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Imatinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01EA0",
+      "L01XE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Imiglucerase",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Imipenem and cilastatin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01DH5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Imipramine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Imiquimod",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D06BB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Immunoglobulins, normal human, for extravascular adm.",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J06BA0",
+      "J06BB3"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Immunoglobulins, normal human, for intravascular adm.",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J06BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Inclisiran",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C10AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Indacaterol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Indacaterol and glycopyrronium bromide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03AL0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Indapamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C03BA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Indocyanine green",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V04CX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Indometacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01BC0",
+      "M01AB0",
+      "M02AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Infliximab",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Influenza, inactivated, split virus or surface antigen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Influenza, purified antigen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Inosine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EB"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Inosine pranobex",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Inotuzumab ozogamicin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XC2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin (human)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AB0",
+      "A10AD0",
+      "A10AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin aspart",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AD0",
+      "A10AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin degludec",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin degludec and insulin aspart",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin degludec and liraglutide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AE5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin detemir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin glargine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin glargine and lixisenatide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AE5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin glulisine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Insulin lispro",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10AB0",
+      "A10AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Interferon alfa-2b",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AB0",
+      "S01XA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Interferon beta-1a",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Interferon beta-1b",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Inula helenium**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iodine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AG0",
+      "R02AA2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iodixanol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iohexol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iopamidol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iopromide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "V08AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ipidacrine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N07AA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ipratropium bromide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R03BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Irbesartan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Irbesartan and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Irinotecan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XX1",
+      "L01CE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iron, parenteral preparations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AC"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Iron, vitamin B12 and folic acid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isodibut*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10XA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isoflurane",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isoleucine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isoniazid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J04AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isosorbide dinitrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isosorbide mononitrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01DA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isotretinoin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D10BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Isoxsuprine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C04AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ispaghula (psylla seeds)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AC0",
+      "C10AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Itopride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03FA0",
+      "A03FA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Itraconazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J02AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ivabradine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01EB1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ivermectin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D11AX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Kanamycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01GB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ketamine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ketoconazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AF1",
+      "D01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ketoprofen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M02AA1",
+      "M01AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ketorolac",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AB1",
+      "S01BC0",
+      "M02AA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ketotifen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01GX0",
+      "R06AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Khellin*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "L - АРГІНІНУ МОНОГІДРОХЛОРИД",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L- АРГІНІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-АЛАНІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-АЛЬФА-ГЛІЦЕРОФОСФОРИЛ ХОЛІН (ХОЛІНУ АЛЬФОСЦЕРАТ)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-АРГІНІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-АРГІНІН L-АСПАРТАТ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-АРГІНІНУ L-АСПАРТАТ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-АРГІНІНУ МОНОГІДРОХЛОРИД",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-АСПАРАГІНАЗА / L-ASPARAGINASE",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XX2"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ВАЛІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ГІСТИДИН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ГІСТИДИНУ МОНОГІДРОХЛОРИДУ МОНОГІДРАТ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ГЛУТАМІНОВА КИСЛОТА",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ІЗОЛЕЙЦИН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ЛЕЙЦИН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ЛІЗИНУ ГІДРОХЛОРИД",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ЛІЗИНУ ЕСЦИНАТ®",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C05CX"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-МАЙ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AE0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-МЕТІОНІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ОРНІТИНУ - L-АСПАРТАТ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ОРНІТИНУ L-АСПАРТАТ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ОРНІТИНУ-L-АСПАРТАТ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ПРОЛІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-СЕРИН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОЗИН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОЗИН (ТИРОЗИН)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОКСИН 100 БЕРЛІН-ХЕМІ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОКСИН 125 БЕРЛІН-ХЕМІ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОКСИН 150 БЕРЛІН-ХЕМІ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОКСИН 50 БЕРЛІН-ХЕМІ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОКСИН 75 БЕРЛІН-ХЕМІ",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТИРОКСИН-ФАРМАК®",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03AA0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТРЕОНІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ТРИПТОФАН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ФЕНІЛАЛАНІН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ЦЕТ®",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AE0"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ЦИСТЕЇН",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "L-ЯБЛУЧНА КИСЛОТА",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "brand"
+  },
+  {
+    "name": "Lacosamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lactic acid producing organisms",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A07FA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lactic acid producing organisms, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A07FA5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lactitol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lactobacillus fermentum",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G01AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lactulose",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Laminaria saccharina**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AC"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lamivudine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lamivudine and abacavir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR0",
+      "J05AF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lamivudine, abacavir and dolutegravir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lamivudine, tenofovir disoproxil and dolutegravir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX1",
+      "J05AR1",
+      "J05AR2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lamivudine, tenofovir disoproxil and doravirine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lamivudine, tenofovir disoproxil and efavirenz",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR0",
+      "J05AR1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lamotrigine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lanatoside C",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lanatozide C*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lanreotide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H01CB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lansoprazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lansoprazole, clarithromycin and tinidazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lapatinib",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XE0",
+      "L01EH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Laronidase",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Latanoprost",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Latanoprostene bunod",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01EE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lavandulae aetheroleum",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BX0",
+      "R05CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Ledi palustris**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05CA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Leflunomide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lenalidomide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L04AX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lenograstim",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L03AA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Leonurus**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05CM2",
+      "N05CM"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lercanidipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C08CA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lespedeza bicolor**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G04BX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Letermovir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Letrozole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02BG0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Leuprorelin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L02AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levamisole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "P02CE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levana*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05CD"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levetiracetam",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N03AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levisticum officinale**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levocabastine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01GX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levocarnitine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A16AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levocetirizine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levodopa",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levodopa and decarboxylase inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N04BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levodopa, decarboxylase inhibitor and COMT inhibitor",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N04BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levodropropizine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R05DB2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levofloxacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01MA1",
+      "S01AE0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levofloxacin and ornidazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01RA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levoleucine*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levomenthol*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levomepromazine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levonorgestrel",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AD0",
+      "G02BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levonorgestrel and estrogen",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03FB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levonorgestrel and ethinylestradiol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03AA0",
+      "G03AB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levosimendan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C01CX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Levothyroxine sodium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "H03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lidocaine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01BB0",
+      "D04AB0",
+      "C01BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lidocaine, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N01BB5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lincomycin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01FF0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Linezolid",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01XX0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Linum**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02X"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Liraglutide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A10BJ0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lisinopril",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lisinopril and amlodipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09BB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lisinopril and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lithium",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AN0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lomefloxacin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J01MA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lomustine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Loperamide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A07DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Loperamide, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A07DA5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lopinavir and ritonavir",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J05AR1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Loratadine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lorazepam",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lornoxicam",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "M01AC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Losartan",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Losartan and amlodipine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09DB0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Losartan and diuretics",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "C09DA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Loteprednol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "S01BA1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Loxapine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N05AH0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lutein*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lynestrenol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03DC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lysine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Lysozyme",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Macrogol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AD1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Macrogol, combinations",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AD6"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magaldrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A02AD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium (different salts in combination)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A12CC3",
+      "A12C",
+      "A12CX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium aspartate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium carbonate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium chloride",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium citrate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium hydroxide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium lactate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium oxide",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A12CC1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium pidolate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Magnesium sulfate",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A06AD0",
+      "B05XA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Malic acid*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Mannitol",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B05BC0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Matricaria chamomilla**",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "D08AX",
+      "D11AX",
+      "A16AX"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Measles, combinations with mumps and rubella, live attenuated",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BD5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Measles, combinations with mumps, rubella and varicella, live attenuated",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BD5"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Measles, live attenuated",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "J07BD0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Mebendazole",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "P02CA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Mebeverine",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A03AA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Mebhydrolin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "R06AX1"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Mebicar* (tetramethylglycoluril)",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "N06BX2"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Mebifon*",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "L01XX",
+      "M05BA"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Mecobalamin",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "B03BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Medicinal charcoal",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "A07BA0"
+    ],
+    "type": "ingredient"
+  },
+  {
+    "name": "Medroxyprogesterone",
+    "sources": [
+      "ua_reestr"
+    ],
+    "atcPrefixes": [
+      "G03DA0",
+      "G03AC0"
+    ],
+    "type": "ingredient"
+  }
+]

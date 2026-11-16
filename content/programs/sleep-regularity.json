@@ -1,0 +1,37 @@
+{
+  "id": "sleep-regularity",
+  "title": "Sleep Regularity",
+  "shape": "daily-habit",
+  "durationWeeks": 6,
+  "adherenceMetric": "bedtime-wake-window",
+  "defaultTarget": {
+    "bedTime": "23:00",
+    "wakeTime": "07:00",
+    "toleranceMinutes": 30
+  },
+  "recommendationTriggers": [
+    {
+      "kind": "factor-frequency",
+      "factor": "sleep_issue",
+      "values": [],
+      "minDays": 5,
+      "windowDays": 14
+    },
+    {
+      "kind": "headache-rate",
+      "minHeadacheDays": 4,
+      "windowDays": 14
+    },
+    {
+      "kind": "intake-answer",
+      "field": "sleepTrouble",
+      "values": ["often", "sometimes"]
+    }
+  ],
+  "citations": [
+    { "id": "vgontzas-2020", "label": "Vgontzas 2020", "doi": "10.1212/WNL.0000000000010012" },
+    { "id": "smitherman-2019", "label": "Smitherman 2019", "doi": "10.1111/head.13441" },
+    { "id": "lin-2016", "label": "Lin 2016", "pmid": "26849014" }
+  ],
+  "disclaimer": "Discuss any change with your doctor. Not medical advice."
+}

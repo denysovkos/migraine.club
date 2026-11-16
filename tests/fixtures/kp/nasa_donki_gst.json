@@ -1,0 +1,14 @@
+[
+  {
+    "startTime": "2025-12-19T05:00Z",
+    "allKpIndex": [
+      { "observedTime": "2025-12-20T08:00Z", "kpIndex": 5, "source": "NOAA" }
+    ]
+  },
+  {
+    "startTime": "2025-12-20T09:00Z",
+    "allKpIndex": [
+      { "observedTime": "2025-12-20T09:30Z", "kpIndex": 6, "source": "NOAA" }
+    ]
+  }
+]

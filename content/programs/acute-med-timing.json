@@ -1,0 +1,50 @@
+{
+  "id": "acute-med-timing",
+  "title": "Acute Med Timing",
+  "shape": "per-attack-rule",
+  "durationWeeks": 6,
+  "adherenceMetric": "onset-to-dose",
+  "defaultTarget": {
+    "acuteWindowMinutes": 30
+  },
+  "recommendationTriggers": [
+    {
+      "kind": "onset-to-dose",
+      "averageMinutesAtLeast": 60,
+      "windowDays": 28
+    },
+    {
+      "kind": "acute-med-days",
+      "minDays": 10,
+      "windowDays": 28
+    },
+    {
+      "kind": "intake-answer",
+      "field": "medTiming",
+      "values": ["gt120", "varies"]
+    }
+  ],
+  "citations": [
+    {
+      "id": "goadsby-2008",
+      "label": "Goadsby 2008 — Early acute treatment",
+      "doi": "10.1212/01.wnl.0000310648.92383.04"
+    },
+    {
+      "id": "lipton-2014",
+      "label": "Lipton 2014 — AMPP study",
+      "doi": "10.1212/WNL.0000000000000936"
+    },
+    {
+      "id": "moh-iccr",
+      "label": "ICHD-3 — Medication-overuse headache",
+      "url": "https://ichd-3.org/8-headache-attributed-to-a-substance-or-its-withdrawal/8-2-medication-overuse-headache/"
+    },
+    {
+      "id": "katsarava-2018",
+      "label": "Katsarava 2018 — MOH risk thresholds",
+      "doi": "10.1186/s10194-018-0874-y"
+    }
+  ],
+  "disclaimer": "Discuss any medication change with your doctor. Frequent acute medication use can cause medication-overuse headache (MOH)."
+}

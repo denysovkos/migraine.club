@@ -1,0 +1,2 @@
+ALTER TABLE "user" ADD COLUMN IF NOT EXISTS "display_name" text DEFAULT '' NOT NULL;--> statement-breakpoint
+ALTER TABLE "user" ADD COLUMN IF NOT EXISTS "preferred_language" text DEFAULT 'en' NOT NULL;

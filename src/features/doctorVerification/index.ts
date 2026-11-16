@@ -1,0 +1,1 @@
+export { DoctorVerificationSettings } from './DoctorVerificationSettings';

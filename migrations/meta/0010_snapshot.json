@@ -1,0 +1,15 @@
+{
+  "id": "0010_daily_risk_alerts",
+  "prevId": "0009_flawless_silver_sable",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {},
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
+

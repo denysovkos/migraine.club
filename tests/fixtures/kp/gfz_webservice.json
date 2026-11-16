@@ -1,0 +1,10 @@
+{
+  "meta": { "source": "GFZ", "license": "test" },
+  "datetime": [
+    "2025-12-20T00:00:00Z",
+    "2025-12-20T03:00:00Z",
+    "2025-12-20T06:00:00Z"
+  ],
+  "Kp": [2, 3.33, 4],
+  "status": ["definitive", "definitive", "preliminary"]
+}

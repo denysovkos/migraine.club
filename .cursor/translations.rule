@@ -1,0 +1,274 @@
+# Translations & i18n Rules
+
+## Goal
+
+All **user-facing text** in the Migraine Tracker app must go through the translation system.  
+No hardcoded UI strings in React components, hooks, or services that return messages to the UI.
+
+---
+
+## Scope
+
+These rules apply to **all frontend code** that renders or returns text visible to the user:
+
+- React components (pages, widgets, modals, toasts, etc.)
+- Form labels, placeholders, hints, tooltips
+- Button text, links, headings, section titles
+- Error messages, empty states, notifications, toasts, banners
+- Table headers, column labels, chart legends
+- Text returned from frontend helpers that is shown in the UI
+
+**Not in scope / allowed to be hardcoded:**
+
+- Comments
+- Console logs for debugging
+- Test strings inside unit/integration tests
+- Internal enum names / constant keys (not rendered)
+- Data attributes / IDs (`data-testid`, etc.)
+
+---
+
+## i18n Conventions
+
+### Translation library & hook
+
+- Assume **react-i18next** with `useTranslation`:
+  - `import { useTranslation } from 'react-i18next';`
+  - `const { t } = useTranslation('common');`
+
+### Key structure
+
+Use dot-separated keys:
+
+- Screens: `screen.dashboard.title`, `screen.episodeLog.title`
+- Components: `component.episodeForm.intensityLabel`
+- Generic UI: `ui.button.save`, `ui.button.cancel`, `ui.state.loading`, `ui.state.empty`
+- Errors: `error.network`, `error.validation.required`, `error.episode.notFound`
+
+When adding new text, prefer reusing generic keys (`ui.button.save`) before inventing new ones.
+
+### Locale files
+
+- English is the **source** language: `locales/en/common.json`
+- Other languages mirror keys: `locales/de/common.json`, `locales/uk/common.json`, etc.
+- Every new key must be added to `en/common.json` in the diff.
+
+---
+
+## Rules For Cursor (Very Important)
+
+### 1. Never hardcode user-facing text in JSX/TSX
+
+**DO (GOOD)**
+
+```tsx
+const { t } = useTranslation('common');
+
+<Button>
+  {t('ui.button.save')}
+</Button>
+
+<h1>{t('screen.dashboard.title')}</h1>
+<p>{t('screen.dashboard.subtitle')}</p>
+````
+
+**DON’T (BAD)**
+
+```tsx
+<Button>Save</Button>
+<h1>Dashboard</h1>
+<p>Your recent episodes</p>
+```
+
+Whenever you are about to write a human-readable string, **stop and replace it with `t('some.key')`.**
+
+---
+
+### 2. When you introduce new UI text, define translation keys
+
+Whenever you add a new label / heading / message:
+
+1. **Pick a key** that follows the conventions.
+2. **Use it in code** with `t('that.key')`.
+3. **Add it to `locales/en/common.json`** in the same change.
+
+**Example**
+
+```tsx
+// code
+const { t } = useTranslation('common');
+
+<h2>{t('screen.episodeHistory.title')}</h2>
+<p>{t('screen.episodeHistory.description')}</p>
+```
+
+```jsonc
+// locales/en/common.json
+{
+  "screen": {
+    "episodeHistory": {
+      "title": "Episode history",
+      "description": "Review your past migraine episodes and patterns."
+    }
+  }
+}
+```
+
+If you generate code that references a key that doesn’t exist yet, **also generate the JSON snippet** for `locales/en/common.json`.
+
+---
+
+### 3. Forms, validation, and errors
+
+* Don’t inline validation messages like `"This field is required"`.
+* Use keys like `error.validation.required`, `error.validation.intensityRange`.
+
+**GOOD**
+
+```tsx
+{errors.intensity && (
+  <span className="text-red-500">
+    {t('error.validation.required')}
+  </span>
+)}
+```
+
+**BAD**
+
+```tsx
+{errors.intensity && (
+  <span className="text-red-500">
+    This field is required
+  </span>
+)}
+```
+
+For backend error codes:
+
+* Map codes to translation keys in a helper (e.g. `mapErrorCodeToKey(code): string`).
+* Render via `t(errorKey)` instead of showing raw error strings.
+
+---
+
+### 4. Toasts, alerts, and empty states
+
+* All toasts and alerts must use translations.
+
+**GOOD**
+
+```tsx
+toast.success(t('episode.toast.saved'));
+toast.error(t('episode.toast.saveFailed'));
+```
+
+**BAD**
+
+```tsx
+toast.success('Episode saved');
+toast.error('Failed to save episode');
+```
+
+Empty states:
+
+```tsx
+<p>{t('screen.dashboard.empty.noEpisodes')}</p>
+```
+
+---
+
+### 5. Exceptions (allowed hardcoded strings)
+
+You may use hardcoded strings **only** for:
+
+* Tests:
+
+  * Example: `expect(screen.getByText('Episode history')).toBeInTheDocument();`
+  * (But if possible, prefer using translated text from `t` in tests too.)
+* Dev-only logs:
+
+  * `console.log('Episode saved', episode);`
+* Internal keys or IDs not visible in UI:
+
+  * `const STORAGE_KEY = 'migraine-tracker:lastEpisode';`
+
+---
+
+## Checklist For Every UI Change
+
+When generating or editing code, Cursor must follow this checklist:
+
+1. **Am I adding or modifying anything the user can read?**
+
+   * If yes → use `t('...')` instead of a literal string.
+2. **Does the translation key exist?**
+
+   * If not → add it to `locales/en/common.json` in the same suggestion.
+3. **Is this error/empty/tooltip text?**
+
+   * Follow the specific `error.*`, `ui.state.*`, or component namespaces.
+4. **Is there any remaining raw English text in JSX/TSX?**
+
+   * If yes and it’s user-visible → replace with a translation key.
+
+Cursor should flag **any** new user-facing hardcoded strings in components as a violation of this rule.
+
+---
+
+## Example: Full Component Conversion
+
+When Cursor refactors components, it should transform code like this:
+
+**Before (BAD)**
+
+```tsx
+export function EpisodeSummary() {
+  return (
+    <section>
+      <h2>Episode summary</h2>
+      <p>No episodes logged yet. Start by adding your first migraine episode.</p>
+      <button>Add episode</button>
+    </section>
+  );
+}
+```
+
+**After (GOOD)**
+
+```tsx
+import { useTranslation } from 'react-i18next';
+
+export function EpisodeSummary() {
+  const { t } = useTranslation('common');
+
+  return (
+    <section>
+      <h2>{t('screen.episodeSummary.title')}</h2>
+      <p>{t('screen.episodeSummary.emptyDescription')}</p>
+      <button>
+        {t('screen.episodeSummary.addEpisodeButton')}
+      </button>
+    </section>
+  );
+}
+```
+
+```jsonc
+// locales/en/common.json
+{
+  "screen": {
+    "episodeSummary": {
+      "title": "Episode summary",
+      "emptyDescription": "No episodes logged yet. Start by adding your first migraine episode.",
+      "addEpisodeButton": "Add episode"
+    }
+  }
+}
+```
+
+---
+
+By following these rules, Cursor must always:
+
+* Prefer translation keys to hardcoded text,
+* Keep `locales/en/common.json` in sync,
+* And avoid mixing English with partially translated UI.

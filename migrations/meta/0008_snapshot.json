@@ -1,0 +1,15 @@
+{
+  "id": "0008_push_subscriptions",
+  "prevId": "0007_slippery_rocket_racer",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {},
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
+
