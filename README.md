@@ -105,8 +105,8 @@ flowchart LR
     SVC --> MODEL
     MODEL --> DB[(Postgres)]
     REPO --> EXT[OpenWeatherMap<br/>NOAA Kp index]
-    API -.auth.-> Clerk[Clerk]
-    MCP -.OAuth 2.1.-> Clerk
+    API -.->|auth| Clerk[Clerk]
+    MCP -.->|"OAuth 2.1"| Clerk
 ```
 
 The REST routes and the MCP tools are thin: they validate input and call the same services. An attack logged through an AI client therefore goes through the same rules as one logged in the app, including the one-ongoing-attack rule, the diary day recompute and medication-overuse dose counting.
