@@ -20,7 +20,7 @@ export const config = defineConfig({
   // FIXME: Add your own project name, logical ID, and repository URL
   projectName: 'Migraine Club',
   logicalId: 'migraine-club',
-  repoUrl: 'https://bitbucket.org/denysovkos07/migraine.club/src/main/',
+  repoUrl: 'https://github.com/denysovkos/migraine.club',
   checks: {
     locations: ['us-east-1', 'eu-west-1'],
     tags: ['website'],
