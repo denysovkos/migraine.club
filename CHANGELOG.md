@@ -1,3 +1,9 @@
+# [1.1.0](https://github.com/denysovkos/migraine.club/compare/v1.0.0...v1.1.0) (2026-11-17)
+
+### Features
+
+* offline logging with background sync for attacks, doses and diary ([#5](https://github.com/denysovkos/migraine.club/issues/5)) ([2910293](https://github.com/denysovkos/migraine.club/commit/291029305aae54d244ef0e24ec766d6ed8802047))
+
 # 1.0.0 (2026-11-16)
 
 ### Bug Fixes
