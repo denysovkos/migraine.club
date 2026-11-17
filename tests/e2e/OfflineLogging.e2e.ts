@@ -354,7 +354,11 @@ test('a failed write releases its key so the corrected retry can succeed', async
   expect(retry.status()).toBe(201);
 });
 
-test('Background Sync replays the queue after the app was closed (Chromium)', async ({ page, context }) => {
+test('Background Sync replays the queue after the app was closed (Chromium)', async ({ page, context, browserName }) => {
+  // Background Sync is a Chromium API; elsewhere the page replays on reopen,
+  // which the first test in this file covers.
+  test.skip(browserName !== 'chromium', 'Background Sync API is Chromium-only');
+
   await page.goto('/en/dashboard');
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
@@ -369,6 +373,29 @@ test('Background Sync replays the queue after the app was closed (Chromium)', as
   // Close the app, then reconnect: only the service worker is left to sync.
   await page.close();
   await context.setOffline(false);
+
+  // Chromium fires `sync` when the *browser* sees connectivity return, and
+  // emulated offline never takes the browser offline, so it would only retry
+  // on its own multi-minute backoff. Fire the event the way Chromium does on
+  // a real reconnect. A blank page is enough to reach DevTools; no app code runs.
+  const blank = await context.newPage();
+  const cdp = await context.newCDPSession(blank);
+  const registration = new Promise<{ registrationId: string; scopeURL: string }>((resolve) => {
+    cdp.on('ServiceWorker.workerRegistrationUpdated', ({ registrations }) => {
+      const live = registrations.find(r => !r.isDeleted);
+      if (live) {
+        resolve(live);
+      }
+    });
+  });
+  await cdp.send('ServiceWorker.enable');
+  const { registrationId, scopeURL } = await registration;
+  await cdp.send('ServiceWorker.dispatchSyncEvent', {
+    origin: new URL(scopeURL).origin,
+    registrationId,
+    tag: 'mc-outbox-sync',
+    lastChance: false,
+  });
 
   await expect.poll(async () => {
     const res = await context.request.get('/api/diary/today');

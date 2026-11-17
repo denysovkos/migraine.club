@@ -22,6 +22,13 @@ export const OUTBOX_SYNC_TAG = 'mc-outbox-sync';
 export const MAX_RETRY_ATTEMPTS = 8;
 /** How long a live attempt may hang before the entry is queued instead. */
 export const LIVE_ATTEMPT_TIMEOUT_MS = 15_000;
+/**
+ * Upper bound for one replayed request. Without it, a request that hangs
+ * instead of failing (a captive portal, a stalled connection, or offline
+ * emulation in some browsers) keeps the shared flush and its Web Lock busy,
+ * and every later flush, including the one on `online`, waits on it forever.
+ */
+export const REPLAY_ATTEMPT_TIMEOUT_MS = 15_000;
 
 type Outcome = 'done' | 'retry' | 'auth' | 'failed' | 'wrong_user';
 
@@ -243,6 +250,21 @@ export async function sendOrQueue(req: {
 export type FlushSummary = { synced: number; failed: number; remaining: number; stoppedBy: Outcome | 'network' | null };
 
 let flushing: Promise<FlushSummary> | null = null;
+let flushRequestedDuringRun = false;
+
+/** fetch that settles within `ms` even if the implementation ignores abort. */
+function fetchWithTimeout(fetchImpl: typeof fetch, url: string, init: RequestInit, ms: number): Promise<Response> {
+  const controller = new AbortController();
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => {
+      controller.abort();
+      reject(new TypeError('Replay request timed out'));
+    }, ms);
+  });
+  return Promise.race([fetchImpl(url, { ...init, signal: controller.signal }), timeout])
+    .finally(() => clearTimeout(timer));
+}
 
 /**
  * Replay this user's pending entries in capture order. Safe to call often;
@@ -250,11 +272,23 @@ let flushing: Promise<FlushSummary> | null = null;
  * worker a Web Lock keeps one replay at a time where supported.
  */
 export function flushOutbox(fetchImpl: typeof fetch = fetch): Promise<FlushSummary> {
-  if (!flushing) {
-    flushing = runWithLock(() => flushOnce(fetchImpl)).finally(() => {
-      flushing = null;
-    });
+  if (flushing) {
+    // Joining a run that may already be doomed, e.g. `online` firing while a
+    // request sent during the outage is still timing out: try again after it.
+    flushRequestedDuringRun = true;
+    return flushing;
   }
+  flushRequestedDuringRun = false;
+  const run = runWithLock(() => flushOnce(fetchImpl));
+  flushing = run.finally(() => {
+    flushing = null;
+  });
+  void run.then((summary) => {
+    if (flushRequestedDuringRun && summary.stoppedBy === 'network') {
+      flushRequestedDuringRun = false;
+      void flushOutbox(fetchImpl);
+    }
+  }, () => {});
   return flushing;
 }
 
@@ -281,7 +315,7 @@ async function flushOnce(fetchImpl: typeof fetch): Promise<FlushSummary> {
     let outcome: Outcome;
     let errorText: string | null = null;
     try {
-      const res = await fetchImpl(item.url, {
+      const res = await fetchWithTimeout(fetchImpl, item.url, {
         method: item.method,
         headers: {
           'Content-Type': 'application/json',
@@ -289,7 +323,7 @@ async function flushOnce(fetchImpl: typeof fetch): Promise<FlushSummary> {
           [OFFLINE_USER_HEADER]: item.userId,
         },
         body: item.body,
-      });
+      }, REPLAY_ATTEMPT_TIMEOUT_MS);
       const data = res.ok ? null : await res.json().catch(() => null);
       outcome = classifyResponse(res.status, data?.code);
       errorText = data?.error ?? (res.ok ? null : `HTTP ${res.status}`);
