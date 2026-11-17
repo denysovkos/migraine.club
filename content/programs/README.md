@@ -4,4 +4,4 @@ Each program is a pair: a `<id>.json` file holding the validated frontmatter, an
 
 The frontmatter schema is `src/services/programs/programDefinitionSchema.ts`. The loader (`src/services/programs/programDefinitions.ts`) reads both files and validates the JSON.
 
-i18n: file names are stable identifiers. Translated bodies live in crowdin under the `programs` namespace.
+i18n: file names are stable identifiers. Translated bodies sit next to the English one as `<id>.<locale>.md` (for example `sleep-regularity.fr.md`, `sleep-regularity.uk.md`).
