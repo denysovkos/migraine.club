@@ -1,3 +1,9 @@
+# [1.3.0](https://github.com/denysovkos/migraine.club/compare/v1.2.0...v1.3.0) (2026-11-17)
+
+### Features
+
+* attack mode, a low-stimulus screen for logging during an attack ([#8](https://github.com/denysovkos/migraine.club/issues/8)) ([35df0d1](https://github.com/denysovkos/migraine.club/commit/35df0d14bfaeb2489a2ab612c75278f1503ea943))
+
 # [1.2.0](https://github.com/denysovkos/migraine.club/compare/v1.1.0...v1.2.0) (2026-11-17)
 
 ### Features
