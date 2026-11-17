@@ -68,6 +68,19 @@
   "screenshots": [],
   "shortcuts": [
     {
+      "name": "Attack mode",
+      "short_name": "Attack mode",
+      "description": "Dim screen with big buttons for logging during an attack",
+      "url": "/quick/attack",
+      "icons": [
+        {
+          "src": "/android-icon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
       "name": "Log Episode",
       "short_name": "Log",
       "description": "Log a new migraine episode",

@@ -17,6 +17,7 @@
     "test:e2e": "cross-env E2E_MOCK_AUTH=true NEXT_PUBLIC_E2E_MOCK_AUTH=true playwright test",
     "e2e:seed": "dotenv -e .env -- tsx scripts/e2e-seed.ts",
     "e2e:seed:onboarding": "dotenv -e .env -- tsx scripts/e2e-seed-onboarding.ts",
+    "e2e:seed:attack-mode": "dotenv -e .env -- tsx scripts/e2e-seed-attack-mode.ts",
     "e2e:reset": "dotenv -e .env -- tsx scripts/e2e-reset.ts",
     "commit": "cz",
     "db:generate": "drizzle-kit generate",

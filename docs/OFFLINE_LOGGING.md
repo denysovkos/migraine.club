@@ -13,7 +13,7 @@ Attacks, medication doses and diary entries can be logged without a connection. 
 | Diary day type, notes, sleep, pain-free | Check-in card, diary, notes | `PUT /api/diary/entry` |
 | Triggers and protectors | Attack form, factor logger | `POST /api/factors/log` |
 
-Pages and data the user has opened online before are available offline. A page that was never opened falls back to the dashboard home, which has the quick-log sheet. Reports, insights and other reads stay online-only.
+Pages and data the user has opened online before are available offline. A page that was never opened falls back to the dashboard home, which has the quick-log sheet. Reports, insights and other reads stay online-only. Attack mode (`/quick/attack`, the dim three-button screen) is cached the same way as dashboard pages, so it opens offline once it has been visited. It shows its own quiet "saved on this device" status instead of the sync pill.
 
 ## How it works
 
@@ -70,7 +70,7 @@ The outbox and the SW caches (`migrennity-user-pages`, `migrennity-user-api`) ho
 
 ## UI
 
-`OfflineSyncIndicator` shows a pill at the top of the dashboard only when there is something to say: offline, entries waiting, or entries that couldn't sync. Tapping it lists the entries on the device, with Retry and Discard for failed ones and a "Sync now" button. When a backlog drains, a snackbar confirms how many entries synced and the page data refreshes.
+`OfflineSyncIndicator` (left out in attack mode via `OfflineSyncProvider showIndicator={false}`) shows a pill at the top of the dashboard only when there is something to say: offline, entries waiting, or entries that couldn't sync. Tapping it lists the entries on the device, with Retry and Discard for failed ones and a "Sync now" button. When a backlog drains, a snackbar confirms how many entries synced and the page data refreshes.
 
 ## Operations
 

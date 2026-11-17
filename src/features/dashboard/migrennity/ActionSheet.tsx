@@ -3,11 +3,12 @@
 import type { LucideIcon } from 'lucide-react';
 import type { DiaryTodayResponse } from '@/features/diary/diaryApi';
 import type { Episode } from '@/types/Episode';
-import { Check, ChevronRight, NotebookPen, Pencil, Pill, Sparkles, X } from 'lucide-react';
+import { Check, ChevronRight, Moon, NotebookPen, Pencil, Pill, Sparkles, X } from 'lucide-react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import { ATTACK_MODE_PATH } from '@/features/attackMode/attackModeLogic';
 import { fetchTodayDiary, upsertDiaryEntry } from '@/features/diary/diaryApi';
 import { TakeMedicationSheet } from '@/features/quickAdd/TakeMedicationSheet';
 import { showSnackbar } from '@/features/snackbar';
@@ -15,7 +16,7 @@ import { showSnackbar } from '@/features/snackbar';
 import { fetchOngoingEpisode } from './dataHelpers';
 import { NotesModal } from './NotesModal';
 
-type ActionId = 'attack' | 'med' | 'free' | 'note';
+type ActionId = 'attack' | 'attack_mode' | 'med' | 'free' | 'note';
 
 type Item = {
   id: ActionId;
@@ -95,6 +96,15 @@ export function ActionSheet({
           fg: '#6d28d9',
         },
     {
+      id: 'attack_mode',
+      label: t('action_attack_mode'),
+      sub: t('action_attack_mode_sub'),
+      icon: Moon,
+      // Dark tile in both themes: previews the dim screen it opens.
+      bg: '#0a0a0a',
+      fg: '#a3a3a3',
+    },
+    {
       id: 'med',
       label: t('action_take_medication'),
       sub: hasOngoing ? t('action_take_medication_sub_ongoing') : t('action_take_medication_sub_default'),
@@ -136,6 +146,11 @@ export function ActionSheet({
         router.push('/dashboard/episodes/new');
         onClose();
       }
+      return;
+    }
+    if (id === 'attack_mode') {
+      router.push(ATTACK_MODE_PATH);
+      onClose();
       return;
     }
     if (id === 'med') {
