@@ -9,7 +9,7 @@ const authState = { isLoaded: true, userId: 'user_a' as string | null };
 vi.mock('@clerk/nextjs', () => ({ useAuth: () => authState }));
 
 // The indicator has its own tests.
-vi.mock('./OfflineSyncIndicator', () => ({ OfflineSyncIndicator: () => null }));
+vi.mock('./OfflineSyncIndicator', () => ({ OfflineSyncIndicator: () => <span data-testid="sync-indicator" /> }));
 
 const postMessage = vi.fn();
 
@@ -171,5 +171,22 @@ describe('OfflineSyncProvider', () => {
     const { getByText } = render(<OfflineSyncProvider><p>dashboard</p></OfflineSyncProvider>);
 
     expect(getByText('dashboard')).toBeInTheDocument();
+  });
+
+  it('shows the sync indicator by default', () => {
+    const { queryByTestId } = render(<OfflineSyncProvider><p>dashboard</p></OfflineSyncProvider>);
+
+    expect(queryByTestId('sync-indicator')).toBeInTheDocument();
+  });
+
+  it('can leave the sync indicator out and still syncs', async () => {
+    await store.put(item({ id: 'q1' }));
+    const { queryByTestId } = render(
+      <OfflineSyncProvider showIndicator={false}><p>attack mode</p></OfflineSyncProvider>,
+    );
+
+    expect(queryByTestId('sync-indicator')).not.toBeInTheDocument();
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
   });
 });

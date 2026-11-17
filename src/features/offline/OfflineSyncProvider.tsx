@@ -46,7 +46,14 @@ function clearCachedUserData() {
  * worker's cached pages and API responses for the previous user. Queued
  * entries are kept per user and only ever sent for their owner.
  */
-export function OfflineSyncProvider({ children }: { children: React.ReactNode }) {
+export function OfflineSyncProvider({
+  children,
+  showIndicator = true,
+}: {
+  children: React.ReactNode;
+  /** Off where the page reports offline saves itself (attack mode keeps the screen calm). */
+  showIndicator?: boolean;
+}) {
   const { isLoaded, userId } = useAuth();
 
   useEffect(() => {
@@ -90,7 +97,7 @@ export function OfflineSyncProvider({ children }: { children: React.ReactNode })
   return (
     <>
       {children}
-      <OfflineSyncIndicator />
+      {showIndicator && <OfflineSyncIndicator />}
     </>
   );
 }

@@ -405,6 +405,20 @@ describe('service worker: caching', () => {
     expect(await offline!.text()).toBe('<html>diary v2</html>');
   });
 
+  it('caches attack mode network-first so it opens offline, but not other quick pages', async () => {
+    const sw = loadSw();
+    sw.fetchMock.mockResolvedValue(new Response('<html>attack mode</html>'));
+
+    await sw.fetchEvent('/uk/quick/attack', { mode: 'navigate' });
+    const sleep = await sw.fetchEvent('/quick/sleep', { mode: 'navigate' });
+    sw.fetchMock.mockRejectedValue(new TypeError('offline'));
+    const offline = await sw.fetchEvent('/uk/quick/attack', { mode: 'navigate' });
+
+    expect(await offline!.text()).toBe('<html>attack mode</html>');
+    // Not intercepted: the browser handles it directly.
+    expect(sleep).toBeUndefined();
+  });
+
   it('falls back to the dashboard home in the same locale for an unvisited page', async () => {
     const sw = loadSw();
     sw.fetchMock.mockResolvedValue(new Response('<html>uk home</html>'));

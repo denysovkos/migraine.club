@@ -3,6 +3,7 @@ import { clerkMiddleware } from '@clerk/nextjs/server';
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 
+import { isAuthPagePath } from './libs/authPagePath';
 import { getE2EMockUserId, isE2EMockAuth } from './libs/E2EAuth';
 import { AllLocales, AppConfig } from './utils/AppConfig';
 
@@ -17,7 +18,6 @@ const intlMiddleware = createMiddleware({
 // `requireUserOrRedirect` (src/libs/AuthGuard.ts). This proxy only has to make
 // sure `clerkMiddleware` runs on the requests whose server code calls `auth()`.
 // See https://clerk.com/docs/guides/development/upgrading/upgrade-guides/migrate-from-create-route-matcher
-const DASHBOARD_PATH = /^(?:\/[^/]+)?\/dashboard(?:\/|$)/;
 
 // clerkMiddleware with no auth checks: it only attaches the auth state that
 // `auth()` reads. `auth()` throws on requests clerkMiddleware didn't run on.
@@ -79,7 +79,7 @@ export default function proxy(
   if (
     request.nextUrl.pathname.includes('/sign-in')
     || request.nextUrl.pathname.includes('/sign-up')
-    || DASHBOARD_PATH.test(request.nextUrl.pathname)
+    || isAuthPagePath(request.nextUrl.pathname)
   ) {
     return clerkMiddleware(async (_auth, req) => intlMiddleware(req))(request, event);
   }

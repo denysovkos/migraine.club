@@ -3,9 +3,11 @@
 import { Cookie, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { isAttackModePath } from '@/features/attackMode/attackModeLogic';
 
 const COOKIE_PREFS_KEY = 'migrennity_cookie_prefs';
 
@@ -48,8 +50,14 @@ export function hasAnalyticsConsent(): boolean {
 export function CookieBanner() {
   const t = useTranslations('CookieBanner');
   const [isVisible, setIsVisible] = useState(false);
+  // No bright panel over the low-stimulus attack screen. Without a stored
+  // choice analytics stay off, and the banner shows on the next page instead.
+  const deferred = isAttackModePath(usePathname());
 
   useEffect(() => {
+    if (deferred) {
+      return undefined;
+    }
     // Check if user has already made a choice
     const prefs = getCookiePreferences();
     if (!prefs) {
@@ -58,7 +66,7 @@ export function CookieBanner() {
       return () => clearTimeout(timer);
     }
     return undefined;
-  }, []);
+  }, [deferred]);
 
   const handleAcceptAll = () => {
     setCookiePreferences({
@@ -81,7 +89,7 @@ export function CookieBanner() {
     window.dispatchEvent(new CustomEvent('cookieConsentChanged', { detail: { analytics: false } }));
   };
 
-  if (!isVisible) {
+  if (!isVisible || deferred) {
     return null;
   }
 

@@ -15,7 +15,7 @@
  * Writes and auth requests are never cached or intercepted.
  */
 
-const SW_VERSION = '1.1.0';
+const SW_VERSION = '1.2.0';
 const CACHE_NAME = `migrennity-sw-v${SW_VERSION}`;
 // Build assets are content-hashed, so this cache survives SW upgrades.
 const NEXT_STATIC_CACHE = 'migrennity-next-static';
@@ -25,8 +25,8 @@ const API_CACHE = 'migrennity-user-api';
 const USER_CACHES = [PAGES_CACHE, API_CACHE];
 const KEEP_CACHES = new Set([CACHE_NAME, NEXT_STATIC_CACHE, ...USER_CACHES]);
 
-// Dashboard routes, with or without a non-default locale prefix (as-needed).
-const APP_PAGE_RE = /^\/(?:(?:fr|uk)\/)?dashboard(?:\/|$)/;
+// Dashboard routes and attack mode, with or without a non-default locale prefix (as-needed).
+const APP_PAGE_RE = /^\/(?:(?:fr|uk)\/)?(?:dashboard|quick\/attack)(?:\/|$)/;
 
 // Read endpoints the quick-log flows depend on. Network-first.
 // consent + profile gate the dashboard itself: without them it would show the
