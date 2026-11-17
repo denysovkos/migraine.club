@@ -9,7 +9,7 @@ test.use({ viewport: { width: 390, height: 844 }, serviceWorkers: 'allow' });
  * survive a reload, and sync with their original time once back online.
  * See docs/OFFLINE_LOGGING.md.
  */
-test('logs a diary day and an attack offline, then syncs them with their original times', async ({ page, context }) => {
+test('logs a diary day and an attack offline, then syncs them with their original times', async ({ page, context, browserName }) => {
   await page.goto('/en/dashboard');
 
   await expect(page.getByRole('heading', { name: /Hi,\s*E2E\./i })).toBeVisible();
@@ -58,6 +58,14 @@ test('logs a diary day and an attack offline, then syncs them with their origina
   await page.waitForTimeout(3_000);
   const syncStartedAt = Date.now();
   await context.setOffline(false);
+  if (browserName === 'firefox') {
+    // Playwright's Firefox restores navigator.onLine but does not dispatch
+    // `online` to a page that was loaded while offline, as this one was
+    // (CI diagnostics: onLine true, UI still "Offline", no replay attempted).
+    // Fire it as a real reconnect would; without it the app only catches up
+    // on its 60s safety-net retry.
+    await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  }
 
   await expect(page.getByText(/2 offline entries synced/)).toBeVisible({ timeout: 20_000 });
   await expect(page.getByRole('button', { name: /waiting to sync|couldn't sync/ })).toHaveCount(0);
