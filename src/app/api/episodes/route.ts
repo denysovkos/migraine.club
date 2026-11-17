@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { withIdempotency } from '@/app/api/_helpers/idempotency';
 import { logger } from '@/libs/Logger';
 import { EpisodeError, episodeService } from '@/services/episodes/EpisodeService';
 
@@ -32,7 +33,7 @@ function episodeErrorResponse(error: EpisodeError) {
 }
 
 // POST /api/episodes - Create a new episode
-export async function POST(request: Request) {
+async function handlePost(request: Request) {
   try {
     const { userId } = await auth();
 
@@ -89,4 +90,13 @@ export async function GET(request: Request) {
       { status: 500 },
     );
   }
+}
+
+// Wrapped so entries queued offline can be replayed safely (see _helpers/idempotency).
+export async function POST(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return withIdempotency(request, userId, 'episodes', () => handlePost(request));
 }

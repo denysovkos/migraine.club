@@ -150,6 +150,9 @@ export const UpdateEpisodeSchema = z
     endTime: z.string().datetime().optional(),
     isOngoing: z.boolean().optional(),
     endNow: z.boolean().optional(),
+    // With endNow: the moment the user tapped "end" on their device. Lets an
+    // end queued offline keep its real time instead of the sync time.
+    endedAt: z.string().datetime().optional(),
     intensity: z.number().int().min(1).max(5).optional(),
     painLocation: z.nativeEnum(PainLocation).optional(),
     painLocationOther: z.string().max(200).optional(),

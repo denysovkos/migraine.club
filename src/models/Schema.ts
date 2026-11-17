@@ -1646,3 +1646,30 @@ export const intakeResponseSchema = pgTable('intake_response', {
     .notNull(),
   createdAt: timestamp('created_at', { mode: 'date', withTimezone: true }).defaultNow().notNull(),
 });
+
+/**
+ * Idempotency ledger for client writes that may be replayed, e.g. entries
+ * queued on a device while offline and synced later.
+ *
+ * The client sends an `Idempotency-Key` header. The first request reserves the
+ * row (responseStatus null), runs, then stores its 2xx response. A replay with
+ * the same key gets the stored response back instead of creating a duplicate.
+ * Rows hold the response body of create endpoints (ids, not free text), and
+ * are safe to prune after a few weeks.
+ */
+export const idempotentRequestSchema = pgTable(
+  'idempotent_request',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: text('user_id').notNull(),
+    idempotencyKey: text('idempotency_key').notNull(),
+    route: text('route').notNull(),
+    responseStatus: integer('response_status'),
+    responseBody: jsonb('response_body').$type<unknown>(),
+    createdAt: timestamp('created_at', { mode: 'date', withTimezone: true }).defaultNow().notNull(),
+  },
+  table => [
+    uniqueIndex('idempotent_request_user_key_idx').on(table.userId, table.idempotencyKey),
+    index('idempotent_request_created_idx').on(table.createdAt),
+  ],
+);

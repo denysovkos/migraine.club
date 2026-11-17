@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { withIdempotency } from '@/app/api/_helpers/idempotency';
 import { DailyDiaryError, dailyDiaryService } from '@/services/DailyDiaryService';
 
 export const dynamic = 'force-dynamic';
@@ -25,7 +26,7 @@ const BodySchema = z.object({
  * PUT /api/diary/entry
  * Body: { localDate: YYYY-MM-DD, patch: { ... } }
  */
-export async function PUT(request: Request) {
+async function handlePut(request: Request) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -49,4 +50,13 @@ export async function PUT(request: Request) {
     }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
+}
+
+// Wrapped so entries queued offline can be replayed safely (see _helpers/idempotency).
+export async function PUT(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return withIdempotency(request, userId, 'diary/entry', () => handlePut(request));
 }

@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { fetchDiaryDayDetail } from '@/features/diary/diaryApi';
 import { TakeMedicationSheet } from '@/features/quickAdd/TakeMedicationSheet';
+import { showSnackbar } from '@/features/snackbar';
+import { sendOrQueue } from '@/libs/offline/outbox';
 import { PreventiveIntakeState } from '@/types/Preventives';
 
 type EventKind = 'sleep' | 'med' | 'attack' | 'note';
@@ -85,6 +87,7 @@ export function TodayTimeline({
   onDidLog?: () => void;
 }) {
   const t = useTranslations('DashboardHome');
+  const tOffline = useTranslations('OfflineSync');
   const router = useRouter();
   const [events, setEvents] = useState<TimelineEvent[] | null>(null);
   const [now, setNow] = useState(() => new Date());
@@ -216,17 +219,24 @@ export function TodayTimeline({
     setEnding(true);
     setError(null);
     try {
-      const res = await fetch(`/api/episodes/${ongoing.id}`, {
+      // endedAt keeps the real end time if this has to wait in the offline queue.
+      const result = await sendOrQueue({
+        url: `/api/episodes/${ongoing.id}`,
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ endNow: true }),
+        body: { endNow: true, endedAt: new Date().toISOString() },
+        kind: 'attack_update',
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+      if (result.queued) {
+        showSnackbar({ message: tOffline('saved_offline') });
+      } else if (!result.response.ok) {
+        const data = await result.response.json().catch(() => ({}));
         throw new Error(data.error || t('timeline_failed_end'));
       }
       onDidLog?.();
-      router.refresh();
+      // Offline, a refresh would hard-navigate (RSC fetch fails) and drop the snackbar.
+      if (!result.queued) {
+        router.refresh();
+      }
     } catch (e: any) {
       setError(e?.message ?? t('timeline_failed_end'));
     } finally {
@@ -457,7 +467,9 @@ export function TodayTimeline({
           episodeId={ongoing.id as any}
           onDidLog={() => {
             onDidLog?.();
-            router.refresh();
+            if (navigator.onLine !== false) {
+              router.refresh();
+            }
           }}
         />
       )}

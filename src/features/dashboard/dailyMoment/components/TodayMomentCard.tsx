@@ -10,7 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { BottomSheet } from '@/components/ui/bottom-sheet';
 import { Button } from '@/components/ui/button';
 import { useUserProfileContext } from '@/features/auth/UserProfileProvider';
-import { fetchDiaryRange, fetchTodayDiary, upsertDiaryEntry } from '@/features/diary/diaryApi';
+import { applyQueuedDiaryPatch, fetchDiaryRange, fetchTodayDiary, upsertDiaryEntry } from '@/features/diary/diaryApi';
 import { setLastAttackType } from '@/features/episodes/attackTypePrefs';
 import { isEditableLocalDate } from '@/services/localDate';
 import { cn } from '@/utils/Helpers';
@@ -294,10 +294,10 @@ export function TodayMomentCard(props: {
     });
 
     try {
-      const saved = await upsertDiaryEntry({
+      const saved = (await upsertDiaryEntry({
         localDate: prev.data.todayLocalDate,
         patch: { dayType: next },
-      });
+      })) ?? applyQueuedDiaryPatch(prev.data.entry, prev.data.todayLocalDate, { dayType: next })!;
 
       if (savedTimerRef.current) {
         window.clearTimeout(savedTimerRef.current);

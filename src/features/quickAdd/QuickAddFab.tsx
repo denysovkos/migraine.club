@@ -137,6 +137,9 @@ export function QuickAddFab() {
 
     const promise = quickAddStartEpisodeNow({ signal: controller.signal })
       .then((r) => {
+        if (r.queued) {
+          return undefined;
+        }
         episodeId = r.episodeId;
         if (undone) {
           return deleteEpisode(r.episodeId).catch(() => {});
@@ -195,6 +198,9 @@ export function QuickAddFab() {
 
     const promise = quickAddCreateIntake(args.payload, { signal: controller.signal })
       .then((r) => {
+        if (r.queued) {
+          return undefined;
+        }
         intakeId = r.intakeId;
         if (undone) {
           return quickAddUndoIntake(r.intakeId).catch(() => {});

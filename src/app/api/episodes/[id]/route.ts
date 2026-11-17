@@ -4,6 +4,8 @@ import { and, desc, eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
 import { z } from 'zod';
+
+import { withIdempotency } from '@/app/api/_helpers/idempotency';
 import { db } from '@/libs/DB';
 import { logger } from '@/libs/Logger';
 import { episodeSchema, medicationIntakesSchema, medicationsCatalogSchema, userMedicationsSchema } from '@/models/Schema';
@@ -151,7 +153,19 @@ export async function GET(
 }
 
 // PATCH /api/episodes/:id - Update an episode
+// Wrapped so edits queued offline (e.g. "end attack") can be replayed safely.
 export async function PATCH(
+  request: Request,
+  ctx: { params: Promise<{ id: string }> },
+) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return withIdempotency(request, userId, 'episodes/:id', () => handlePatch(request, ctx));
+}
+
+async function handlePatch(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {

@@ -55,6 +55,7 @@ export function HeroCheckInCard({
 }) {
   const tDiary = useTranslations('Diary');
   const t = useTranslations('DashboardHome');
+  const tOffline = useTranslations('OfflineSync');
   const OPTIONS: { id: DayType; label: string }[] = [
     { id: 'headache_free', label: t('seg_no_pain') },
     { id: 'headache_day', label: t('seg_headache') },
@@ -118,7 +119,7 @@ export function HeroCheckInCard({
     }
     setSaving(true);
     try {
-      await upsertDiaryEntry({
+      const saved = await upsertDiaryEntry({
         localDate: data.todayLocalDate,
         patch: { dayType: value },
       });
@@ -143,7 +144,7 @@ export function HeroCheckInCard({
             },
           })
         : prev);
-      showSnackbar({ message: t('saved') });
+      showSnackbar({ message: saved ? t('saved') : tOffline('saved_offline') });
       onDidLog?.();
     } catch (e: any) {
       showSnackbar({ message: e?.message ?? tDiary('error_generic') });

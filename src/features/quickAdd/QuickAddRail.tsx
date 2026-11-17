@@ -57,6 +57,9 @@ export function QuickAddRail(props: { onDidLog?: () => void }) {
 
     const promise = quickAddStartEpisodeNow({ signal: controller.signal })
       .then((r) => {
+        if (r.queued) {
+          return undefined;
+        }
         episodeId = r.episodeId;
         if (undone) {
           return deleteEpisode(r.episodeId).catch(() => {});

@@ -1,5 +1,7 @@
 'use client';
 
+import { sendOrQueue } from '@/libs/offline/outbox';
+
 export type DiaryTodayResponse = {
   timezone: string;
   todayLocalDate: string;
@@ -33,9 +35,44 @@ export async function fetchTodayDiary(): Promise<DiaryTodayResponse> {
     const body = await res.json().catch(() => ({}));
     throw new Error(body?.error ?? 'Failed to load today diary state');
   }
-  return await res.json();
+  return reconcileTodayWithDeviceClock(await res.json());
 }
 
+function localDateIn(timezone: string, at: Date): string | null {
+  try {
+    // en-CA formats as YYYY-MM-DD.
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(at);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Offline, this response may come from the service worker's cache and be from
+ * an earlier day. Re-derive "today" from the device clock in the user's
+ * timezone so offline entries land on the right day.
+ */
+export function reconcileTodayWithDeviceClock(data: DiaryTodayResponse, now: Date = new Date()): DiaryTodayResponse {
+  const today = data?.timezone ? localDateIn(data.timezone, now) : null;
+  if (!today || today === data.todayLocalDate) {
+    return data;
+  }
+  return {
+    ...data,
+    todayLocalDate: today,
+    entry: data.entry?.localDate === today ? data.entry : null,
+  };
+}
+
+/**
+ * Save a diary day. Works offline: when queued, resolves to `null` and the
+ * entry syncs later (the payload names its local date, so replay is exact).
+ */
 export async function upsertDiaryEntry(args: {
   localDate: string;
   patch: Partial<{
@@ -45,12 +82,18 @@ export async function upsertDiaryEntry(args: {
     bedTimeLocal: string | null;
     wakeTimeLocal: string | null;
   }>;
-}): Promise<NonNullable<DiaryTodayResponse['entry']>> {
-  const res = await fetch('/api/diary/entry', {
+}): Promise<NonNullable<DiaryTodayResponse['entry']> | null> {
+  const result = await sendOrQueue({
+    url: '/api/diary/entry',
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(args),
+    body: args,
+    kind: 'diary',
+    label: args.localDate,
   });
+  if (result.queued) {
+    return null;
+  }
+  const res = result.response;
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     const msg = body?.error ?? 'Failed to save diary entry';
@@ -59,6 +102,40 @@ export async function upsertDiaryEntry(args: {
     throw err;
   }
   return await res.json();
+}
+
+type DiaryEntry = NonNullable<DiaryTodayResponse['entry']>;
+
+/**
+ * Local stand-in for a diary entry that was queued offline, so the UI can
+ * show what the user just recorded. Returns the previous entry unchanged
+ * when the day type is unknown.
+ */
+export function applyQueuedDiaryPatch(
+  prev: DiaryEntry | null | undefined,
+  localDate: string,
+  patch: Partial<Pick<DiaryEntry, 'dayType' | 'impact' | 'notes' | 'bedTimeLocal' | 'wakeTimeLocal'>>,
+): DiaryEntry | null {
+  const dayType = patch.dayType ?? prev?.dayType;
+  if (!dayType) {
+    return prev ?? null;
+  }
+  const nowIso = new Date().toISOString();
+  return {
+    id: prev?.id ?? `offline:${localDate}`,
+    userId: prev?.userId ?? '',
+    localDate,
+    timezone: prev?.timezone ?? '',
+    createdFrom: prev?.createdFrom ?? 'user',
+    impact: prev?.impact ?? null,
+    notes: prev?.notes ?? null,
+    bedTimeLocal: prev?.bedTimeLocal ?? null,
+    wakeTimeLocal: prev?.wakeTimeLocal ?? null,
+    createdAt: prev?.createdAt ?? nowIso,
+    ...patch,
+    dayType,
+    updatedAt: nowIso,
+  };
 }
 
 export async function fetchDiaryRange(args: {

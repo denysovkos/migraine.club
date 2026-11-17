@@ -419,7 +419,7 @@ export class EpisodeService {
     // endNow takes precedence over any provided endTime.
     if (validatedData.endNow === true) {
       updateData.isOngoing = false;
-      updateData.endTime = new Date();
+      updateData.endTime = resolveEndNowTime(validatedData.endedAt, existing.startTime, new Date());
     }
 
     if (validatedData.startTime !== undefined) {
@@ -573,3 +573,22 @@ export class EpisodeService {
 }
 
 export const episodeService = new EpisodeService();
+
+/**
+ * End time for an `endNow` update. Uses the device-captured `endedAt` when it
+ * is plausible (not before the attack started, not in the future), so an end
+ * that was queued offline keeps its real time. Falls back to `now`.
+ */
+export function resolveEndNowTime(endedAt: string | undefined, startTime: Date, now: Date): Date {
+  if (!endedAt) {
+    return now;
+  }
+  const at = new Date(endedAt);
+  if (Number.isNaN(at.getTime()) || at.getTime() > now.getTime()) {
+    return now;
+  }
+  if (at.getTime() < startTime.getTime()) {
+    return startTime;
+  }
+  return at;
+}
