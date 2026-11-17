@@ -251,7 +251,7 @@ There are no delete tools. Every call is audited without storing arguments or pa
 - Every personal-data endpoint requires authentication. Share links are tokenised, scoped to a date range and expire.
 - Health-data consent is recorded explicitly, and writes through the MCP server fail without it.
 - Weather context is optional and only computed once a location is set.
-- Account deletion is available from privacy settings. Self-service data export is not built yet.
+- Account deletion and self-service data export are available from privacy settings. `GET /api/user/export?format=json` returns every user-owned record in one file; `format=csv` returns a ZIP with one CSV per table. Share-link tokens, push keys, payment-provider IDs and staff-only moderation fields are left out. When adding a user-scoped table, add it to `EXPORT_TABLES` in `src/services/dataExport/DataExportService.ts`.
 
 ## Internationalisation
 

@@ -7,6 +7,7 @@ import {
   listOutbox,
   MAX_RETRY_ATTEMPTS,
   removeOutboxItem,
+  REPLAY_ATTEMPT_TIMEOUT_MS,
   retryOutboxItem,
   sendOrQueue,
   setOutboxUser,
@@ -187,6 +188,32 @@ describe('flushOutbox', () => {
 
     expect(summary.stoppedBy).toBe('network');
     expect((await listOutbox())[0]).toMatchObject({ status: 'pending', attempts: 0 });
+  });
+
+  it('gives up on a request that hangs so the next flush is not blocked by it', async () => {
+    vi.useFakeTimers();
+    try {
+      await store.put(item({ id: 'a' }));
+      let signal: AbortSignal | undefined;
+      const hanging = vi.fn((_url: string, init: RequestInit) => {
+        signal = init.signal ?? undefined;
+        return new Promise<Response>(() => {});
+      });
+
+      const first = flushOutbox(hanging as unknown as typeof fetch);
+      await vi.advanceTimersByTimeAsync(REPLAY_ATTEMPT_TIMEOUT_MS);
+
+      await expect(first).resolves.toMatchObject({ stoppedBy: 'network', remaining: 1 });
+      expect(signal?.aborted).toBe(true);
+      expect((await listOutbox())[0]).toMatchObject({ status: 'pending', attempts: 0 });
+
+      const second = await flushOutbox((async () => json(201)) as unknown as typeof fetch);
+
+      expect(second).toMatchObject({ synced: 1, stoppedBy: null });
+      expect(await listOutbox()).toHaveLength(0);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('parks a permanently rejected entry and carries on with the rest', async () => {
@@ -423,6 +450,40 @@ describe('flushOutbox details', () => {
     release();
 
     expect(await first).toBe(await second);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('runs again when asked during a run that the network cut short', async () => {
+    await store.put(item({ id: 'a' }));
+    let failFirst!: () => void;
+    const fetchMock = vi.fn()
+      .mockImplementationOnce(() => new Promise<Response>((_, reject) => {
+        failFirst = () => reject(new TypeError('offline'));
+      }))
+      .mockResolvedValueOnce(json(201));
+
+    const first = flushOutbox(fetchMock as unknown as typeof fetch);
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    // Connection comes back while the first attempt is still pending.
+    void flushOutbox(fetchMock as unknown as typeof fetch);
+    failFirst();
+
+    await expect(first).resolves.toMatchObject({ stoppedBy: 'network' });
+
+    await vi.waitFor(async () => expect(await listOutbox()).toHaveLength(0));
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not run again after a server-side stop, so a 503 cannot loop', async () => {
+    await store.put(item({ id: 'a' }));
+    const fetchMock = vi.fn(async () => json(503, { error: 'busy' }));
+
+    const first = flushOutbox(fetchMock as unknown as typeof fetch);
+    void flushOutbox(fetchMock as unknown as typeof fetch);
+    await first;
+    await new Promise(r => setTimeout(r, 10));
+
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 

@@ -7,6 +7,7 @@
 
 import type { NextFetchEvent, NextRequest } from 'next/server';
 import { headers } from 'next/headers';
+import { unstable_rethrow } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
 import {
@@ -28,7 +29,9 @@ const mockUserId = () => {
         return v;
       }
     }
-  } catch {
+  } catch (error) {
+    // Let Next's request-time bailout through, like real Clerk does.
+    unstable_rethrow(error);
     // headers() may throw if called outside request scope (e.g. cron). Ignore.
   }
   return getE2EMockUserId();
@@ -60,7 +63,11 @@ export const auth = async () => {
     } else {
       userId = getE2EMockUserId();
     }
-  } catch {
+  } catch (error) {
+    // Real Clerk's auth() reads request headers, which makes the calling page
+    // dynamic. Swallowing Next's bailout here made `next build` prerender
+    // signed-in pages as the mock user and query the database at build time.
+    unstable_rethrow(error);
     userId = mockUserId();
   }
   return buildAuthObject(userId);

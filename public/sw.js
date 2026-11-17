@@ -48,6 +48,24 @@ const OUTBOX_DB_VERSION = 1;
 const OUTBOX_STORE = 'outbox';
 const OUTBOX_CHANNEL = 'mc-outbox';
 const OUTBOX_SYNC_TAG = 'mc-outbox-sync';
+// Mirrors REPLAY_ATTEMPT_TIMEOUT_MS in src/libs/offline/outbox.ts: a request
+// that hangs must not hold the outbox lock forever.
+const REPLAY_ATTEMPT_TIMEOUT_MS = 15000;
+
+function fetchWithTimeout(url, init, ms) {
+  const controller = typeof AbortController === 'undefined' ? null : new AbortController();
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      if (controller) {
+        controller.abort();
+      }
+      reject(new TypeError('Replay request timed out'));
+    }, ms);
+  });
+  const request = fetch(url, controller ? { ...init, signal: controller.signal } : init);
+  return Promise.race([request, timeout]).finally(() => clearTimeout(timer));
+}
 const MAX_RETRY_ATTEMPTS = 8;
 
 // Static assets to cache (conservative list)
@@ -275,7 +293,7 @@ async function replayOutbox() {
     let outcome;
     let errorText = null;
     try {
-      const res = await fetch(item.url, {
+      const res = await fetchWithTimeout(item.url, {
         method: item.method,
         credentials: 'include',
         headers: {
@@ -284,7 +302,7 @@ async function replayOutbox() {
           'X-Offline-User': item.userId,
         },
         body: item.body,
-      });
+      }, REPLAY_ATTEMPT_TIMEOUT_MS);
       const data = res.ok ? null : await res.json().catch(() => null);
       outcome = classifyResponse(res.status, data && data.code);
       errorText = (data && data.error) || (res.ok ? null : `HTTP ${res.status}`);

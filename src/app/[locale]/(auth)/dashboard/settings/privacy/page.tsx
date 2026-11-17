@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertTriangle, CheckCircle, Download, FileText, Shield, Trash2 } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Download, FileJson, FileSpreadsheet, FileText, Shield, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -21,6 +21,13 @@ type Consents = {
   analytics?: ConsentRecord;
 };
 
+type ExportFormat = 'json' | 'csv';
+
+function filenameFromDisposition(header: string | null, fallback: string): string {
+  const match = header?.match(/filename="([^"]+)"/);
+  return match?.[1] ?? fallback;
+}
+
 export default function PrivacySettingsPage() {
   const t = useTranslations('PrivacySettings');
   const router = useRouter();
@@ -32,6 +39,8 @@ export default function PrivacySettingsPage() {
   const [termsSuccess, setTermsSuccess] = useState(false);
   const [termsError, setTermsError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [exportingFormat, setExportingFormat] = useState<ExportFormat | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const fetchConsents = async () => {
     try {
@@ -80,6 +89,36 @@ export default function PrivacySettingsPage() {
       setTermsError(t('terms_accept_error'));
     } finally {
       setIsAcceptingTerms(false);
+    }
+  };
+
+  const handleExport = async (format: ExportFormat) => {
+    setExportingFormat(format);
+    setExportError(null);
+    try {
+      const response = await fetch(`/api/user/export?format=${format}`, { cache: 'no-store' });
+      if (!response.ok) {
+        setExportError(t('export_error'));
+        return;
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filenameFromDisposition(
+        response.headers.get('Content-Disposition'),
+        format === 'csv' ? 'migraine-club-export-csv.zip' : 'migraine-club-export.json',
+      );
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to export data:', error);
+      setExportError(t('export_error'));
+    } finally {
+      setExportingFormat(null);
     }
   };
 
@@ -250,7 +289,7 @@ export default function PrivacySettingsPage() {
         </div>
       </DashboardSection>
 
-      {/* Data Export (placeholder) */}
+      {/* Data Export */}
       <DashboardSection
         title={(
           <span className="flex items-center gap-2">
@@ -260,19 +299,30 @@ export default function PrivacySettingsPage() {
         )}
         description={t('data_export_description')}
       >
-        <Button variant="outline" disabled>
-          <Download className="mr-2 size-4" />
-          {t('export_button')}
-          {' '}
-          <span className="ml-1 text-xs text-muted-foreground">
-            (
-            {t('coming_soon')}
-            )
-          </span>
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Button
+            variant="outline"
+            onClick={() => handleExport('json')}
+            disabled={exportingFormat !== null}
+          >
+            <FileJson className="mr-2 size-4" />
+            {exportingFormat === 'json' ? t('exporting') : t('export_json_button')}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => handleExport('csv')}
+            disabled={exportingFormat !== null}
+          >
+            <FileSpreadsheet className="mr-2 size-4" />
+            {exportingFormat === 'csv' ? t('exporting') : t('export_csv_button')}
+          </Button>
+        </div>
         <p className="mt-2 text-sm text-muted-foreground">
           {t('data_export_note')}
         </p>
+        {exportError && (
+          <p className="mt-2 text-sm text-destructive" role="alert">{exportError}</p>
+        )}
       </DashboardSection>
 
       {/* Delete Account */}

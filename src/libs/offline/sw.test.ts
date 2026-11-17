@@ -176,6 +176,8 @@ function loadSw(opts: { rows?: Row[] } = {}) {
     console: { log: () => {}, error: () => {} },
     clients: self.clients,
     setTimeout,
+    clearTimeout,
+    AbortController,
     queueMicrotask,
   };
   vm.createContext(sandbox);
@@ -265,6 +267,25 @@ describe('service worker: outbox replay (Background Sync)', () => {
     await expect(sw.sync()).rejects.toThrow();
 
     expect(sw.rows.get('a')).toMatchObject({ status: 'pending', attempts: 0 });
+  });
+
+  it('gives up on a request that hangs so the lock is released and the browser retries', async () => {
+    vi.useFakeTimers();
+    try {
+      // Load after faking timers so the worker's setTimeout is the fake one.
+      sw = loadSw({ rows: [outboxRow({ id: 'a' })] });
+      sw.fetchMock.mockImplementation(() => new Promise<Response>(() => {}));
+
+      const run = sw.sync()!;
+      const settled = expect(run).rejects.toThrow('Outbox not fully synced');
+      await vi.advanceTimersByTimeAsync(15_000);
+      await settled;
+
+      expect(sw.fetchMock.mock.calls[0]![1].signal.aborted).toBe(true);
+      expect(sw.rows.get('a')).toMatchObject({ status: 'pending', attempts: 0 });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('parks a rejected entry and continues with the next one', async () => {
