@@ -1,21 +1,56 @@
+# Crowdin sync
+#
+# Uploads src/locales/en.json to Crowdin and opens a PR with downloaded
+# translations. It needs the CROWDIN_PROJECT_ID and CROWDIN_PERSONAL_TOKEN
+# repository secrets. Without them the job skips with a notice instead of
+# failing, so a repository that keeps translations in-repo (as this one does
+# today: fr.json and uk.json are edited in PRs) gets no red runs.
+#
+# Before adding the secrets, note that download_translations overwrites
+# fr.json and uk.json with what is in Crowdin.
+
 name: Crowdin Action
 
 on:
   push:
-    branches: [main] # Run on push to the main branch
+    branches: [main]
+    paths:
+      - src/locales/**
+      - crowdin.yml
+      - .github/workflows/crowdin.yml
   schedule:
     - cron: '0 5 * * *' # Run every day at 5am
   workflow_dispatch: # Run manually
+
+concurrency:
+  group: crowdin
+  cancel-in-progress: false
 
 jobs:
   synchronize-with-crowdin:
     name: Synchronize with Crowdin
     runs-on: ubuntu-latest
 
+    # The action pushes the l10n branch and opens the translations PR.
+    permissions:
+      contents: write
+      pull-requests: write
+
+    # Secrets cannot be used in `if:` directly; expose them as job env.
+    env:
+      CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+      CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
     steps:
+      - name: Skip when Crowdin is not configured
+        if: env.CROWDIN_PROJECT_ID == '' || env.CROWDIN_PERSONAL_TOKEN == ''
+        run: echo "::notice title=Crowdin skipped::CROWDIN_PROJECT_ID or CROWDIN_PERSONAL_TOKEN secret is not set."
+
       - uses: actions/checkout@v4
+        if: env.CROWDIN_PROJECT_ID != '' && env.CROWDIN_PERSONAL_TOKEN != ''
 
       - name: crowdin action
+        if: env.CROWDIN_PROJECT_ID != '' && env.CROWDIN_PERSONAL_TOKEN != ''
         uses: crowdin/github-action@v2
         with:
           upload_sources: true
@@ -29,5 +64,3 @@ jobs:
           commit_message: 'chore: new Crowdin translations by GitHub Action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
