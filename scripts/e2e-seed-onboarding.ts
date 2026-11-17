@@ -75,6 +75,20 @@ async function seed() {
       set: { enabled: true },
     });
 
+  // 4. minimal medication catalogue. The full catalogue (`npm run db:seed`)
+  // pulls from external drug registries, which is too slow and flaky for CI.
+  // Include near-misses so the spec still proves it picks the exact match.
+  for (const canonicalName of ['Ibuprofen', 'Ibuprofen, combinations', 'Dexibuprofen', 'Sumatriptan']) {
+    await db
+      .insert(schema.medicationsCatalogSchema)
+      .values({
+        canonicalName,
+        canonicalNameLc: canonicalName.toLowerCase(),
+        searchText: canonicalName,
+      })
+      .onConflictDoNothing();
+  }
+
   console.log('[e2e-seed-onboarding] Done');
 }
 

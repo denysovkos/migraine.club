@@ -15,6 +15,12 @@
 # placeholder keys. Nothing here uploads or deploys it — the job only answers
 # "does it still compile".
 #
+# The e2e job runs the Playwright suite against a production build with Clerk
+# swapped for the mock in src/libs/MockClerk*.ts (E2E_MOCK_AUTH), backed by a
+# throwaway Postgres service. It uses the same placeholder keys as the build
+# job: no real Clerk or Stripe calls are made. A production build matters:
+# the service worker (offline sync specs) only registers outside dev mode.
+#
 # The workflow name is load-bearing: release.yml triggers on the completion of
 # the workflow called "CI".
 
@@ -90,3 +96,73 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+
+  e2e:
+    name: E2E (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox]
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    # Placeholders only, see the note at the top of this file. The mock-auth
+    # flags must be present at build time (they swap the Clerk modules) and at
+    # runtime (playwright.config.ts also sets them on the server).
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/e2e
+      E2E_MOCK_AUTH: 'true'
+      NEXT_PUBLIC_E2E_MOCK_AUTH: 'true'
+      CLERK_SECRET_KEY: sk_test_placeholder
+      STRIPE_SECRET_KEY: sk_test_placeholder
+      STRIPE_WEBHOOK_SECRET: whsec_placeholder
+      BILLING_PLAN_ENV: test
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_placeholder
+      NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Build (mock auth)
+        run: npm run build
+
+      # The server applies migrations on boot (src/instrumentation.ts), and the
+      # `seeded` fixture resets and seeds the e2e user before every test.
+      - name: E2E tests
+        run: npx playwright test --project=${{ matrix.browser }}
+
+      - name: Upload traces and videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-${{ matrix.browser }}
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
