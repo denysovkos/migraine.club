@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/denysovkos/migraine.club/compare/v1.1.0...v1.2.0) (2026-11-17)
+
+### Features
+
+* self-service data export as JSON or CSV archive ([#6](https://github.com/denysovkos/migraine.club/issues/6)) ([6f4e0c1](https://github.com/denysovkos/migraine.club/commit/6f4e0c1843c7c77e90a723ee38e7835b60cf4368))
+
 # [1.1.0](https://github.com/denysovkos/migraine.club/compare/v1.0.0...v1.1.0) (2026-11-17)
 
 ### Features
