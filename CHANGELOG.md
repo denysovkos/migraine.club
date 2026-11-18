@@ -1,3 +1,9 @@
+# [1.5.0](https://github.com/denysovkos/migraine.club/compare/v1.4.0...v1.5.0) (2026-11-18)
+
+### Features
+
+* pain intensity timeline within one attack ([#10](https://github.com/denysovkos/migraine.club/issues/10)) ([de15a57](https://github.com/denysovkos/migraine.club/commit/de15a57168b84551e46b0e7f75846de98d158fa6))
+
 # [1.4.0](https://github.com/denysovkos/migraine.club/compare/v1.3.0...v1.4.0) (2026-11-18)
 
 ### Features
