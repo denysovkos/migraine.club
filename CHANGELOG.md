@@ -1,3 +1,9 @@
+# [1.4.0](https://github.com/denysovkos/migraine.club/compare/v1.3.0...v1.4.0) (2026-11-18)
+
+### Features
+
+* pressure-change forecast alerts with user-set threshold and multi-day outlook ([#9](https://github.com/denysovkos/migraine.club/issues/9)) ([838db33](https://github.com/denysovkos/migraine.club/commit/838db3309aa91e78303d0deac6b9126ac3a41ba4))
+
 # [1.3.0](https://github.com/denysovkos/migraine.club/compare/v1.2.0...v1.3.0) (2026-11-17)
 
 ### Features
