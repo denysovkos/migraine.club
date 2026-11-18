@@ -270,6 +270,31 @@ export const episodePainReadingSchema = pgTable(
   },
 );
 
+// In-attack relief sessions (attack mode "Relax"): one row per breathing,
+// muscle relaxation or guided relaxation session, with the user's own answer
+// to "Did it help?". Linked to the attack it was used in, when there was one;
+// the session stays if that attack is later deleted.
+export const reliefSessionSchema = pgTable(
+  'relief_session',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: text('user_id').notNull(),
+    episodeId: integer('episode_id').references(() => episodeSchema.id, { onDelete: 'set null' }),
+    exercise: text('exercise').notNull(), // 'breathing' | 'pmr' | 'relaxation'
+    startedAt: timestamp('started_at', { mode: 'date', withTimezone: true }).notNull(),
+    durationSeconds: integer('duration_seconds').notNull(),
+    completed: boolean('completed').notNull(),
+    helped: text('helped'), // 'yes' | 'a_little' | 'no' | null when skipped
+    createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  },
+  (table) => {
+    return {
+      userStartedAtIdx: index('relief_session_user_id_started_at_idx').on(table.userId, table.startedAt),
+      episodeIdIdx: index('relief_session_episode_id_idx').on(table.episodeId),
+    };
+  },
+);
+
 // Factor taxonomy (minimal; supports trigger/protector/symptom classification)
 export const FactorType = {
   TRIGGER: 'trigger',

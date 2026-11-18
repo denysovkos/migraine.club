@@ -16,26 +16,15 @@ import { removeOutboxItem } from '@/libs/offline/outbox';
 import { cn } from '@/utils/Helpers';
 import { endAttackNow, fetchAttackModeState, setAttackPain } from './attackModeApi';
 import { ATTACK_PAIN_CHOICES, formatDose, intensityToPainChoice, painChoiceToIntensity } from './attackModeLogic';
+import { bigButton, bigLabel, bigSub } from './attackModeStyles';
+import { ReliefTools } from './relief/ReliefTools';
 
 /** Ongoing attack as attack mode knows it. `id` is null while the start waits in the offline queue. */
 type Ongoing = Omit<AttackModeOngoing, 'id'> & { id: number | null };
 
 type Status = { message: string; undo?: () => Promise<void> };
 
-type View = 'home' | 'meds' | 'pain';
-
-/*
- * Low-stimulus palette: near-black background, mid-grey text that still
- * meets WCAG AA (neutral-400 ≈ 8:1, neutral-500 ≈ 4.6:1 on black), no
- * colour accents, no motion. Kept independent of the app theme on purpose.
- */
-const bigButton = cn(
-  'flex w-full flex-col items-center justify-center gap-1 rounded-3xl border border-neutral-800 bg-black px-4 text-center',
-  'text-neutral-400 active:bg-neutral-950 disabled:cursor-not-allowed disabled:opacity-40',
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500',
-);
-const bigLabel = 'text-2xl font-medium leading-tight';
-const bigSub = 'text-base text-neutral-500';
+type View = 'home' | 'meds' | 'pain' | 'relief';
 
 export function AttackMode() {
   const t = useTranslations('AttackMode');
@@ -237,7 +226,7 @@ export function AttackMode() {
         )}
 
         {!loading && !consentRequired && view === 'home' && (
-          <div className="grid flex-1 grid-rows-3 gap-3">
+          <div className="grid flex-1 grid-rows-4 gap-3">
             {ongoing
               ? (
                   <button
@@ -283,7 +272,23 @@ export function AttackMode() {
                       : t('pain_level_sub')}
               </span>
             </button>
+
+            <button type="button" className={bigButton} onClick={() => setView('relief')} disabled={busy}>
+              <span className={bigLabel}>{t('relax')}</span>
+              <span className={bigSub}>{t('relax_sub')}</span>
+            </button>
           </div>
+        )}
+
+        {!loading && !consentRequired && view === 'relief' && (
+          <ReliefTools
+            episodeId={ongoing?.id ?? null}
+            onBack={() => setView('home')}
+            onDone={(message) => {
+              setView('home');
+              setStatus({ message });
+            }}
+          />
         )}
 
         {!loading && !consentRequired && view === 'meds' && (

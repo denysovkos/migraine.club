@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => ({
   quickAddUndoIntake: vi.fn(async () => {}),
   deleteEpisode: vi.fn(async () => {}),
   removeOutboxItem: vi.fn(async () => {}),
+  recordReliefSession: vi.fn(),
 }));
 
 vi.mock('./attackModeApi', () => ({
@@ -25,6 +26,7 @@ vi.mock('@/features/quickAdd/quickAddApi', () => ({
   deleteEpisode: mocks.deleteEpisode,
 }));
 vi.mock('@/libs/offline/outbox', () => ({ removeOutboxItem: mocks.removeOutboxItem }));
+vi.mock('./relief/reliefApi', () => ({ recordReliefSession: mocks.recordReliefSession }));
 vi.mock('next-intl', () => ({
   useLocale: () => 'en',
   useTranslations: () => (key: string, values?: Record<string, string>) =>
@@ -54,7 +56,7 @@ beforeEach(() => {
 });
 
 describe('AttackMode', () => {
-  it('offers the three actions with large tap targets and no ongoing attack', async () => {
+  it('offers the four actions with large tap targets and no ongoing attack', async () => {
     ready();
     render(<AttackMode />);
 
@@ -65,7 +67,39 @@ describe('AttackMode', () => {
     expect(screen.getByRole('button', { name: /pain_level/ })).toHaveTextContent('pain_level_needs_attack');
     expect(screen.getByRole('link', { name: 'exit' })).toHaveAttribute('href', '/dashboard');
     expect(screen.getByTestId('attack-mode')).toHaveClass('bg-black');
-    expect(start.parentElement).toHaveClass('grid-rows-3');
+    expect(screen.getByRole('button', { name: /relax/ })).toBeEnabled();
+    expect(start.parentElement).toHaveClass('grid-rows-4');
+  });
+
+  it('opens relief exercises from home, also without an attack, and comes back', async () => {
+    ready();
+    render(<AttackMode />);
+
+    await userEvent.click(await screen.findByRole('button', { name: /relax/ }));
+
+    expect(screen.getByTestId('relief-menu')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /exercise_breathing/ })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'back' }));
+
+    expect(await screen.findByRole('button', { name: /start_attack/ })).toBeInTheDocument();
+  });
+
+  it('records a relief session against the ongoing attack and shows the result in the footer', async () => {
+    ready({ ongoing: ONGOING });
+    mocks.recordReliefSession.mockResolvedValue({ queued: false });
+    render(<AttackMode />);
+
+    await userEvent.click(await screen.findByRole('button', { name: /relax/ }));
+    await userEvent.click(screen.getByRole('button', { name: /exercise_pmr/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'stop' }));
+    await userEvent.click(screen.getByRole('button', { name: 'helped_yes' }));
+
+    expect(mocks.recordReliefSession).toHaveBeenCalledWith(
+      expect.objectContaining({ exercise: 'pmr', completed: false, helped: 'yes', episodeId: 7 }),
+    );
+    expect(await screen.findByRole('button', { name: /end_attack/ })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('status_saved');
   });
 
   it('starts an attack, then offers ending it, and can undo the start', async () => {

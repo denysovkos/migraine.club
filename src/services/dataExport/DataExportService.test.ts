@@ -48,6 +48,18 @@ describe('DataExportService', () => {
     );
   });
 
+  it('includes relief sessions with the "did it help" answer', async () => {
+    rowsByTable.relief_session = [{ id: 's1', exercise: 'breathing', helped: 'yes' }];
+    const { collectUserData } = await import('./DataExportService');
+
+    const data = await collectUserData('user_1', new Date('2026-11-17T08:00:00Z'));
+
+    expect(data.tables.relief_session).toEqual([{ id: 's1', exercise: 'breathing', helped: 'yes' }]);
+    expect(selectedColumns.relief_session).toEqual(
+      expect.arrayContaining(['episodeId', 'exercise', 'startedAt', 'durationSeconds', 'completed', 'helped']),
+    );
+  });
+
   it('collects user tables and leaves out credentials and staff-only fields', async () => {
     rowsByTable.episode = [{ id: 1, intensity: 7, notes: 'bad one' }];
     rowsByTable.doctor_verification_application = [{ id: 'app-1', status: 'pending' }];

@@ -10,7 +10,7 @@ export const OUTBOX_DB = 'mc-offline';
 export const OUTBOX_DB_VERSION = 1;
 export const OUTBOX_STORE = 'outbox';
 
-export type OutboxKind = 'attack' | 'attack_update' | 'dose' | 'diary' | 'factor';
+export type OutboxKind = 'attack' | 'attack_update' | 'dose' | 'diary' | 'factor' | 'relief';
 
 export type OutboxItem = {
   /** Also sent as the Idempotency-Key header. */
