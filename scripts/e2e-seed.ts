@@ -9,6 +9,7 @@
 
 import { eq } from 'drizzle-orm';
 import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
+import { DateTime } from 'luxon';
 import { Pool } from 'pg';
 
 import * as schema from '../src/models/Schema';
@@ -79,6 +80,22 @@ async function seed() {
       units: 'metric',
     })
     .onConflictDoNothing();
+
+  // 4b. pressure forecast for the seeded location, so the outlook card never
+  // calls OpenWeatherMap. Fresh fetchedAt keeps it inside the cache TTL.
+  // Day-over-day: today, -2, -7 (drop), +3, -1, -7 (drop).
+  const kyivToday = DateTime.now().setZone('Europe/Kyiv').startOf('day').plus({ hours: 12 });
+  const pressurePoints = [1018, 1016, 1009, 1012, 1011, 1004].map((pressureHpa, i) => ({
+    dt: Math.floor(kyivToday.plus({ days: i }).toSeconds()),
+    pressureHpa,
+  }));
+  await db
+    .insert(schema.pressureForecastCacheSchema)
+    .values({ lat: 50.45, lon: 30.52, points: pressurePoints, fetchedAt: new Date() })
+    .onConflictDoUpdate({
+      target: [schema.pressureForecastCacheSchema.lat, schema.pressureForecastCacheSchema.lon],
+      set: { points: pressurePoints, fetchedAt: new Date() },
+    });
 
   // 5. a couple of past diary entries for the streak strip
   const today = new Date();

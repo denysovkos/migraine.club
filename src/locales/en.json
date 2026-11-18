@@ -362,6 +362,12 @@
     "test": {
       "title": "Migrennity test",
       "body": "Push notifications are working! You’ll receive alerts when enabled."
+    },
+    "pressureDrop": {
+      "title": "Pressure change ahead",
+      "body": "Air pressure is forecast to fall about {drop} hPa {day}. Some people notice headaches around shifts like this. Context for planning, not a prediction.",
+      "tomorrow": "tomorrow",
+      "onDay": "on {weekday}"
     }
   },
   "ProtectFallback": {
@@ -2100,6 +2106,26 @@
     "trigger_other": "Other",
     "language_label": "Language",
     "language_switch_hint": "Change report language"
+  },
+  "PressureOutlook": {
+    "title": "Pressure outlook",
+    "subtitle": "Next {count} days · hPa",
+    "today": "Today",
+    "drop_badge": "Fall ≥ {threshold} hPa",
+    "context_note": "Context, not a prediction. A pressure fall is one factor some people notice. Your diary shows whether it matters for you.",
+    "alert_on": "Alert on: falls of {threshold} hPa or more in a day.",
+    "alert_off": "Pressure-drop alerts are off.",
+    "manage_link": "Alert settings",
+    "unavailable": "The pressure forecast is unavailable right now.",
+    "settings_title": "Pressure-drop alert",
+    "settings_description": "Get a push when the forecast shows air pressure falling at least this much from one day to the next, up to two days ahead. It is context for planning, not a prediction of an attack.",
+    "settings_label": "Alert when pressure falls by",
+    "option_off": "Off",
+    "option_hpa": "{value} hPa or more",
+    "settings_saved": "Saved",
+    "settings_error": "Could not save the alert setting. Please try again.",
+    "settings_no_location": "Set your location above to use pressure-drop alerts.",
+    "settings_push_hint": "Alerts arrive as push notifications, so turn those on under Notifications on this device."
   },
   "WpiCard": {
     "title": "Weather Pain Index",

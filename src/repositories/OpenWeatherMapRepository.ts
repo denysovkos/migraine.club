@@ -37,6 +37,7 @@ type OWMOneCallResponse = {
     wind_speed: number;
   }>;
   daily?: Array<{
+    dt: number;
     temp: {
       min: number;
       max: number;
@@ -165,6 +166,36 @@ export class OpenWeatherMapRepository {
       // Fall back to basic current weather API
       logger.warn({ error }, 'OneCall API failed, falling back to current weather');
       return this.getBasicWeather(lat, lon);
+    }
+  }
+
+  /**
+   * Daily pressure forecast (OneCall `daily`, up to 8 days). Returns [] when the
+   * API key is missing or the call fails, so callers can fall back to cache.
+   */
+  async getDailyPressureForecast(lat: number, lon: number): Promise<Array<{ dt: number; pressureHpa: number }>> {
+    if (!this.apiKey) {
+      logger.warn('OpenWeatherMap API key not configured');
+      return [];
+    }
+
+    try {
+      const response = await http.get<OWMOneCallResponse>(this.oneCallUrl, {
+        params: {
+          lat,
+          lon,
+          appid: this.apiKey,
+          units: 'metric',
+          exclude: 'current,minutely,hourly,alerts',
+        },
+      });
+
+      return (response.data.daily ?? [])
+        .filter(d => Number.isFinite(d.dt) && Number.isFinite(d.pressure))
+        .map(d => ({ dt: d.dt, pressureHpa: d.pressure }));
+    } catch (error) {
+      logger.error({ error, lat, lon }, 'Failed to fetch daily pressure forecast');
+      return [];
     }
   }
 
