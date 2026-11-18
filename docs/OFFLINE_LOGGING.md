@@ -10,6 +10,7 @@ Attacks, medication doses and diary entries can be logged without a connection. 
 | Log or edit an attack with the full form | `/dashboard/episodes/new`, attack detail | `POST /api/episodes`, `PATCH /api/episodes/:id` |
 | End the ongoing attack | Today timeline | `PATCH /api/episodes/:id` (`endNow` + `endedAt`) |
 | Record the pain level within an attack | Attack mode "Pain level", pain timeline on the attack page | `POST /api/episodes/:id/pain-readings` (`intensity` + `recordedAt`) |
+| Record a relief exercise and whether it helped | Attack mode "Relax" | `POST /api/relief-sessions` (`exercise`, `startedAt`, `durationSeconds`, `completed`, `helped`, `episodeId`) |
 | Take a medication | Take-medication sheet, Quick kit | `POST /api/quick-add/medication-intake`, `POST /api/acute-doses` |
 | Diary day type, notes, sleep, pain-free | Check-in card, diary, notes | `PUT /api/diary/entry` |
 | Triggers and protectors | Attack form, factor logger | `POST /api/factors/log` |
