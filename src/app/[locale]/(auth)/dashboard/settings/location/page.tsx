@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { DashboardSection } from '@/features/dashboard/DashboardSection';
-import { WeatherSettingsForm } from '@/features/weather/WeatherSettingsForm';
+import { LocationSettingsPanel } from '@/features/weather/LocationSettingsPanel';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const t = await getTranslations({
@@ -28,7 +28,7 @@ export default async function LocationSettingsPage(props: {
       title={t('location.title')}
       description={t('location.description')}
     >
-      <WeatherSettingsForm />
+      <LocationSettingsPanel />
     </DashboardSection>
   );
 }

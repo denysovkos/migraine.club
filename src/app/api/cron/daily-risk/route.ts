@@ -1,5 +1,6 @@
 import { createCronRoute } from '@/app/api/cron/_shared/withCron';
 import { dailyRiskAlertService } from '@/services/DailyRiskAlertService';
+import { pressureAlertService } from '@/services/pressure/PressureAlertService';
 
 // pg + node crypto: never let Next try to evaluate this route at build time.
 export const dynamic = 'force-dynamic';
@@ -17,12 +18,15 @@ export const runtime = 'nodejs';
  * 3. For each user, only consider delivery if local time is 09:00–19:59
  * 4. Send a grouped notification if WPI ≥ 5 and/or future max Kp ≥ 5
  * 5. Deduplicate by (userId, localDate, type)
+ * 6. Pressure-drop alerts: users with a threshold get one push per forecast
+ *    drop day (tomorrow or the day after) when the fall meets their threshold
  */
 export const { POST, GET } = createCronRoute({
   name: 'daily-risk',
   description: 'Daily risk alert cron - runs every 4 hours',
   run: async ({ deadline }) => {
     const result = await dailyRiskAlertService.processAlerts(undefined, deadline);
+    const pressure = await pressureAlertService.processAlerts(undefined, deadline);
 
     return {
       eligibleTimezones: result.eligibleTimezones,
@@ -33,6 +37,15 @@ export const { POST, GET } = createCronRoute({
       alreadyProcessed: result.alreadyProcessed,
       truncated: result.truncated,
       remaining: result.remaining,
+      pressure: {
+        usersProcessed: pressure.usersProcessed,
+        sent: pressure.sent,
+        skipped: pressure.skipped,
+        failed: pressure.failed,
+        alreadyProcessed: pressure.alreadyProcessed,
+        truncated: pressure.truncated,
+        remaining: pressure.remaining,
+      },
     };
   },
 });

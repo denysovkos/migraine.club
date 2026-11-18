@@ -456,6 +456,12 @@
     "test": {
       "title": "Test Migrennity",
       "body": "Les notifications push fonctionnent ! Vous recevrez des alertes une fois activées."
+    },
+    "pressureDrop": {
+      "title": "Changement de pression à venir",
+      "body": "La pression atmosphérique devrait baisser d’environ {drop} hPa {day}. Certaines personnes remarquent des maux de tête lors de tels changements. Un repère pour s’organiser, pas une prédiction.",
+      "tomorrow": "demain",
+      "onDay": "{weekday}"
     }
   },
   "ProtectFallback": {
@@ -2303,6 +2309,26 @@
     "trigger_other": "Autre",
     "language_label": "Langue",
     "language_switch_hint": "Changer la langue du rapport"
+  },
+  "PressureOutlook": {
+    "title": "Prévision de pression",
+    "subtitle": "{count} prochains jours · hPa",
+    "today": "Aujourd’hui",
+    "drop_badge": "Baisse ≥ {threshold} hPa",
+    "context_note": "Un repère, pas une prédiction. Une baisse de pression est un facteur que certaines personnes remarquent. Votre journal montre si cela compte pour vous.",
+    "alert_on": "Alerte active : baisses de {threshold} hPa ou plus en un jour.",
+    "alert_off": "Les alertes de baisse de pression sont désactivées.",
+    "manage_link": "Réglages d’alerte",
+    "unavailable": "La prévision de pression n’est pas disponible pour le moment.",
+    "settings_title": "Alerte de baisse de pression",
+    "settings_description": "Recevez une notification lorsque la prévision indique une baisse de pression d’au moins cette valeur d’un jour à l’autre, jusqu’à deux jours à l’avance. C’est un repère pour s’organiser, pas une prédiction de crise.",
+    "settings_label": "Alerter quand la pression baisse de",
+    "option_off": "Désactivée",
+    "option_hpa": "{value} hPa ou plus",
+    "settings_saved": "Enregistré",
+    "settings_error": "Impossible d’enregistrer le réglage. Veuillez réessayer.",
+    "settings_no_location": "Définissez votre position ci-dessus pour utiliser les alertes de baisse de pression.",
+    "settings_push_hint": "Les alertes arrivent en notifications push : activez-les dans Notifications sur cet appareil."
   },
   "WpiCard": {
     "title": "Indice de Douleur Météo",

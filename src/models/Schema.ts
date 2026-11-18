@@ -871,6 +871,8 @@ export const userWeatherSettingsSchema = pgTable(
     units: text('units').notNull().default('metric'),
     // Whether daily risk alerts are enabled for this user
     alertsEnabled: boolean('alerts_enabled').notNull().default(false),
+    // Pressure-drop alert threshold in hPa (day-over-day forecast fall). NULL = off.
+    pressureDropThresholdHpa: doublePrecision('pressure_drop_threshold_hpa'),
     updatedAt: timestamp('updated_at', { mode: 'date' })
       .defaultNow()
       .$onUpdate(() => new Date())
@@ -885,6 +887,26 @@ export const userWeatherSettingsSchema = pgTable(
         table.timezone,
         table.alertsEnabled,
       ),
+    };
+  },
+);
+
+// Pressure forecast cache - multi-day daily pressure per rounded (lat, lon).
+// Global reference data (not user-scoped), refreshed at most every few hours.
+export const pressureForecastCacheSchema = pgTable(
+  'pressure_forecast_cache',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    lat: doublePrecision('lat').notNull(),
+    lon: doublePrecision('lon').notNull(),
+    // [{ dt: unix seconds, pressureHpa }] in forecast order, from the provider's daily series
+    points: jsonb('points').$type<Array<{ dt: number; pressureHpa: number }>>().notNull(),
+    source: text('source').notNull().default('openweathermap'),
+    fetchedAt: timestamp('fetched_at', { mode: 'date', withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => {
+    return {
+      latLonIdx: uniqueIndex('pressure_forecast_cache_lat_lon_idx').on(table.lat, table.lon),
     };
   },
 );
@@ -1266,6 +1288,8 @@ export type RiskAlertStatusType = (typeof RiskAlertStatus)[keyof typeof RiskAler
 // Risk alert type
 export const RiskAlertType = {
   DAILY_RISK: 'daily_risk',
+  // One per (user, forecast drop date): localDate holds the day the drop is forecast for.
+  PRESSURE_DROP: 'pressure_drop',
 } as const;
 
 export type RiskAlertTypeValue = (typeof RiskAlertType)[keyof typeof RiskAlertType];
@@ -1307,6 +1331,9 @@ export const riskAlertRunSchema = pgTable(
       wpiHigh?: boolean;
       timezone?: string;
       errorMessage?: string;
+      // Pressure-drop alerts
+      dropHpa?: number;
+      thresholdHpa?: number;
     }>(),
     createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   },

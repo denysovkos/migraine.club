@@ -18,6 +18,7 @@ import { SleepRegularityCard } from '@/features/dashboard/migrennity/SleepRegula
 import { SolarActivityCard } from '@/features/dashboard/migrennity/SolarActivityCard';
 import { TodayTimeline } from '@/features/dashboard/migrennity/TodayTimeline';
 import { WeatherPainCard } from '@/features/dashboard/migrennity/WeatherPainCard';
+import { PressureOutlookCard } from '@/features/weather/PressureOutlookCard';
 
 const DashboardIndexPage = () => {
   const [episodesRefreshToken, setEpisodesRefreshToken] = useState(0);
@@ -95,6 +96,9 @@ const DashboardIndexPage = () => {
           <WeatherPainCard />
           <SolarActivityCard />
         </div>
+
+        {/* Pressure outlook — multi-day forecast, context not prediction */}
+        <PressureOutlookCard />
 
         {/* Quick kit */}
         <QuickKitCard refreshToken={episodesRefreshToken} onDidLog={onDidLog} />

@@ -288,6 +288,13 @@
       "when": 1794867162447,
       "tag": "0040_offline_idempotency",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1794996660430,
+      "tag": "0041_pressure_forecast_alerts",
+      "breakpoints": true
     }
   ]
 }
