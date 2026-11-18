@@ -2,6 +2,13 @@
 
 ### Features
 
+* in-attack relief tools (breathing, muscle relaxation, guided relaxation) ([#11](https://github.com/denysovkos/migraine.club/issues/11)) ([5307c12](https://github.com/denysovkos/migraine.club/commit/5307c12380af7da3a2cf798aad4db6d3a67fdfd2))
+* pain intensity timeline within one attack ([#10](https://github.com/denysovkos/migraine.club/issues/10)) ([de15a57](https://github.com/denysovkos/migraine.club/commit/de15a57168b84551e46b0e7f75846de98d158fa6))
+
+# [1.5.0](https://github.com/denysovkos/migraine.club/compare/v1.4.0...v1.5.0) (2026-11-18)
+
+### Features
+
 * pain intensity timeline within one attack ([#10](https://github.com/denysovkos/migraine.club/issues/10)) ([de15a57](https://github.com/denysovkos/migraine.club/commit/de15a57168b84551e46b0e7f75846de98d158fa6))
 
 # [1.4.0](https://github.com/denysovkos/migraine.club/compare/v1.3.0...v1.4.0) (2026-11-18)
