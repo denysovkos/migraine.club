@@ -40,17 +40,35 @@ export async function fetchAttackModeState(args?: { signal?: AbortSignal }): Pro
     }
   }
 
+  // "Now" is the latest pain reading; the attack's stored intensity is its peak.
+  const latest = ongoing ? await fetchLatestPainIntensity(ongoing.id, args?.signal) : null;
+
   return {
     status: 'ready',
     ongoing: ongoing
       ? {
           id: ongoing.id,
           startTime: new Date(ongoing.startTime as unknown as string).toISOString(),
-          intensity: typeof ongoing.intensity === 'number' ? ongoing.intensity : null,
+          intensity: latest ?? (typeof ongoing.intensity === 'number' ? ongoing.intensity : null),
         }
       : null,
     meds,
   };
+}
+
+async function fetchLatestPainIntensity(episodeId: number, signal?: AbortSignal): Promise<number | null> {
+  try {
+    const res = await fetch(`/api/episodes/${episodeId}/pain-readings`, { cache: 'no-store', signal });
+    if (!res.ok) {
+      return null;
+    }
+    const data = await res.json();
+    const readings = Array.isArray(data?.readings) ? data.readings : [];
+    const last = readings.at(-1);
+    return typeof last?.intensity === 'number' ? last.intensity : null;
+  } catch {
+    return null;
+  }
 }
 
 async function patchEpisode(episodeId: number, body: Record<string, unknown>, fallback: string) {
@@ -78,6 +96,24 @@ export function endAttackNow(episodeId: number, now: Date = new Date()) {
   return patchEpisode(episodeId, { endNow: true, endedAt: now.toISOString() }, 'Failed to end attack');
 }
 
-export function setAttackPain(episodeId: number, choice: AttackPainChoice) {
-  return patchEpisode(episodeId, { intensity: painChoiceToIntensity(choice) }, 'Failed to save pain level');
+/**
+ * Record the pain level now as a point on the attack's pain timeline. The
+ * server raises the attack's peak intensity when this reading exceeds it.
+ * `recordedAt` is the time of the tap, so a queued reading keeps its place.
+ */
+export async function setAttackPain(episodeId: number, choice: AttackPainChoice, now: Date = new Date()) {
+  const result = await sendOrQueue({
+    url: `/api/episodes/${episodeId}/pain-readings`,
+    method: 'POST',
+    body: { intensity: painChoiceToIntensity(choice), recordedAt: now.toISOString() },
+    kind: 'attack_update',
+  });
+  if (result.queued) {
+    return { queued: true as const };
+  }
+  if (!result.response.ok) {
+    const data = await result.response.json().catch(() => ({}));
+    throw new Error(data.error || 'Failed to save pain level');
+  }
+  return { queued: false as const };
 }

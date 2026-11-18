@@ -48,6 +48,7 @@ async function reset() {
     schema.medicationIntakesSchema,
     schema.acuteDosesSchema,
     schema.doseOutcomesSchema,
+    schema.episodePainReadingSchema,
     schema.factorEventSchema,
     schema.factorSchema,
     schema.episodeSchema,

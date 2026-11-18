@@ -14,6 +14,7 @@ import { useEpisodeSharedStatus } from '@/hooks/useCommunity';
 
 import { AttackTypeBadge } from './components/AttackTypeBadge';
 import { EpisodeForm } from './EpisodeForm';
+import { PainTimeline } from './PainTimeline';
 
 type EpisodeDetailProps = {
   episodeId: number;
@@ -125,6 +126,18 @@ export function EpisodeDetail({ episodeId }: EpisodeDetailProps) {
         <div className="text-sm text-muted-foreground">{t('title')}</div>
         <AttackTypeBadge episode={episode} />
       </div>
+      <PainTimeline
+        episodeId={episode.id}
+        startTime={episode.startTime}
+        onsetAt={episode.onsetAt ?? null}
+        endTime={episode.endTime ?? null}
+        isOngoing={episode.isOngoing}
+        onPeakChange={(peak) => {
+          if (peak !== episode.intensity) {
+            fetchEpisode();
+          }
+        }}
+      />
       {/* Community sharing section */}
       <div className="rounded-lg border bg-card p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -209,7 +222,9 @@ export function EpisodeDetail({ episodeId }: EpisodeDetailProps) {
             )}
       </div>
 
+      {/* Re-mount when a pain reading raises the peak so the form never saves a stale intensity. */}
       <EpisodeForm
+        key={`${episode.id}-${episode.intensity}`}
         episode={episode}
         onSuccess={() => {
           router.push('/dashboard/episodes');
