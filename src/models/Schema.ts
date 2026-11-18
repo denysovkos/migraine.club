@@ -244,6 +244,32 @@ export const episodeSchema = pgTable(
   },
 );
 
+// Pain intensity readings within one attack (pain timeline). Each row is the
+// pain level at a point in time; the episode's own `intensity` stays the
+// attack's peak and is raised when a higher reading is recorded.
+export const episodePainReadingSchema = pgTable(
+  'episode_pain_reading',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: text('user_id').notNull(),
+    episodeId: integer('episode_id')
+      .notNull()
+      .references(() => episodeSchema.id, { onDelete: 'cascade' }),
+    recordedAt: timestamp('recorded_at', { mode: 'date', withTimezone: true }).notNull(),
+    intensity: integer('intensity').notNull(),
+    createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  },
+  (table) => {
+    return {
+      episodeRecordedAtIdx: index('episode_pain_reading_episode_id_recorded_at_idx').on(
+        table.episodeId,
+        table.recordedAt,
+      ),
+      userIdIdx: index('episode_pain_reading_user_id_idx').on(table.userId),
+    };
+  },
+);
+
 // Factor taxonomy (minimal; supports trigger/protector/symptom classification)
 export const FactorType = {
   TRIGGER: 'trigger',

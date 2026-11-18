@@ -36,6 +36,18 @@ describe('DataExportService', () => {
     }
   });
 
+  it('includes the pain readings of each attack', async () => {
+    rowsByTable.episode_pain_reading = [{ id: 'r1', episodeId: 1, intensity: 4 }];
+    const { collectUserData } = await import('./DataExportService');
+
+    const data = await collectUserData('user_1', new Date('2026-11-17T08:00:00Z'));
+
+    expect(data.tables.episode_pain_reading).toEqual([{ id: 'r1', episodeId: 1, intensity: 4 }]);
+    expect(selectedColumns.episode_pain_reading).toEqual(
+      expect.arrayContaining(['episodeId', 'recordedAt', 'intensity']),
+    );
+  });
+
   it('collects user tables and leaves out credentials and staff-only fields', async () => {
     rowsByTable.episode = [{ id: 1, intensity: 7, notes: 'bad one' }];
     rowsByTable.doctor_verification_application = [{ id: 'app-1', status: 'pending' }];

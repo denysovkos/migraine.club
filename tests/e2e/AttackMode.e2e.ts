@@ -55,6 +55,14 @@ test('logs a whole attack in attack mode: start, pain, medication, end', async (
   await expect(page.getByRole('button', { name: /Pain level/ })).toContainText('Now: Severe');
   await expect.poll(async () => (await episodes())[0]?.intensity).toBe(4);
 
+  // Each pain tap is a point on the attack's pain timeline.
+  const [attackRow] = await episodes();
+
+  await expect.poll(async () => (await query<{ intensity: number }>(
+    'select intensity from episode_pain_reading where episode_id = $1',
+    [attackRow!.id],
+  )).map(r => r.intensity)).toEqual([4]);
+
   await page.getByRole('button', { name: /Took medication/ }).click();
 
   // Most used first, at most three, the user's own only.

@@ -18,6 +18,7 @@
     "e2e:seed": "dotenv -e .env -- tsx scripts/e2e-seed.ts",
     "e2e:seed:onboarding": "dotenv -e .env -- tsx scripts/e2e-seed-onboarding.ts",
     "e2e:seed:attack-mode": "dotenv -e .env -- tsx scripts/e2e-seed-attack-mode.ts",
+    "e2e:seed:pain-timeline": "dotenv -e .env -- tsx scripts/e2e-seed-pain-timeline.ts",
     "e2e:reset": "dotenv -e .env -- tsx scripts/e2e-reset.ts",
     "commit": "cz",
     "db:generate": "drizzle-kit generate",
