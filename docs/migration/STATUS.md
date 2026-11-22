@@ -33,6 +33,10 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - Every route gets: Go handler tests on a real database (`internal/apitest`)
   covering auth, validation, happy path and cross-user isolation; ported unit
   tests for its service; and a parity scenario in `tests/parity/scenarios`.
+- Unhandled throws in a Node route (no try/catch) answered 500 with an empty
+  body: use `httpx.Unhandled`. `error?.message` 500s use the Go error text.
+- Parity steps can mark clock-derived keys as `volatile`; serial ids and
+  UUIDs are normalised automatically.
 - Parity runs: `/tmp/claude-0/servers.sh` (Next on :3001, Go on :3000), then
   `node --import tsx tests/parity/run.mts <filter>`.
 - E2E through Go: `npx playwright test -c playwright.local.config.ts`.
@@ -51,7 +55,7 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 
 - [ ] `/.well-known/oauth-authorization-server` GET
 - [ ] `/.well-known/oauth-protected-resource/mcp` GET
-- [ ] `/api/acute-doses` POST
+- [x] `/api/acute-doses` POST
 - [ ] `/api/acute-meds-report` GET
 - [ ] `/api/admin/doctor-verification/applications` GET
 - [ ] `/api/admin/doctor-verification/applications/[id]` GET
@@ -79,22 +83,22 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/cycle/data` DELETE
 - [ ] `/api/cycle/insights` GET
 - [ ] `/api/cycle/settings` GET PUT
-- [ ] `/api/diary/day` GET
-- [ ] `/api/diary/entry` PUT
-- [ ] `/api/diary/overlap` GET
-- [ ] `/api/diary/range` GET
-- [ ] `/api/diary/today` GET
+- [x] `/api/diary/day` GET
+- [x] `/api/diary/entry` PUT
+- [x] `/api/diary/overlap` GET
+- [x] `/api/diary/range` GET
+- [x] `/api/diary/today` GET
 - [ ] `/api/doctor-verification/application` GET POST PUT
 - [ ] `/api/doctor-verification/files/[fileId]` GET
 - [ ] `/api/doctor-verification/upload` POST
-- [ ] `/api/dose-outcomes` POST
+- [x] `/api/dose-outcomes` POST
 - [x] `/api/episodes` GET POST
 - [x] `/api/episodes/[id]` DELETE GET PATCH
 - [x] `/api/episodes/[id]/pain-readings` GET POST
 - [x] `/api/episodes/[id]/pain-readings/[readingId]` DELETE
 - [x] `/api/episodes/recent` GET
-- [ ] `/api/factors/log` POST
-- [ ] `/api/factors/options` GET
+- [x] `/api/factors/log` POST
+- [x] `/api/factors/options` GET
 - [ ] `/api/feature-requests` GET POST
 - [ ] `/api/insights` GET
 - [ ] `/api/insights/recompute` POST
@@ -104,7 +108,7 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/intake/complete` POST
 - [ ] `/api/intake/skip` POST
 - [ ] `/api/mcp` GET POST
-- [ ] `/api/medications/search` GET
+- [x] `/api/medications/search` GET
 - [ ] `/api/moderation/reports` GET POST
 - [ ] `/api/moderation/role` GET
 - [ ] `/api/moderation/users` GET POST
@@ -140,18 +144,18 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/push/test` POST
 - [ ] `/api/push/unsubscribe` POST
 - [ ] `/api/questionnaires` GET POST
-- [ ] `/api/quick-add/episode` POST
-- [ ] `/api/quick-add/medication-intake` POST
-- [ ] `/api/quick-add/medication-intake/[id]` DELETE PATCH
-- [ ] `/api/quick-add/suggestions` GET
-- [ ] `/api/relief-sessions` GET POST
+- [x] `/api/quick-add/episode` POST
+- [x] `/api/quick-add/medication-intake` POST
+- [x] `/api/quick-add/medication-intake/[id]` DELETE PATCH
+- [x] `/api/quick-add/suggestions` GET
+- [x] `/api/relief-sessions` GET POST
 - [ ] `/api/reports/clinician/pdf` POST
 - [ ] `/api/reports/clinician/preview` GET
 - [ ] `/api/share` DELETE GET POST
 - [ ] `/api/share/[token]` GET
 - [x] `/api/space-weather/kp` GET
-- [ ] `/api/user-medications` GET POST
-- [ ] `/api/user-medications/[id]` PATCH
+- [x] `/api/user-medications` GET POST
+- [x] `/api/user-medications/[id]` PATCH
 - [ ] `/api/user/alerts` GET PUT
 - [x] `/api/user/consent` DELETE GET POST
 - [ ] `/api/user/delete-account` DELETE
