@@ -136,9 +136,9 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/moderation/users` GET POST
 - [ ] `/api/moderation/visibility` GET POST
 - [ ] `/api/moh-status` GET
-- [ ] `/api/outcomes` GET
-- [ ] `/api/outcomes/monthly` GET
-- [ ] `/api/outcomes/settings` GET PUT
+- [x] `/api/outcomes` GET
+- [x] `/api/outcomes/monthly` GET
+- [x] `/api/outcomes/settings` GET PUT
 - [x] `/api/preventives` GET POST
 - [x] `/api/preventives/[id]` DELETE GET PATCH
 - [x] `/api/preventives/[id]/pause` POST
