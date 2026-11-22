@@ -269,11 +269,5 @@ func (h handlers) putSettings(w http.ResponseWriter, r *http.Request) {
 	httpx.JSON(w, http.StatusOK, s.JSON())
 }
 
-// jsonErrorMessage approximates the SyntaxError text `request.json()` threw.
-func jsonErrorMessage(err error) string {
-	var bad httpx.ErrInvalidJSON
-	if errors.As(err, &bad) {
-		return "Unexpected end of JSON input"
-	}
-	return err.Error()
-}
+// jsonErrorMessage is the message of what `request.json()` threw.
+func jsonErrorMessage(err error) string { return err.Error() }

@@ -59,9 +59,26 @@ func ValidationError(w http.ResponseWriter, err *zod.Error) {
 
 // ErrInvalidJSON is returned by ReadJSON for a body `request.json()` would
 // reject with a SyntaxError.
-type ErrInvalidJSON struct{ Err error }
+// Its message is the one V8's SyntaxError carried.
+type ErrInvalidJSON struct{ Msg string }
 
-func (e ErrInvalidJSON) Error() string { return e.Err.Error() }
+func (e ErrInvalidJSON) Error() string { return e.Msg }
+
+// utf8BOM is dropped by the body's UTF-8 decode before JSON.parse sees it.
+var utf8BOM = []byte{0xEF, 0xBB, 0xBF}
+
+// parseJSONText is `JSON.parse(utf8Decode(raw))`.
+func parseJSONText(raw []byte) (any, error) {
+	raw = bytes.TrimPrefix(raw, utf8BOM)
+	if msg := JSONSyntaxMessage(string(raw)); msg != "" {
+		return nil, ErrInvalidJSON{msg}
+	}
+	v, err := zod.Decode(raw)
+	if err != nil {
+		return nil, ErrInvalidJSON{err.Error()}
+	}
+	return v, nil
+}
 
 // ReadJSON reads the body like `await request.json()`: an empty or malformed
 // body is an error. The value is a tree for the zod package.
@@ -70,14 +87,7 @@ func ReadJSON(r *http.Request) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(bytes.TrimSpace(raw)) == 0 {
-		return nil, ErrInvalidJSON{io.ErrUnexpectedEOF}
-	}
-	v, err := zod.Decode(raw)
-	if err != nil {
-		return nil, ErrInvalidJSON{err}
-	}
-	return v, nil
+	return parseJSONText(raw)
 }
 
 // ReadJSONOr reads the body like `await request.json().catch(() => fallback)`.
@@ -150,10 +160,7 @@ func O(pairs ...any) *Object {
 
 // ParseBody checks that b is a JSON document (what response.json() accepts).
 func ParseBody(b []byte) (any, error) {
-	if len(bytes.TrimSpace(b)) == 0 {
-		return nil, io.ErrUnexpectedEOF
-	}
-	return zod.Decode(b)
+	return parseJSONText(b)
 }
 
 // Unhandled is what Next sent when a route handler threw without catching:

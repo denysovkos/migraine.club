@@ -3,6 +3,7 @@
 package localdate
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/denysovkos/migraine.club/internal/tz"
@@ -97,4 +98,28 @@ func UTCRange(zone string, dates []string) (time.Time, time.Time) {
 	end := last.AddDate(0, 0, 1)
 	end = time.Date(end.Year(), end.Month(), end.Day(), 0, 0, 0, 0, loc)
 	return first.UTC(), end.UTC()
+}
+
+// ErrInvalidTimeValue is the RangeError toISOString throws on an Invalid Date.
+var ErrInvalidTimeValue = errInvalidTime{}
+
+type errInvalidTime struct{}
+
+func (errInvalidTime) Error() string { return "Invalid time value" }
+
+// JSDateFromYMD is ymdToDbDate, `new Date(`${ymd}T00:00:00.000Z`)`, for a
+// string that already matched /^\d{4}-\d{2}-\d{2}$/: V8 accepts days 1..31 in
+// any month and rolls over ("2024-02-30" is 2024-03-01). An Invalid Date is
+// ErrInvalidTimeValue, the error Drizzle's toISOString raised for it.
+func JSDateFromYMD(ymd string) (time.Time, error) {
+	if len(ymd) != 10 || ymd[4] != '-' || ymd[7] != '-' {
+		return time.Time{}, ErrInvalidTimeValue
+	}
+	y, e1 := strconv.Atoi(ymd[:4])
+	m, e2 := strconv.Atoi(ymd[5:7])
+	d, e3 := strconv.Atoi(ymd[8:])
+	if e1 != nil || e2 != nil || e3 != nil || m < 1 || m > 12 || d < 1 || d > 31 {
+		return time.Time{}, ErrInvalidTimeValue
+	}
+	return time.Date(y, time.Month(m), d, 0, 0, 0, 0, time.UTC), nil
 }
