@@ -10,15 +10,18 @@ GOBIN := $(shell go env GOPATH)/bin
 ## gen: regenerate the schema snapshot and the sqlc query layer
 gen: schema sqlc
 
+## schema: needs TEST_DATABASE_URL (a Postgres where databases can be created)
 schema:
 	go run ./cmd/schemagen
 
 sqlc:
 	@test -x $(GOBIN)/sqlc && $(GOBIN)/sqlc version | grep -q $(SQLC_VERSION) || go install github.com/sqlc-dev/sqlc/cmd/sqlc@$(SQLC_VERSION)
 	$(GOBIN)/sqlc generate
+	npx tsx scripts/gen-go-json-order.ts
 
 ## check-gen: fail when generated files are out of date
 check-gen: gen
+	git add --intent-to-add internal/db/q
 	git diff --exit-code -- internal/db/schema.sql internal/db/q
 
 ## test: Go tests (set TEST_DATABASE_URL for the database-backed ones)

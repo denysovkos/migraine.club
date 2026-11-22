@@ -124,7 +124,7 @@ type DailyDiaryEntry struct {
 	UserID        string          `json:"userId"`
 	LocalDate     jsontime.Date   `json:"localDate"`
 	Timezone      string          `json:"timezone"`
-	Status        string          `json:"status"`
+	DayType       string          `json:"dayType"`
 	Impact        *int32          `json:"impact"`
 	Notes         *string         `json:"notes"`
 	UpdatedAt     jsontime.Time   `json:"updatedAt"`
