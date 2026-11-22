@@ -120,7 +120,7 @@ func (h handlers) createIntake(w http.ResponseWriter, r *http.Request) {
 		var acuteDoseID *string
 		if in.RecordAcuteDose != nil && *in.RecordAcuteDose {
 			id, _, err := h.svc.CreateDose(r.Context(), uid, meds.DoseInput{
-				MedicationID: created.UserMedicationID, AttackID: created.LinkedEpisodeID,
+				MedicationID: created.UserMedicationID, AttackID: widen(created.LinkedEpisodeID),
 				TakenAt: &iso, Dose: in.Dose, Unit: in.Unit, UnitIsCustom: in.UnitIsCustom,
 			})
 			if err != nil {
@@ -319,4 +319,12 @@ func (h handlers) doseOutcome(w http.ResponseWriter, r *http.Request) {
 	}
 	h.d.Log.Info("Dose outcome upserted", "userId", uid, "doseId", in.DoseID)
 	httpx.JSON(w, http.StatusOK, httpx.O("outcomeId", id, "doseId", in.DoseID))
+}
+
+func widen(p *int32) *int64 {
+	if p == nil {
+		return nil
+	}
+	v := int64(*p)
+	return &v
 }

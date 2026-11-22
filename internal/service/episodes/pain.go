@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/denysovkos/migraine.club/internal/db"
 	"github.com/denysovkos/migraine.club/internal/db/q"
 	"github.com/denysovkos/migraine.club/internal/httpx"
 	"github.com/denysovkos/migraine.club/internal/jsontime"
@@ -87,7 +88,13 @@ func readingDTO(r q.EpisodePainReading) *httpx.Object {
 	return httpx.O("id", r.ID, "episodeId", r.EpisodeID, "recordedAt", jsontime.Format(r.RecordedAt.Time), "intensity", r.Intensity)
 }
 
-func (s *Service) requireEpisode(ctx context.Context, userID string, id int32) (q.Episode, error) {
+// requireEpisode loads the user's episode. The id arrives as the route parsed
+// it (a safe integer); one beyond int4 fails like the Node query did.
+func (s *Service) requireEpisode(ctx context.Context, userID string, raw int64) (q.Episode, error) {
+	id, err := db.Int4(raw)
+	if err != nil {
+		return q.Episode{}, err
+	}
 	ep, err := s.Get(ctx, userID, id)
 	if err != nil {
 		return q.Episode{}, err
@@ -99,11 +106,12 @@ func (s *Service) requireEpisode(ctx context.Context, userID string, id int32) (
 }
 
 // ListPainReadings returns the attack's readings, oldest first.
-func (s *Service) ListPainReadings(ctx context.Context, userID string, id int32) ([]any, error) {
-	if _, err := s.requireEpisode(ctx, userID, id); err != nil {
+func (s *Service) ListPainReadings(ctx context.Context, userID string, raw int64) ([]any, error) {
+	ep, err := s.requireEpisode(ctx, userID, raw)
+	if err != nil {
 		return nil, err
 	}
-	rows, err := s.Q.ListPainReadings(ctx, userID, id)
+	rows, err := s.Q.ListPainReadings(ctx, userID, ep.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +123,7 @@ func (s *Service) ListPainReadings(ctx context.Context, userID string, id int32)
 }
 
 // AddPainReading is PainReadingService.add.
-func (s *Service) AddPainReading(ctx context.Context, userID string, id int32, body any) (*httpx.Object, error) {
+func (s *Service) AddPainReading(ctx context.Context, userID string, raw int64, body any) (*httpx.Object, error) {
 	ok, err := s.HasHealthDataConsent(ctx, userID)
 	if err != nil {
 		return nil, err
@@ -130,10 +138,11 @@ func (s *Service) AddPainReading(ctx context.Context, userID string, id int32, b
 	if err := zod.ParseInto(CreatePainReadingSchema, body, &in); err != nil {
 		return nil, err
 	}
-	ep, err := s.requireEpisode(ctx, userID, id)
+	ep, err := s.requireEpisode(ctx, userID, raw)
 	if err != nil {
 		return nil, err
 	}
+	id := ep.ID
 	now := s.now()
 	at := parseTime(in.RecordedAt, now)
 	if reason := CheckReadingTime(at, WindowOf(ep), now); reason != "" {
@@ -172,11 +181,12 @@ func (s *Service) syncPeak(ctx context.Context, userID string, id, current int32
 }
 
 // RemovePainReading deletes one reading and returns the peak afterwards.
-func (s *Service) RemovePainReading(ctx context.Context, userID string, id int32, readingID string) (*int32, error) {
-	ep, err := s.requireEpisode(ctx, userID, id)
+func (s *Service) RemovePainReading(ctx context.Context, userID string, raw int64, readingID string) (*int32, error) {
+	ep, err := s.requireEpisode(ctx, userID, raw)
 	if err != nil {
 		return nil, err
 	}
+	id := ep.ID
 	deleted, err := s.Q.DeletePainReading(ctx, readingID, userID, id)
 	if err != nil {
 		return nil, err

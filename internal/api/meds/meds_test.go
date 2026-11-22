@@ -225,3 +225,12 @@ func TestUserMedicationCatalog(t *testing.T) {
 	res = e.Do(apitest.Request{Path: "/api/medications/search?q=x", User: "nobody"})
 	require.Equal(t, `{"error":"Health data consent required","code":"CONSENT_REQUIRED","message":"You must provide explicit consent for health data processing before searching meds."}`, string(res.Body))
 }
+
+// The 500 body exposed DrizzleQueryError's text for an episode id int4
+// cannot hold.
+func TestQuickAddEpisodeIDBeyondInt4(t *testing.T) {
+	e := newEnv(t)
+	res := e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/medication-intake", User: "u", Body: map[string]any{"customName": "X", "episodeId": 99999999999}})
+	require.Equal(t, 500, res.Status)
+	require.Equal(t, `{"error":"Failed query: select \"id\" from \"episode\" where (\"episode\".\"user_id\" = $1 and \"episode\".\"id\" = $2) limit $3\nparams: u,99999999999,1"}`, string(res.Body))
+}

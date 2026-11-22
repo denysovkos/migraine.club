@@ -1,12 +1,12 @@
 package episodes
 
 import (
-	"math"
 	"net/http"
 	"strconv"
 
 	"github.com/denysovkos/migraine.club/internal/api/idem"
 	"github.com/denysovkos/migraine.club/internal/auth"
+	"github.com/denysovkos/migraine.club/internal/db"
 	"github.com/denysovkos/migraine.club/internal/httpx"
 )
 
@@ -25,12 +25,12 @@ func (h handlers) listRelief(w http.ResponseWriter, r *http.Request) {
 			httpx.Error(w, http.StatusBadRequest, "Invalid episode ID")
 			return
 		}
-		if n > math.MaxInt32 {
-			// Safe integer, but no serial id can be that large: no rows.
-			httpx.JSON(w, http.StatusOK, httpx.O("sessions", []any{}))
+		id, err := db.Int4(int64(n))
+		if err != nil {
+			// A safe integer beyond int4: Postgres rejected the parameter.
+			h.painError(w, err, "listing relief session")
 			return
 		}
-		id := int32(n)
 		episodeID = &id
 	}
 	sessions, err := h.svc.ListReliefSessions(r.Context(), userID, episodeID)

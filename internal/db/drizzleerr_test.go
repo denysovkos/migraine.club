@@ -19,3 +19,15 @@ func TestDrizzleWrapsDatabaseErrors(t *testing.T) {
 	require.Same(t, context.Canceled, Drizzle(context.Canceled, "x"))
 	require.False(t, errors.As(Drizzle(context.Canceled, "x"), new(*QueryError)))
 }
+
+func TestInt4(t *testing.T) {
+	n, err := Int4(2147483647)
+	require.NoError(t, err)
+	require.Equal(t, int32(2147483647), n)
+	_, err = Int4(99999999999)
+	var pg *pgconn.PgError
+	require.ErrorAs(t, err, &pg)
+	require.Equal(t, "22003", pg.Code)
+	_, err = Int4(-2147483649)
+	require.Error(t, err)
+}

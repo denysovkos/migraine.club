@@ -173,9 +173,6 @@ func (c *Catalog) List(ctx context.Context, userID string) (*httpx.Object, error
 	for i, r := range allRows {
 		all[i] = r.base().Set("isPinned", r.IsPinned)
 	}
-	if pinned == nil {
-		pinned = []any{}
-	}
 	return httpx.O("pinned", pinned, "recentlyUsed", recent, "all", all), nil
 }
 

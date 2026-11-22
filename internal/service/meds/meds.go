@@ -14,6 +14,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 
+	"github.com/denysovkos/migraine.club/internal/db"
 	"github.com/denysovkos/migraine.club/internal/db/q"
 	"github.com/denysovkos/migraine.club/internal/httpx"
 	"github.com/denysovkos/migraine.club/internal/jsontime"
@@ -207,7 +208,7 @@ type IntakeInput struct {
 	Dose                *string `json:"dose"`
 	Unit                *string `json:"unit"`
 	UnitIsCustom        *bool   `json:"unitIsCustom"`
-	EpisodeID           *int32  `json:"episodeId"`
+	EpisodeID           *int64  `json:"episodeId"`
 	TakenAt             *string `json:"takenAt"`
 	RecordAcuteDose     *bool   `json:"recordAcuteDose"`
 }
@@ -303,7 +304,7 @@ func (s *Service) CreateIntake(ctx context.Context, userID string, in IntakeInpu
 
 	var episodeID *int32
 	if in.EpisodeID != nil && *in.EpisodeID != 0 {
-		ep, err := optional(s.Q.OwnedEpisodeID(ctx, userID, *in.EpisodeID))
+		ep, err := s.ownedEpisode(ctx, userID, *in.EpisodeID)
 		if err != nil {
 			return Created{}, err
 		}
@@ -426,10 +427,27 @@ var DoseSchema = zod.Object(
 	zod.F("notes", zod.Optional(zod.Nullable(zod.String().Max(1000)))),
 )
 
+// sqlOwnedEpisode is the ownership check Drizzle reported on failure.
+const sqlOwnedEpisode = `select "id" from "episode" where ("episode"."user_id" = $1 and "episode"."id" = $2) limit $3`
+
+// ownedEpisode is the user's episode id, nil when there is none. An id
+// beyond int4 fails as the Postgres query did, with Drizzle's message.
+func (s *Service) ownedEpisode(ctx context.Context, userID string, raw int64) (*int32, error) {
+	id, err := db.Int4(raw)
+	if err == nil {
+		var ep *int32
+		ep, err = optional(s.Q.OwnedEpisodeID(ctx, userID, id))
+		if err == nil {
+			return ep, nil
+		}
+	}
+	return nil, db.Drizzle(err, sqlOwnedEpisode, userID, float64(raw), 1)
+}
+
 // DoseInput is AcuteDoseInput.
 type DoseInput struct {
 	MedicationID string  `json:"medicationId"`
-	AttackID     *int32  `json:"attackId"`
+	AttackID     *int64  `json:"attackId"`
 	TakenAt      *string `json:"takenAt"`
 	Dose         *string `json:"dose"`
 	Unit         *string `json:"unit"`
@@ -454,7 +472,7 @@ func (s *Service) CreateDose(ctx context.Context, userID string, in DoseInput) (
 		return "", nil, &DoseError{"MEDICATION_NOT_FOUND", "Medication not found"}
 	}
 	if in.AttackID != nil && *in.AttackID != 0 {
-		ep, err := optional(s.Q.OwnedEpisodeID(ctx, userID, *in.AttackID))
+		ep, err := s.ownedEpisode(ctx, userID, *in.AttackID)
 		if err != nil {
 			return "", nil, err
 		}

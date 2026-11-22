@@ -88,3 +88,14 @@ func TestBleedingCalendarContextInsights(t *testing.T) {
 	require.Zero(t, e.Count(`SELECT count(*) FROM cycle_bleeding_day WHERE user_id = 'u'`))
 	require.Zero(t, e.Count(`SELECT count(*) FROM cycle_settings WHERE user_id = 'u'`))
 }
+
+// ymdToDbDate rolls 2026-02-30 over to 2026-03-02; the response echoes the
+// input. Month 13 is "Invalid time value".
+func TestBleedingDateRollover(t *testing.T) {
+	e := newEnv(t)
+	res := e.Do(apitest.Request{Method: "PUT", Path: "/api/cycle/bleeding", User: "u", Body: map[string]any{"localDate": "2026-02-30", "bleeding": true}})
+	require.Equal(t, `{"localDate":"2026-02-30","bleeding":true,"flow":"unspecified"}`, string(res.Body))
+	require.Equal(t, 1, e.Count(`SELECT count(*) FROM cycle_bleeding_day WHERE user_id = 'u' AND local_date = '2026-03-02'`))
+	res = e.Do(apitest.Request{Method: "PUT", Path: "/api/cycle/bleeding", User: "u", Body: map[string]any{"localDate": "2026-13-01", "bleeding": true}})
+	require.Equal(t, 500, res.Status)
+}

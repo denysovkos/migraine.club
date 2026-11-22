@@ -356,3 +356,22 @@ func TestReliefSessions(t *testing.T) {
 	require.Equal(t, 400, e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "u", Body: map[string]any{"exercise": "yoga", "durationSeconds": 99999}}).Status)
 	require.Equal(t, `{"error":"Invalid JSON body"}`, string(e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "u", Raw: "{"}).Body))
 }
+
+// An id that parseInt accepts but int4 cannot hold failed at the first query
+// in Node: a generic 500, never a 404 or 400.
+func TestEpisodeIDBeyondInt4(t *testing.T) {
+	e := newEnv(t)
+	for _, req := range []apitest.Request{
+		{Path: "/api/episodes/99999999999", User: "u"},
+		{Method: "PATCH", Path: "/api/episodes/99999999999", User: "u", Body: map[string]any{"intensity": 3}},
+		{Method: "DELETE", Path: "/api/episodes/99999999999", User: "u"},
+		{Path: "/api/episodes/99999999999/pain-readings", User: "u"},
+		{Method: "POST", Path: "/api/episodes/99999999999/pain-readings", User: "u", Body: map[string]any{"intensity": 3}},
+		{Path: "/api/relief-sessions?episodeId=99999999999", User: "u"},
+	} {
+		res := e.Do(req)
+		require.Equal(t, 500, res.Status, req.Method+" "+req.Path)
+		require.Equal(t, `{"error":"Internal server error"}`, string(res.Body), req.Method+" "+req.Path)
+	}
+	require.Equal(t, 404, e.Do(apitest.Request{Path: "/api/episodes/2147483647", User: "u"}).Status)
+}

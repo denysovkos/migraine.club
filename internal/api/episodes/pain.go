@@ -26,16 +26,17 @@ func mountPainReadings(r chi.Router, d *app.Deps) {
 
 var digitsRe = regexp.MustCompile(`^\d+$`)
 
-// parsePainEpisodeID is parseEpisodeId: digits only, a positive safe integer.
-func parsePainEpisodeID(s string) (int32, bool) {
+// parsePainEpisodeID is parseEpisodeId: digits only, a positive safe
+// integer. Ids beyond int4 pass and fail at the query, as in Node.
+func parsePainEpisodeID(s string) (int64, bool) {
 	if !digitsRe.MatchString(s) {
 		return 0, false
 	}
 	n, err := strconv.ParseInt(s, 10, 64)
-	if err != nil || n <= 0 || n > 2147483647 {
+	if err != nil || n <= 0 || n > 9007199254740991 {
 		return 0, false
 	}
-	return int32(n), true
+	return n, true
 }
 
 func (h handlers) painError(w http.ResponseWriter, err error, action string) {

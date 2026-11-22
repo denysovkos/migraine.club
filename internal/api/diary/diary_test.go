@@ -142,3 +142,14 @@ func TestQueryValidation(t *testing.T) {
 	require.Equal(t, `{"error":"Invalid date range","code":"VALIDATION_ERROR"}`, string(res.Body))
 	require.Equal(t, 400, e.Do(apitest.Request{Path: "/api/diary/day", User: "u"}).Status)
 }
+
+// Luxon made 2026-02-30 an Invalid Date that Drizzle could not serialize:
+// Node answered a generic 500, not the validation 400.
+func TestOverlapImpossibleDateIs500(t *testing.T) {
+	e := newEnv(t)
+	res := e.Do(apitest.Request{Path: "/api/diary/overlap?from=2026-02-30&to=2026-03-02", User: "u"})
+	require.Equal(t, 500, res.Status)
+	require.Equal(t, `{"error":"Internal server error"}`, string(res.Body))
+	res = e.Do(apitest.Request{Path: "/api/diary/overlap?from=2026-03-01&to=2026-03-02", User: "u"})
+	require.Equal(t, 200, res.Status)
+}

@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgconn"
@@ -44,4 +45,14 @@ func Drizzle(err error, sql string, params ...any) error {
 		return err
 	}
 	return &QueryError{SQL: sql, Params: params, Cause: err}
+}
+
+// Int4 narrows an id that JavaScript passed as a number to an integer
+// column. Out of range, it is the error Postgres raised for that parameter.
+func Int4(n int64) (int32, error) {
+	if n < -2147483648 || n > 2147483647 {
+		return 0, &pgconn.PgError{Code: "22003", Severity: "ERROR",
+			Message: `value "` + strconv.FormatInt(n, 10) + `" is out of range for type integer`}
+	}
+	return int32(n), nil
 }

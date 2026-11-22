@@ -65,19 +65,6 @@ func (is Issue) Message() string { s, _ := is.Get("message").(string); return s 
 // Path is the issue path.
 func (is Issue) Path() []any { p, _ := is.Get("path").([]any); return p }
 
-func (is Issue) set(key string, v any) Issue {
-	out := Issue{fields: make([]kv, len(is.fields))}
-	copy(out.fields, is.fields)
-	for i, f := range out.fields {
-		if f.k == key {
-			out.fields[i].v = v
-			return out
-		}
-	}
-	out.fields = append(out.fields, kv{key, v})
-	return out
-}
-
 // withPath inserts "path" and "message" at the end, in Zod's order.
 func (is Issue) finish(path []any, message string) Issue {
 	is.fields = append(is.fields, kv{"path", path}, kv{"message", message})
@@ -175,9 +162,6 @@ func (e *Error) Flatten() Flatten {
 type Schema interface {
 	run(v any, path []any) (any, []Issue)
 }
-
-// optionalish schemas accept a missing key.
-type optionalish interface{ acceptsMissing() bool }
 
 // Parse runs the schema. The error, when not nil, is an *Error.
 func Parse(s Schema, v any) (any, error) {

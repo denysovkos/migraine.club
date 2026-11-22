@@ -224,7 +224,12 @@ func (s *Service) UpsertSettings(ctx context.Context, userID string, p SettingsP
 	return next, nil
 }
 
-func dbDate(ymd string) jsontime.Date { return jsontime.NewDate(parseYMD(ymd)) }
+// dbDate is ymdToDbDate: V8 rolls 2026-02-30 over to 2026-03-02 and rejects
+// month 13 with "Invalid time value".
+func dbDate(ymd string) (jsontime.Date, error) {
+	d, err := localdate.JSDateFromYMD(ymd)
+	return jsontime.NewDate(d), err
+}
 
 // Day is a CycleCalendarDayDTO.
 func Day(ymd string, bleeding bool, flow string) *httpx.Object {
@@ -232,7 +237,11 @@ func Day(ymd string, bleeding bool, flow string) *httpx.Object {
 }
 
 func (s *Service) getDay(ctx context.Context, userID, ymd string) (*q.CycleBleedingDay, error) {
-	row, err := s.Q.GetBleedingDay(ctx, userID, dbDate(ymd))
+	day, err := dbDate(ymd)
+	if err != nil {
+		return nil, err
+	}
+	row, err := s.Q.GetBleedingDay(ctx, userID, day)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, nil
 	}
@@ -247,7 +256,11 @@ func (s *Service) SetDay(ctx context.Context, userID, ymd string, bleeding bool,
 	if flow == "" {
 		flow = "unspecified"
 	}
-	row, err := s.Q.UpsertBleedingDay(ctx, q.UpsertBleedingDayParams{UserID: userID, LocalDate: dbDate(ymd), Bleeding: bleeding, Flow: flow, Now: jsontime.New(s.now())})
+	day, err := dbDate(ymd)
+	if err != nil {
+		return nil, err
+	}
+	row, err := s.Q.UpsertBleedingDay(ctx, q.UpsertBleedingDayParams{UserID: userID, LocalDate: day, Bleeding: bleeding, Flow: flow, Now: jsontime.New(s.now())})
 	if err != nil {
 		return nil, err
 	}
@@ -282,7 +295,11 @@ func (s *Service) SetFlow(ctx context.Context, userID, ymd, flow string) (*httpx
 
 // DeleteDay is deleteBleedingDay.
 func (s *Service) DeleteDay(ctx context.Context, userID, ymd string) error {
-	return s.Q.DeleteBleedingDay(ctx, userID, dbDate(ymd))
+	day, err := dbDate(ymd)
+	if err != nil {
+		return err
+	}
+	return s.Q.DeleteBleedingDay(ctx, userID, day)
 }
 
 // StartDates is getBleedingStartDates.
@@ -312,11 +329,19 @@ func (s *Service) Calendar(ctx context.Context, userID, fromRaw, toRaw string) (
 	if err != nil {
 		return nil, err
 	}
-	rows, err := s.Q.BleedingDaysBetween(ctx, userID, dbDate(from), dbDate(to))
+	fromDB, err := dbDate(from)
 	if err != nil {
 		return nil, err
 	}
-	migraine, err := s.Q.MigraineDiaryDaysBetween(ctx, userID, dbDate(from), dbDate(to))
+	toDB, err := dbDate(to)
+	if err != nil {
+		return nil, err
+	}
+	rows, err := s.Q.BleedingDaysBetween(ctx, userID, fromDB, toDB)
+	if err != nil {
+		return nil, err
+	}
+	migraine, err := s.Q.MigraineDiaryDaysBetween(ctx, userID, fromDB, toDB)
 	if err != nil {
 		return nil, err
 	}

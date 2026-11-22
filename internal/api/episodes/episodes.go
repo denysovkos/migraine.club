@@ -3,6 +3,7 @@ package episodes
 
 import (
 	"errors"
+	"math"
 	"net/http"
 	"regexp"
 	"time"
@@ -235,13 +236,23 @@ func (h handlers) medicationIntakes(r *http.Request, userID string, id int32) ([
 	return out, nil
 }
 
-func episodeID(w http.ResponseWriter, r *http.Request) (int32, bool) {
+// errIDOutOfRange is what Postgres answered for a parsed id outside the
+// integer column's range: the route's first query failed.
+var errIDOutOfRange = errors.New("value out of range for type integer")
+
+// episodeID is Number.parseInt(id, 10) with the NaN check. An id beyond int4
+// passed the check in Node and failed at the first query, so the handler
+// reports rangeErr where that query ran.
+func episodeID(w http.ResponseWriter, r *http.Request) (id int32, rangeErr error, ok bool) {
 	n, ok := jsx.ParseInt(chi.URLParam(r, "id"))
 	if !ok {
 		httpx.Error(w, http.StatusBadRequest, "Invalid episode ID")
-		return 0, false
+		return 0, nil, false
 	}
-	return int32(n), true
+	if n < math.MinInt32 || n > math.MaxInt32 {
+		return 0, errIDOutOfRange, true
+	}
+	return int32(n), nil, true
 }
 
 func (h handlers) detail(r *http.Request, userID string, ep qEpisode) (any, error) {
@@ -263,7 +274,7 @@ func (h handlers) get(w http.ResponseWriter, r *http.Request) {
 		httpx.Unauthorized(w)
 		return
 	}
-	id, ok := episodeID(w, r)
+	id, rangeErr, ok := episodeID(w, r)
 	if !ok {
 		return
 	}
@@ -275,6 +286,10 @@ func (h handlers) get(w http.ResponseWriter, r *http.Request) {
 		}
 		h.d.Log.Error("Error fetching episode", "error", err)
 		httpx.Internal(w)
+	}
+	if rangeErr != nil {
+		fail(rangeErr)
+		return
 	}
 	ep, err := h.svc.Get(r.Context(), userID, id)
 	if err != nil {
@@ -301,7 +316,7 @@ func (h handlers) patch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	idem.Wrap(h.d.Q, h.d.Log, h.d.Clock, w, r, userID, "episodes/:id", func(w http.ResponseWriter, r *http.Request) {
-		id, ok := episodeID(w, r)
+		id, rangeErr, ok := episodeID(w, r)
 		if !ok {
 			return
 		}
@@ -333,6 +348,10 @@ func (h handlers) patch(w http.ResponseWriter, r *http.Request) {
 			fail(err)
 			return
 		}
+		if rangeErr != nil {
+			fail(rangeErr)
+			return
+		}
 		updated, err := h.svc.Update(r.Context(), userID, id, body)
 		if err != nil {
 			fail(err)
@@ -354,7 +373,7 @@ func (h handlers) delete(w http.ResponseWriter, r *http.Request) {
 		httpx.Unauthorized(w)
 		return
 	}
-	id, ok := episodeID(w, r)
+	id, rangeErr, ok := episodeID(w, r)
 	if !ok {
 		return
 	}
@@ -362,6 +381,10 @@ func (h handlers) delete(w http.ResponseWriter, r *http.Request) {
 	fail := func(err error) {
 		h.d.Log.Error("Error deleting episode", "error", err)
 		httpx.Internal(w)
+	}
+	if rangeErr != nil {
+		fail(rangeErr)
+		return
 	}
 	existing, err := h.svc.Get(ctx, userID, id)
 	if err != nil {

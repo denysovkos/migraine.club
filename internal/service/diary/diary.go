@@ -16,6 +16,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/jsontime"
 	"github.com/denysovkos/migraine.club/internal/jsx"
 	"github.com/denysovkos/migraine.club/internal/localdate"
+	"github.com/denysovkos/migraine.club/internal/luxon"
 	"github.com/denysovkos/migraine.club/internal/service/programs"
 	"github.com/denysovkos/migraine.club/internal/service/usertz"
 	"github.com/denysovkos/migraine.club/internal/tz"
@@ -197,6 +198,17 @@ func (s *Service) Overlap(ctx context.Context, userID, from, to string) ([]strin
 	zone, err := usertz.Get(ctx, s.Q, userID)
 	if err != nil {
 		return nil, err
+	}
+	// Luxon turned an impossible date (2026-02-30) or zone into an Invalid
+	// Date, which Drizzle could not serialize: a plain 500, not a 400.
+	loc, ok := tz.Load(zone)
+	if !ok {
+		return nil, localdate.ErrInvalidTimeValue
+	}
+	for _, d := range []string{from, to} {
+		if _, ok := luxon.FromISO(d, loc, s.now()); !ok {
+			return nil, localdate.ErrInvalidTimeValue
+		}
 	}
 	rs, re := dayWindow(from, to, zone)
 	episodes, err := s.Q.EpisodesInWindow(ctx, userID, jsontime.New(re), jsontime.Ptr(rs))

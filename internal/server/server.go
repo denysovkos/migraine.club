@@ -2,9 +2,11 @@
 package server
 
 import (
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -52,12 +54,14 @@ func ProxyTo(raw string) (http.Handler, error) {
 	if err != nil {
 		return nil, err
 	}
-	p := httputil.NewSingleHostReverseProxy(u)
-	orig := p.Director
-	p.Director = func(r *http.Request) {
-		host := r.Host
-		orig(r)
-		r.Host = host
-	}
+	// Rewrite with what Director mode did: keep the incoming Host and
+	// append the client address to X-Forwarded-For.
+	p := &httputil.ReverseProxy{Rewrite: func(pr *httputil.ProxyRequest) {
+		pr.SetURL(u)
+		pr.Out.Host = pr.In.Host
+		if ip, _, err := net.SplitHostPort(pr.In.RemoteAddr); err == nil {
+			pr.Out.Header.Set("X-Forwarded-For", strings.Join(append(pr.In.Header.Values("X-Forwarded-For"), ip), ", "))
+		}
+	}}
 	return p, nil
 }
