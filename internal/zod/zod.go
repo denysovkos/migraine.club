@@ -119,13 +119,43 @@ func (e *Error) Error() string {
 
 // Flatten is z.flattenError(error) (and error.flatten()).
 type Flatten struct {
-	FormErrors  []string            `json:"formErrors"`
-	FieldErrors map[string][]string `json:"fieldErrors"`
+	FormErrors  []string    `json:"formErrors"`
+	FieldErrors FieldErrors `json:"fieldErrors"`
+}
+
+// FieldErrors maps a top-level key to its messages, keeping the order in
+// which keys first appear, as the JavaScript object did.
+type FieldErrors struct {
+	keys []string
+	msgs map[string][]string
+}
+
+// Get returns the messages for a key.
+func (f FieldErrors) Get(key string) []string { return f.msgs[key] }
+
+// Keys returns the keys in order.
+func (f FieldErrors) Keys() []string { return append([]string{}, f.keys...) }
+
+func (f FieldErrors) MarshalJSON() ([]byte, error) {
+	var b bytes.Buffer
+	b.WriteByte('{')
+	for i, k := range f.keys {
+		if i > 0 {
+			b.WriteByte(',')
+		}
+		kb, _ := marshalPlain(k)
+		b.Write(kb)
+		b.WriteByte(':')
+		vb, _ := marshalPlain(f.msgs[k])
+		b.Write(vb)
+	}
+	b.WriteByte('}')
+	return b.Bytes(), nil
 }
 
 // Flatten groups messages by their first path segment.
 func (e *Error) Flatten() Flatten {
-	f := Flatten{FormErrors: []string{}, FieldErrors: map[string][]string{}}
+	f := Flatten{FormErrors: []string{}, FieldErrors: FieldErrors{msgs: map[string][]string{}}}
 	for _, is := range e.Issues {
 		p := is.Path()
 		if len(p) == 0 {
@@ -133,7 +163,10 @@ func (e *Error) Flatten() Flatten {
 			continue
 		}
 		key := fmt.Sprint(p[0])
-		f.FieldErrors[key] = append(f.FieldErrors[key], is.Message())
+		if _, seen := f.FieldErrors.msgs[key]; !seen {
+			f.FieldErrors.keys = append(f.FieldErrors.keys, key)
+		}
+		f.FieldErrors.msgs[key] = append(f.FieldErrors.msgs[key], is.Message())
 	}
 	return f
 }
