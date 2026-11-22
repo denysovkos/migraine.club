@@ -120,7 +120,7 @@ func TestForecastPointsCachesByRoundedCoords(t *testing.T) {
 	require.Len(t, pts, 2)
 	row, err := qs.PressureForecastCache(ctx, 52.52, 13.41)
 	require.NoError(t, err)
-	require.True(t, row.FetchedAt.Time.Equal(*now))
+	require.True(t, row.FetchedAt.Equal(*now))
 
 	// Fresh cache: no provider call.
 	_, err = s.ForecastPoints(ctx, 52.5201, 13.4149, now.Add(2*time.Hour))
