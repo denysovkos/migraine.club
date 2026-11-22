@@ -209,7 +209,7 @@ func ParseNoaaForecast(data any, now time.Time) (*Reading, *string) {
 	return best, bestScale
 }
 
-// nullishString is String(v ?? '').
+// nullishString is String(v ?? ”).
 func nullishString(v any) string {
 	if v == nil {
 		return ""

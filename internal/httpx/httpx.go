@@ -50,7 +50,9 @@ func Error(w http.ResponseWriter, status int, msg string) {
 func Unauthorized(w http.ResponseWriter) { Error(w, http.StatusUnauthorized, "Unauthorized") }
 
 // Internal writes the generic 500.
-func Internal(w http.ResponseWriter) { Error(w, http.StatusInternalServerError, "Internal server error") }
+func Internal(w http.ResponseWriter) {
+	Error(w, http.StatusInternalServerError, "Internal server error")
+}
 
 // ValidationError writes {"error": "Validation error", "details": issues}.
 func ValidationError(w http.ResponseWriter, err *zod.Error) {

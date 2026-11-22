@@ -226,7 +226,7 @@ func (s *Service) Overlap(ctx context.Context, userID, from, to string) ([]strin
 // Patch is UpsertDailyDiaryPatch. A key present with null is Set with a nil
 // value; an absent key is not Set.
 type Patch struct {
-	set    map[string]bool
+	set           map[string]bool
 	DayType       *string
 	Impact        *float64
 	Notes         *string

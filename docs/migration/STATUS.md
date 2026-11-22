@@ -41,6 +41,21 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   `node --import tsx tests/parity/run.mts <filter>`.
 - E2E through Go: `npx playwright test -c playwright.local.config.ts`.
 
+## Fidelity helpers
+
+- `internal/luxon`: `DateTime.fromISO(s, { zone })` incl. validation and DST
+  resolution, checked against Luxon goldens (`scripts/luxon-golden.mts`).
+- `httpx.JSONSyntaxMessage`: V8's `JSON.parse` SyntaxError text; `ReadJSON`
+  errors carry it (`scripts/json-syntax-golden.mts`).
+- `db.Drizzle(err, sql, params...)`: DrizzleQueryError's `Failed query: ...`
+  text for routes that answered `error.message`.
+- `localdate.JSDateFromYMD`: `ymdToDbDate` with V8 day rollover
+  (2024-02-30 is 2024-03-01) and "Invalid time value".
+- TS goldens run with `npx tsx --tsconfig scripts/golden.tsconfig.json ...`
+  (stubs the Logger, whose top-level await tsx cannot load).
+- Open sweep: earlier ports (episodes, diary, meds, factors, cycle) predate
+  these helpers; re-check their invalid-date and DB-error paths.
+
 ## Progress
 
 - [x] Baseline: lint, types, 861 unit tests, 50 e2e (Chromium) green on main
@@ -77,12 +92,12 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/cron/programs-reminders` GET POST
 - [ ] `/api/cron/solar-activity` GET POST
 - [ ] `/api/cron/stale-episode-reminder` GET POST
-- [ ] `/api/cycle/bleeding` DELETE PATCH POST PUT
-- [ ] `/api/cycle/calendar` GET
-- [ ] `/api/cycle/context` GET
-- [ ] `/api/cycle/data` DELETE
-- [ ] `/api/cycle/insights` GET
-- [ ] `/api/cycle/settings` GET PUT
+- [x] `/api/cycle/bleeding` DELETE PATCH POST PUT
+- [x] `/api/cycle/calendar` GET
+- [x] `/api/cycle/context` GET
+- [x] `/api/cycle/data` DELETE
+- [x] `/api/cycle/insights` GET
+- [x] `/api/cycle/settings` GET PUT
 - [x] `/api/diary/day` GET
 - [x] `/api/diary/entry` PUT
 - [x] `/api/diary/overlap` GET
@@ -117,15 +132,15 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/outcomes` GET
 - [ ] `/api/outcomes/monthly` GET
 - [ ] `/api/outcomes/settings` GET PUT
-- [ ] `/api/preventives` GET POST
-- [ ] `/api/preventives/[id]` DELETE GET PATCH
-- [ ] `/api/preventives/[id]/pause` POST
-- [ ] `/api/preventives/[id]/resume` POST
-- [ ] `/api/preventives/[id]/stop` POST
-- [ ] `/api/preventives/[id]/summary` GET
-- [ ] `/api/preventives/[id]/weekly-checkin` POST
-- [ ] `/api/preventives/due` GET
-- [ ] `/api/preventives/intake` POST
+- [x] `/api/preventives` GET POST
+- [x] `/api/preventives/[id]` DELETE GET PATCH
+- [x] `/api/preventives/[id]/pause` POST
+- [x] `/api/preventives/[id]/resume` POST
+- [x] `/api/preventives/[id]/stop` POST
+- [x] `/api/preventives/[id]/summary` GET
+- [x] `/api/preventives/[id]/weekly-checkin` POST
+- [x] `/api/preventives/due` GET
+- [x] `/api/preventives/intake` POST
 - [ ] `/api/programs` GET
 - [ ] `/api/programs/[programId]` GET
 - [ ] `/api/programs/[programId]/end` POST

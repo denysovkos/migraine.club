@@ -11,7 +11,7 @@ import (
 )
 
 func at(s string) time.Time { t, _ := time.Parse(time.RFC3339, s); return t }
-func sp(s string) *string  { return &s }
+func sp(s string) *string   { return &s }
 
 func TestResolveEndNowTime(t *testing.T) {
 	start, now := at("2026-03-10T10:00:00Z"), at("2026-03-10T12:00:00Z")

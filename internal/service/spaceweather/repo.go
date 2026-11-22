@@ -409,4 +409,3 @@ func AggregateJSON(agg Aggregate) *httpx.Object {
 		"readings", readings,
 	)
 }
-

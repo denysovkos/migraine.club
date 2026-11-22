@@ -19,7 +19,6 @@ type dayRow struct {
 	Notes                      *string
 }
 
-
 func TestRecompute(t *testing.T) {
 	pool := testdb.New(t)
 	qs := q.New(pool)

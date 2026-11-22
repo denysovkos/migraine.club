@@ -41,3 +41,11 @@ func TestStringAndToNumber(t *testing.T) {
 	require.Equal(t, 0.0, ToNumber(""))
 	require.Equal(t, 1734566400000.0, ToNumber("1734566400000"))
 }
+
+func TestCompareUTF16(t *testing.T) {
+	// U+FF5E sorts after U+1F600 in UTF-8 bytes but before it in UTF-16.
+	require.Negative(t, CompareUTF16("😀", "～"))
+	require.Negative(t, CompareUTF16("a", "b"))
+	require.Negative(t, CompareUTF16("a", "ab"))
+	require.Zero(t, CompareUTF16("x", "x"))
+}

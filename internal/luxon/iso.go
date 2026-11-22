@@ -36,9 +36,9 @@ var (
 
 // fields is the object the extractors build; nil means undefined.
 type fields struct {
-	year, month, day                   *int
-	weekYear, weekNumber, weekday      *int
-	ordinal                            *int
+	year, month, day                  *int
+	weekYear, weekNumber, weekday     *int
+	ordinal                           *int
 	hour, minute, second, millisecond *int
 }
 

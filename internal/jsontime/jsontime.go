@@ -152,7 +152,6 @@ func (d Date) Value() (driver.Value, error) {
 // YMD is the "YYYY-MM-DD" form used by string-mode date columns.
 func (d Date) YMD() string { return d.Format("2006-01-02") }
 
-
 // YMD is a `date` column in Drizzle's string mode: "YYYY-MM-DD".
 type YMD string
 

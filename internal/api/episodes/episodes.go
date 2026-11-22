@@ -389,4 +389,3 @@ func (h handlers) delete(w http.ResponseWriter, r *http.Request) {
 	}
 	httpx.JSON(w, http.StatusOK, httpx.O("success", true))
 }
-

@@ -353,7 +353,7 @@ func (c *Catalog) Search(ctx context.Context, userID, rawQuery string) (*httpx.O
 	if len(sims) > 1 {
 		score = "greatest(" + strings.Join(sims, ", ") + ")"
 	}
-	cors := []string{"mc.search_text ILIKE " + param("%" + query + "%"), "mc.search_text % " + param(query)}
+	cors := []string{"mc.search_text ILIKE " + param("%"+query+"%"), "mc.search_text % " + param(query)}
 	for _, v := range alt {
 		cors = append(cors, "mc.search_text ILIKE "+param("%"+v+"%"))
 	}

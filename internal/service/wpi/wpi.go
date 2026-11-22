@@ -150,7 +150,9 @@ func (s *Service) now() time.Time {
 	return time.Now()
 }
 
-func (s *Service) kpRepo() *spaceweather.Repo { return &spaceweather.Repo{Q: s.Q, HTTP: s.HTTP, Log: s.Log} }
+func (s *Service) kpRepo() *spaceweather.Repo {
+	return &spaceweather.Repo{Q: s.Q, HTTP: s.HTTP, Log: s.Log}
+}
 
 // Settings returns the user's weather settings, or nil.
 func (s *Service) Settings(ctx context.Context, userID string) (*q.UserWeatherSetting, error) {

@@ -57,7 +57,9 @@ func run() error {
 	if _, err := admin.Exec(ctx, fmt.Sprintf(`CREATE DATABASE %q`, name)); err != nil {
 		return err
 	}
-	defer func() { _, _ = admin.Exec(context.Background(), fmt.Sprintf(`DROP DATABASE IF EXISTS %q WITH (FORCE)`, name)) }()
+	defer func() {
+		_, _ = admin.Exec(context.Background(), fmt.Sprintf(`DROP DATABASE IF EXISTS %q WITH (FORCE)`, name))
+	}()
 
 	pool, err := pgxpool.New(ctx, withDB(raw, name))
 	if err != nil {

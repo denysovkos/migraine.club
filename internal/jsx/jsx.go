@@ -192,3 +192,18 @@ func ParseInt(s string) (int, bool) {
 	}
 	return sign * n, true
 }
+
+// CompareUTF16 orders strings like Array.prototype.sort's default comparator:
+// by UTF-16 code units, not by UTF-8 bytes.
+func CompareUTF16(a, b string) int {
+	ua, ub := CharCodes(a), CharCodes(b)
+	for i := 0; i < len(ua) && i < len(ub); i++ {
+		if ua[i] != ub[i] {
+			if ua[i] < ub[i] {
+				return -1
+			}
+			return 1
+		}
+	}
+	return len(ua) - len(ub)
+}

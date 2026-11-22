@@ -195,4 +195,3 @@ func (h handlers) putSettings(w http.ResponseWriter, r *http.Request) {
 	h.d.Log.Info("Weather settings updated", "userId", userID)
 	httpx.JSON(w, http.StatusOK, settingsJSON(s.Lat, s.Lon, s.LocationLabel, s.Timezone, s.Units))
 }
-

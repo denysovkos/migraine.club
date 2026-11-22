@@ -19,6 +19,7 @@ sqlc:
 	find internal/db/q -name '*.sql.go' -delete
 	$(GOBIN)/sqlc generate
 	npx tsx scripts/gen-go-json-order.ts
+	gofmt -w internal/db/q/json_order_gen.go
 
 ## check-gen: fail when generated files are out of date
 check-gen: gen

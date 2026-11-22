@@ -50,10 +50,13 @@ const cases: Array<{ name: string; schema: z.ZodTypeAny; inputs: unknown[] }> = 
   { name: 'multi_check', schema: z.string().min(5).regex(/^a/), inputs: ['b'] },
   { name: 'nullable_obj_field', schema: z.object({ x: z.string().nullable().optional(), y: z.number().nullable() }), inputs: [{ y: null }, {}, { x: null, y: 1 }] },
   { name: 'array_of_objects', schema: z.array(z.object({ id: z.string().guid(), v: z.number().min(0).max(10) })).max(3), inputs: [[{ id: '7c1d3e2a-1b2c-4d5e-8f90-1234567890ab', v: 11 }], [{ id: 'x', v: 1 }]] },
-  { name: 'int_unsafe', schema: z.number().int(), inputs: [9007199254740993, 1e300] },
+  { name: 'int_unsafe', schema: z.number().int(), inputs: [2 ** 53 + 2, 1e300] },
   { name: 'unknown', schema: z.object({ u: z.unknown() }), inputs: [{}, { u: [1, { a: 2 }] }] },
   { name: 'null', schema: z.null(), inputs: [null, 0] },
   { name: 'starts_ends', schema: z.string().startsWith('ab').endsWith('yz'), inputs: ['abxyz', 'xx'] },
+  { name: 'union_nested', schema: z.object({ p: z.union([z.null(), z.object({ n: z.number().int().positive() }), z.array(z.number().int().min(1).max(7)), z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/))]).nullish() }), inputs: [{ p: null }, { p: { n: 2 } }, { p: { n: 0 } }, { p: { n: 1.5 } }, { p: [1, 'a'] }, { p: [9] }, { p: ['x'] }, { p: 'x' }, {}, { p: [[1]] }] },
+  { name: 'union_checks', schema: z.union([z.string().min(3), z.number().max(2)]), inputs: ['ab', 5, true, 'abc'] },
+  { name: 'union_two_soft', schema: z.object({ u: z.union([z.string().min(5), z.string().max(1)]) }), inputs: [{ u: 'abc' }, { u: 'a' }] },
   { name: 'native_enum_like', schema: z.nativeEnum({ A: 'a', B: 'b' } as const), inputs: ['a', 'z'] },
 ];
 

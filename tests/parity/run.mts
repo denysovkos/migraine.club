@@ -148,7 +148,7 @@ function normalise(v: unknown, ids: Map<string, string>): unknown {
   if (v && typeof v === 'object') {
     return Object.fromEntries(Object.entries(v).map(([k, x]) => {
       // Serial ids differ between runs because sequences keep counting.
-      if (typeof x === 'number' && Number.isInteger(x) && /^(id|.*Id)$/.test(k)) {
+      if (typeof x === 'number' && Number.isInteger(x) && /^(?:id|.*Id)$/.test(k)) {
         const key = `int:${x}`;
         if (!ids.has(key)) {
           ids.set(key, `<id#${ids.size}>`);
@@ -202,13 +202,13 @@ async function main() {
       });
       if (problems.length) {
         failures++;
-        console.log(`✘ ${file} › ${s.name}\n${problems.join('\n')}`);
+        console.warn(`✘ ${file} › ${s.name}\n${problems.join('\n')}`);
       } else {
-        console.log(`✓ ${file} › ${s.name} (${s.steps.length} steps)`);
+        console.warn(`✓ ${file} › ${s.name} (${s.steps.length} steps)`);
       }
     }
   }
-  console.log(`\n${total - failures}/${total} scenarios identical`);
+  console.warn(`\n${total - failures}/${total} scenarios identical`);
   process.exit(failures ? 1 : 0);
 }
 

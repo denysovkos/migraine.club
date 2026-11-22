@@ -320,4 +320,3 @@ func (h handlers) doseOutcome(w http.ResponseWriter, r *http.Request) {
 	h.d.Log.Info("Dose outcome upserted", "userId", uid, "doseId", in.DoseID)
 	httpx.JSON(w, http.StatusOK, httpx.O("outcomeId", id, "doseId", in.DoseID))
 }
-

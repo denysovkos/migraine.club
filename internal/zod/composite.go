@@ -259,16 +259,42 @@ type unionSchema struct{ options []Schema }
 // Union is z.union([...]): the first option that parses wins.
 func Union(options ...Schema) Schema { return unionSchema{options} }
 
+// run is Zod v4's handleUnionResults: the first option without issues wins;
+// when exactly one option failed only on soft checks (issues that let parsing
+// continue), its issues are reported as they are; otherwise one invalid_union
+// carries every option's issues, with paths relative to the union.
 func (u unionSchema) run(v any, path []any) (any, []Issue) {
 	var all [][]Issue
-	for _, opt := range u.options {
-		out, iss := opt.run(v, path)
+	soft := -1
+	softCount := 0
+	for i, opt := range u.options {
+		out, iss := opt.run(v, []any{})
 		if len(iss) == 0 {
 			return out, nil
 		}
 		all = append(all, iss)
+		if !aborted(iss) {
+			soft, softCount = i, softCount+1
+		}
+	}
+	if softCount == 1 {
+		return u.options[soft].run(v, path)
 	}
 	return nil, []Issue{newIssue("code", "invalid_union", "errors", all).finish(path, "Invalid input")}
+}
+
+// continuing are the issue codes Zod's checks raise with continue: true;
+// type, value, union and key errors abort.
+var continuing = map[string]bool{"too_small": true, "too_big": true, "invalid_format": true, "not_multiple_of": true, "custom": true}
+
+// aborted is util.aborted: some issue stops parsing.
+func aborted(issues []Issue) bool {
+	for _, is := range issues {
+		if !continuing[is.Code()] {
+			return true
+		}
+	}
+	return false
 }
 
 type discriminatedSchema struct {
