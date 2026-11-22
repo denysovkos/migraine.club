@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"regexp"
 	"strings"
 	"time"
 
@@ -52,11 +51,9 @@ func resolveTimezone(name string) string {
 	return name
 }
 
-var spaceRun = regexp.MustCompile(`\s+`)
-
 // normalizeName is normalizeName: trimmed, inner whitespace collapsed, lower.
 func normalizeName(name string) string {
-	return strings.ToLower(spaceRun.ReplaceAllString(jsx.Trim(name), " "))
+	return strings.ToLower(jsx.CollapseSpace(jsx.Trim(name), " "))
 }
 
 // Service is PreventivePlansService.

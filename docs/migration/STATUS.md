@@ -53,8 +53,16 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   (2024-02-30 is 2024-03-01) and "Invalid time value".
 - TS goldens run with `npx tsx --tsconfig scripts/golden.tsconfig.json ...`
   (stubs the Logger, whose top-level await tsx cannot load).
-- Open sweep: earlier ports (episodes, diary, meds, factors, cycle) predate
-  these helpers; re-check their invalid-date and DB-error paths.
+- Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
+  the routes ported before these helpers; add steps there for new edges.
+
+## Upstream bugs found (kept identical, to fix in both after cutover)
+
+- `POST /api/intake/complete` with custom triggers is always a 500: the
+  factor insert uses `ON CONFLICT (user_id, key)`, which Postgres cannot match
+  to the partial index `factor_user_key_uidx ... WHERE key IS NOT NULL`
+  (42P10), so the transaction rolls back. Fix: add the index predicate
+  (`targetWhere: isNotNull(factor.key)` / `WHERE key IS NOT NULL`).
 
 ## Progress
 
@@ -119,9 +127,9 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/insights/recompute` POST
 - [ ] `/api/insights/test-plans` GET POST
 - [ ] `/api/insights/test-plans/[id]` PATCH
-- [ ] `/api/intake` GET PATCH
-- [ ] `/api/intake/complete` POST
-- [ ] `/api/intake/skip` POST
+- [x] `/api/intake` GET PATCH
+- [x] `/api/intake/complete` POST
+- [x] `/api/intake/skip` POST
 - [ ] `/api/mcp` GET POST
 - [x] `/api/medications/search` GET
 - [ ] `/api/moderation/reports` GET POST

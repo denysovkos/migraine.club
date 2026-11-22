@@ -207,3 +207,22 @@ func CompareUTF16(a, b string) int {
 	}
 	return len(ua) - len(ub)
 }
+
+// CollapseSpace is s.replace(/\s+/g, repl) with JavaScript's \s, which also
+// matches Unicode spaces that Go's \s does not.
+func CollapseSpace(s, repl string) string {
+	var b strings.Builder
+	inRun := false
+	for _, r := range s {
+		if isJSSpace(r) {
+			if !inRun {
+				b.WriteString(repl)
+				inRun = true
+			}
+			continue
+		}
+		inRun = false
+		b.WriteRune(r)
+	}
+	return b.String()
+}

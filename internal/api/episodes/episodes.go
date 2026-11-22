@@ -5,7 +5,6 @@ import (
 	"errors"
 	"math"
 	"net/http"
-	"regexp"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -208,7 +207,6 @@ func rawOrNull(b []byte) any {
 	return jsonRaw(b)
 }
 
-var wsRe = regexp.MustCompile(`\s+`)
 
 // medicationIntakes is loadMedicationIntakes.
 func (h handlers) medicationIntakes(r *http.Request, userID string, id int32) ([]any, error) {
@@ -228,7 +226,7 @@ func (h handlers) medicationIntakes(r *http.Request, userID string, id int32) ([
 			} else if mi.CanonicalName != nil {
 				raw = *mi.CanonicalName
 			}
-			label = wsRe.ReplaceAllString(jsx.Trim(raw), " ")
+			label = jsx.CollapseSpace(jsx.Trim(raw), " ")
 		}
 		out[i] = httpx.O("id", mi.ID, "takenAt", jsontime.Format(mi.TakenAt.Time), "label", label,
 			"dose", mi.Dose, "unit", mi.Unit, "unitIsCustom", mi.UnitIsCustom)

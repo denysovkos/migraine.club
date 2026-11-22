@@ -49,3 +49,9 @@ func TestCompareUTF16(t *testing.T) {
 	require.Negative(t, CompareUTF16("a", "ab"))
 	require.Zero(t, CompareUTF16("x", "x"))
 }
+
+func TestCollapseSpace(t *testing.T) {
+	require.Equal(t, "a b c", CollapseSpace("a \t  b　c", " "))
+	require.Equal(t, "a_b", CollapseSpace("a  b", "_"))
+	require.Equal(t, " x ", CollapseSpace("\n x  ", " "))
+}
