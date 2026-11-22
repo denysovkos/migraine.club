@@ -5,6 +5,7 @@ import (
 
 	"github.com/denysovkos/migraine.club/internal/api/diary"
 	"github.com/denysovkos/migraine.club/internal/api/episodes"
+	"github.com/denysovkos/migraine.club/internal/api/meds"
 	"github.com/denysovkos/migraine.club/internal/api/user"
 	"github.com/denysovkos/migraine.club/internal/api/weather"
 	"github.com/denysovkos/migraine.club/internal/app"
@@ -16,4 +17,5 @@ func mountAPI(r chi.Router, d *app.Deps) {
 	weather.Mount(r, d)
 	episodes.Mount(r, d)
 	diary.Mount(r, d)
+	meds.Mount(r, d)
 }

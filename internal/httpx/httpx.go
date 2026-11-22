@@ -155,3 +155,7 @@ func ParseBody(b []byte) (any, error) {
 	}
 	return zod.Decode(b)
 }
+
+// Unhandled is what Next sent when a route handler threw without catching:
+// status 500 with an empty body and no content type.
+func Unhandled(w http.ResponseWriter) { w.WriteHeader(http.StatusInternalServerError) }

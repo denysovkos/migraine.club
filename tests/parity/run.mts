@@ -32,6 +32,8 @@ export type Step = {
   compareHeaders?: string[];
   /** Compare the body as text instead of JSON. */
   text?: boolean;
+  /** Keys whose values depend on the clock: only their type is compared. */
+  volatile?: string[];
 };
 
 export type Scenario = {
@@ -114,6 +116,19 @@ async function runSteps(base: string, s: Scenario): Promise<Captured[]> {
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 
+function maskVolatile(v: unknown, keys: string[]): unknown {
+  if (!keys.length) {
+    return v;
+  }
+  if (Array.isArray(v)) {
+    return v.map(x => maskVolatile(x, keys));
+  }
+  if (v && typeof v === 'object') {
+    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, keys.includes(k) ? `<${typeof x}>` : maskVolatile(x, keys)]));
+  }
+  return v;
+}
+
 function normalise(v: unknown, ids: Map<string, string>): unknown {
   if (typeof v === 'string') {
     if (UUID.test(v)) {
@@ -176,8 +191,9 @@ async function main() {
         const b = next[i]!;
         const ida = new Map<string, string>();
         const idb = new Map<string, string>();
-        const na = { status: a.status, contentType: a.contentType, headers: a.headers, body: normalise(a.body, ida) };
-        const nb = { status: b.status, contentType: b.contentType, headers: b.headers, body: normalise(b.body, idb) };
+        const vol = step.volatile ?? [];
+        const na = { status: a.status, contentType: a.contentType, headers: a.headers, body: normalise(maskVolatile(a.body, vol), ida) };
+        const nb = { status: b.status, contentType: b.contentType, headers: b.headers, body: normalise(maskVolatile(b.body, vol), idb) };
         if (!isDeepStrictEqual(na, nb)) {
           problems.push(`  step ${step.name}:\n    next: ${JSON.stringify(na).slice(0, 2000)}\n    go:   ${JSON.stringify(nb).slice(0, 2000)}`);
         } else if (!isDeepStrictEqual(keyOrder(a.body), keyOrder(b.body))) {
