@@ -19,6 +19,8 @@ import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
 
+import pg from 'pg';
+
 export type Step = {
   name: string;
   method?: string;
@@ -46,13 +48,21 @@ type Captured = { status: number; contentType: string | null; headers: Record<st
 const NEXT = process.env.PARITY_NEXT_URL ?? 'http://localhost:3001';
 const GO = process.env.PARITY_GO_URL ?? 'http://localhost:3000';
 
-function prepare(s: Scenario) {
+async function prepare(s: Scenario) {
   execSync('npm run e2e:reset --silent', { stdio: 'ignore' });
   for (const seed of s.seeds ?? ['e2e:seed']) {
     execSync(`npm run ${seed} --silent`, { stdio: 'ignore' });
   }
-  for (const sql of s.sql ?? []) {
-    execSync(`psql "${process.env.DATABASE_URL}" -v ON_ERROR_STOP=1 -q -c ${JSON.stringify(sql)}`, { stdio: 'ignore' });
+  if (s.sql?.length) {
+    const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+    await client.connect();
+    try {
+      for (const sql of s.sql) {
+        await client.query(sql);
+      }
+    } finally {
+      await client.end();
+    }
   }
 }
 
@@ -67,7 +77,7 @@ function resolveTemplates(value: string, ctx: Record<string, Captured>): string 
 }
 
 async function runSteps(base: string, s: Scenario): Promise<Captured[]> {
-  prepare(s);
+  await prepare(s);
   const ctx: Record<string, Captured> = {};
   const out: Captured[] = [];
   for (const step of s.steps) {
