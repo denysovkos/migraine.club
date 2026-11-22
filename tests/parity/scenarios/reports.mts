@@ -1,5 +1,8 @@
 import type { Scenario } from '../run.mts';
 
+// The footer and cover print the current minute.
+const GENERATED = /Generated on \d{4}-\d{2}-\d{2} \d{2}:\d{2}/;
+
 const U = `'e2e_user_test_001'`;
 const MED = 'dddddddd-0000-4000-8000-000000000001';
 const MED2 = 'dddddddd-0000-4000-8000-000000000002';
@@ -49,11 +52,11 @@ const scenarios: Scenario[] = [
     name: 'clinician preview, MOH, acute report',
     sql: setup,
     steps: [
-      { name: 'preview-default', path: '/api/reports/clinician/preview', text: true },
-      { name: 'preview-full', path: cfg({ template: 'full' }), text: true },
-      { name: 'preview-custom', path: cfg({ template: 'custom', rangePreset: 'last30', sections: { cover: false, diary: true, medications: true } }), text: true },
-      { name: 'preview-range', path: cfg({ template: 'full', rangePreset: 'custom', from: '2020-01-01', to: '2020-01-20' }), text: true },
-      { name: 'preview-prep', path: cfg({ appointmentPrepId: PREP }), text: true },
+      { name: 'preview-default', path: '/api/reports/clinician/preview', text: true, masks: [GENERATED] },
+      { name: 'preview-full', path: cfg({ template: 'full' }), text: true, masks: [GENERATED] },
+      { name: 'preview-custom', path: cfg({ template: 'custom', rangePreset: 'last30', sections: { cover: false, diary: true, medications: true } }), text: true, masks: [GENERATED] },
+      { name: 'preview-range', path: cfg({ template: 'full', rangePreset: 'custom', from: '2020-01-01', to: '2020-01-20' }), text: true, masks: [GENERATED] },
+      { name: 'preview-prep', path: cfg({ appointmentPrepId: PREP }), text: true, masks: [GENERATED] },
       { name: 'preview-bad-json', path: '/api/reports/clinician/preview?config=%7Bbad' },
       { name: 'preview-invalid', path: cfg({ template: 'nope', rangePreset: 'custom' }) },
       { name: 'preview-reversed', path: cfg({ rangePreset: 'custom', from: '2020-02-01', to: '2020-01-01' }) },
@@ -62,7 +65,7 @@ const scenarios: Scenario[] = [
       { name: 'enable-cycle-export', method: 'PUT', path: '/api/cycle/settings', body: { enabled: true, includeInExports: true, hormoneProfile: 'hrt' }, volatile: ['updatedAt'] },
       { name: 'bleed-today', method: 'PUT', path: '/api/cycle/bleeding', body: { localDate: '2026-01-31', bleeding: true } },
       { name: 'bleed-before', method: 'PUT', path: '/api/cycle/bleeding', body: { localDate: '2026-01-04', bleeding: true } },
-      { name: 'preview-cycle', path: cfg({ template: 'full', rangePreset: 'custom', from: '2026-01-01', to: '2026-01-31' }), text: true },
+      { name: 'preview-cycle', path: cfg({ template: 'full', rangePreset: 'custom', from: '2026-01-01', to: '2026-01-31' }), text: true, masks: [GENERATED] },
       { name: 'moh-7', path: '/api/moh-status?windowDays=7', volatile: ['asOf'] },
       { name: 'moh-invalid', path: '/api/moh-status?windowDays=61' },
       { name: 'acute-report', path: '/api/acute-meds-report' },

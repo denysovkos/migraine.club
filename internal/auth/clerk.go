@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"math/big"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"sync"
@@ -398,4 +399,23 @@ func isMachineToken(token string) bool {
 		}
 	}
 	return false
+}
+
+// DeleteUser is clerkClient().users.deleteUser.
+func (c *Clerk) DeleteUser(ctx context.Context, userID string) error {
+	u := strings.TrimRight(c.APIURL, "/") + "/v1/users/" + url.PathEscape(userID)
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, u, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.SecretKey)
+	res, err := c.HTTP.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	if res.StatusCode/100 != 2 {
+		return fmt.Errorf("clerk: delete user: status %d", res.StatusCode)
+	}
+	return nil
 }

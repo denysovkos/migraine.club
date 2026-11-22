@@ -75,7 +75,7 @@ type ExportTableSpec = {
  *
  * When adding a user-scoped table to the schema, add it here too.
  */
-const EXPORT_TABLES: readonly ExportTableSpec[] = [
+export const EXPORT_TABLES: readonly ExportTableSpec[] = [
   {
     table: userSchema,
     ownerColumn: userSchema.id,

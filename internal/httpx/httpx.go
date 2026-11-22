@@ -11,6 +11,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/denysovkos/migraine.club/internal/jsx"
 	"github.com/denysovkos/migraine.club/internal/zod"
 )
 
@@ -18,15 +19,23 @@ import (
 // with sorted keys, JavaScript objects keep insertion order.
 type M = map[string]any
 
-// Marshal encodes like JSON.stringify.
+// Marshal encodes like JSON.stringify: after encoding/json it re-encodes the
+// text with V8's rules (array-index keys first, JS number formatting, raw
+// U+2028/U+2029), so values passed through as raw JSON, such as jsonb
+// columns, come out as JSON.stringify(JSON.parse(...)) would print them.
 func Marshal(v any) ([]byte, error) {
+	return MarshalIndent(v, "")
+}
+
+// MarshalIndent is JSON.stringify(v, null, indent).
+func MarshalIndent(v any, indent string) ([]byte, error) {
 	var b bytes.Buffer
 	enc := json.NewEncoder(&b)
 	enc.SetEscapeHTML(false)
 	if err := enc.Encode(v); err != nil {
 		return nil, err
 	}
-	return bytes.TrimSuffix(b.Bytes(), []byte("\n")), nil
+	return jsx.Restringify(b.Bytes(), indent)
 }
 
 // JSON writes v with the given status.

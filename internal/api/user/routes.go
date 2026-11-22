@@ -17,4 +17,8 @@ func Mount(r chi.Router, d *app.Deps) {
 	p := profileHandlers{d: d, svc: &profile.Service{Q: d.Q, Log: d.Log, Now: d.Clock}}
 	r.Get("/api/user/profile", p.get)
 	r.Put("/api/user/profile", p.put)
+
+	a := accountHandlers{d}
+	r.Get("/api/user/export", a.export)
+	r.Delete("/api/user/delete-account", a.deleteAccount)
 }

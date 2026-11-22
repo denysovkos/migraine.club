@@ -14,10 +14,12 @@
  * Env: PARITY_NEXT_URL (default http://localhost:3001),
  *      PARITY_GO_URL (default http://localhost:3000), DATABASE_URL.
  */
+import { Buffer } from 'node:buffer';
 import { execSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
+import { crc32, inflateRawSync } from 'node:zlib';
 
 import pg from 'pg';
 
@@ -32,8 +34,15 @@ export type Step = {
   compareHeaders?: string[];
   /** Compare the body as text instead of JSON. */
   text?: boolean;
+  /**
+   * Compare the raw body byte for byte after masking ISO timestamps and
+   * UUIDs, or, for 'zip', every archive member and its header fields.
+   */
+  exact?: 'text' | 'zip';
   /** Keys whose values depend on the clock: only their type is compared. */
   volatile?: string[];
+  /** Regexes for clock-dependent text, replaced with <masked> before comparing. */
+  masks?: RegExp[];
 };
 
 export type Scenario = {
@@ -50,22 +59,91 @@ type Captured = { status: number; contentType: string | null; headers: Record<st
 const NEXT = process.env.PARITY_NEXT_URL ?? 'http://localhost:3001';
 const GO = process.env.PARITY_GO_URL ?? 'http://localhost:3000';
 
+// Points every serial sequence just past its column's current maximum, so
+// both runs of a scenario hand out the same ids.
+const RESET_SEQUENCES = `DO $$ DECLARE r record; BEGIN
+  FOR r IN SELECT c.table_schema, c.table_name, c.column_name, pg_get_serial_sequence(quote_ident(c.table_schema) || '.' || quote_ident(c.table_name), c.column_name) AS seq
+    FROM information_schema.columns c WHERE c.table_schema = 'public' AND c.column_default LIKE 'nextval(%' LOOP
+    EXECUTE format('SELECT setval(%L, COALESCE((SELECT max(%I) FROM %I.%I), 0) + 1, false)', r.seq, r.column_name, r.table_schema, r.table_name);
+  END LOOP; END $$`;
+
+async function sql(statements: string[]) {
+  const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  await client.connect();
+  try {
+    for (const statement of statements) {
+      await client.query(statement);
+    }
+  } finally {
+    await client.end();
+  }
+}
+
 async function prepare(s: Scenario) {
   execSync('npm run e2e:reset --silent', { stdio: 'ignore' });
+  await sql([RESET_SEQUENCES]);
   for (const seed of s.seeds ?? ['e2e:seed']) {
     execSync(`npm run ${seed} --silent`, { stdio: 'ignore' });
   }
   if (s.sql?.length) {
-    const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
-    await client.connect();
-    try {
-      for (const sql of s.sql) {
-        await client.query(sql);
-      }
-    } finally {
-      await client.end();
-    }
+    await sql(s.sql);
   }
+}
+
+function maskText(text: string): string {
+  const ids = new Map<string, string>();
+  return text
+    .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g, '<ts>')
+    .replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, (u) => {
+      if (!ids.has(u)) {
+        ids.set(u, `<uuid#${ids.size}>`);
+      }
+      return ids.get(u)!;
+    });
+}
+
+/**
+ * Archive members with their header fields. The DOS time and the CRC follow
+ * the clock and the content, so they are checked for consistency instead of
+ * compared; the compressed bytes may differ between deflate implementations.
+ */
+function readZip(buf: Buffer): unknown {
+  const eocd = buf.length - 22;
+  if (eocd < 0 || buf.readUInt32LE(eocd) !== 0x06054B50) {
+    return { __notZip: buf.subarray(0, 100).toString('utf8') };
+  }
+  const count = buf.readUInt16LE(eocd + 10);
+  let cursor = buf.readUInt32LE(eocd + 16);
+  const entries: unknown[] = [];
+  for (let i = 0; i < count; i++) {
+    const nameLength = buf.readUInt16LE(cursor + 28);
+    const localOffset = buf.readUInt32LE(cursor + 42);
+    const compressedSize = buf.readUInt32LE(cursor + 20);
+    const name = buf.subarray(cursor + 46, cursor + 46 + nameLength).toString('utf8');
+    const dataStart = localOffset + 30 + buf.readUInt16LE(localOffset + 26);
+    const content = inflateRawSync(buf.subarray(dataStart, dataStart + compressedSize));
+    const central = [4, 6, 8, 10, 12, 14].map(o => buf.readUInt16LE(cursor + o));
+    const local = [4, 6, 8, 12, 10].map(o => buf.readUInt16LE(localOffset + o));
+    entries.push({
+      name,
+      versionMadeBy: central[0],
+      versionNeeded: central[1],
+      flags: central[2],
+      method: central[3],
+      extraAndComment: [30, 32, 34, 36].map(o => buf.readUInt16LE(cursor + o)),
+      externalAttrs: buf.readUInt32LE(cursor + 38),
+      localMatchesCentral: local[0] === central[1] && local[1] === central[2] && local[2] === central[3]
+        && local[3] === central[5] && local[4] === central[4]
+        && buf.readUInt32LE(localOffset + 14) === buf.readUInt32LE(cursor + 16)
+        && buf.readUInt32LE(localOffset + 18) === compressedSize
+        && buf.readUInt32LE(localOffset + 22) === buf.readUInt32LE(cursor + 24),
+      crcValid: crc32(content) === buf.readUInt32LE(cursor + 16),
+      sizeValid: content.length === buf.readUInt32LE(cursor + 24),
+      content: maskText(content.toString('utf8')),
+    });
+    cursor += 46 + nameLength;
+  }
+  return { entries, centralDirectoryEndsAtEocd: cursor === eocd };
 }
 
 function resolveTemplates(value: string, ctx: Record<string, Captured>): string {
@@ -93,9 +171,14 @@ async function runSteps(base: string, s: Scenario): Promise<Captured[]> {
       body,
       redirect: 'manual',
     });
-    const raw = await res.text();
+    const bytes = Buffer.from(await res.arrayBuffer());
+    const raw = (step.masks ?? []).reduce((text, re) => text.replace(new RegExp(re, 'g'), '<masked>'), bytes.toString('utf8'));
     let parsed: unknown = raw;
-    if (!step.text) {
+    if (step.exact === 'zip') {
+      parsed = readZip(bytes);
+    } else if (step.exact === 'text') {
+      parsed = maskText(raw);
+    } else if (!step.text) {
       try {
         parsed = JSON.parse(raw);
       } catch {
@@ -195,7 +278,14 @@ async function main() {
         const na = { status: a.status, contentType: a.contentType, headers: a.headers, body: normalise(maskVolatile(a.body, vol), ida) };
         const nb = { status: b.status, contentType: b.contentType, headers: b.headers, body: normalise(maskVolatile(b.body, vol), idb) };
         if (!isDeepStrictEqual(na, nb)) {
-          problems.push(`  step ${step.name}:\n    next: ${JSON.stringify(na).slice(0, 2000)}\n    go:   ${JSON.stringify(nb).slice(0, 2000)}`);
+          const ja = JSON.stringify(na);
+          const jb = JSON.stringify(nb);
+          let at = 0;
+          while (at < ja.length && ja[at] === jb[at]) {
+            at++;
+          }
+          const from = Math.max(0, at - 600);
+          problems.push(`  step ${step.name} (first difference at ${at}):\n    next: ${ja.slice(from, at + 1400)}\n    go:   ${jb.slice(from, at + 1400)}`);
         } else if (!isDeepStrictEqual(keyOrder(a.body), keyOrder(b.body))) {
           problems.push(`  step ${step.name}: same values, different key order\n    next: ${JSON.stringify(keyOrder(a.body)).slice(0, 800)}\n    go:   ${JSON.stringify(keyOrder(b.body)).slice(0, 800)}`);
         }

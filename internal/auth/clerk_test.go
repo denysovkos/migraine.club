@@ -244,7 +244,8 @@ func TestMockResolverAndMiddleware(t *testing.T) {
 	require.Equal(t, "e2e_user_test_001", seen)
 
 	r := httptest.NewRequest("GET", "/", nil)
-	r.Header.Set(MockHeader, "other")
+	// The Next proxy overwrote a client-sent x-e2e-mock-user header.
+	r.Header.Set("x-e2e-mock-user", "other")
 	h.ServeHTTP(httptest.NewRecorder(), r)
-	require.Equal(t, "other", seen)
+	require.Equal(t, "e2e_user_test_001", seen)
 }

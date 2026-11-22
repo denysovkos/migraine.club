@@ -58,6 +58,22 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   both servers to reach the engine (export it before `servers.sh`).
 - TS goldens run with `npx tsx --tsconfig scripts/golden.tsconfig.json ...`
   (stubs the Logger, whose top-level await tsx cannot load).
+- `jsx.Restringify` / `ParseJSON` / `Stringify`: `JSON.stringify(JSON.parse(x),
+  null, indent)` as V8 prints it (array-index keys first, JS number format,
+  raw U+2028/U+2029, lowercase `\u00xx`), golden in
+  `scripts/json-stringify-golden.mts`. `httpx.Marshal` runs every response
+  through it, so jsonb passed through as raw JSON prints like Node did.
+- `q.Tables` (generated with the JSON key order): Drizzle keys, column names
+  and a `SELECT *` scanner per table, used by the data export.
+- Parity harness: serial sequences are reset before each run so both sides
+  hand out the same ids; `exact: 'text'` compares bodies byte for byte,
+  `exact: 'zip'` compares archive members and header fields; `masks` hide
+  clock-dependent text such as the report's "Generated on" minute.
+- The CSV export's ZIP members are deflated by Go's compress/flate: the
+  compressed bytes differ from node:zlib's, the inflated contents, CRCs and
+  every other header field are identical.
+- Mock auth ignores a client-sent `x-e2e-mock-user` header, as the Next
+  proxy did by overwriting it.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
   the routes ported before these helpers; add steps there for new edges.
 
@@ -71,6 +87,12 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   gave today's logs `daysAgo = -1`, so the sleep program could say "Logged
   sleep_issue 15 of last 14 days". Logs now count once per local calendar
   day inside the window (collectSignals / recommendationEngine tests).
+- `npm run e2e:reset` skipped the community tables (owned by `author_id` /
+  `reporter_id`, not `user_id`) and missed weather_pain_index_snapshot,
+  preventive_reminder_log, program_notification_log and mcp_tool_call_audit,
+  so rows leaked between e2e tests. The list now lives in
+  `scripts/e2eResetTables.ts`, checked against the schema and EXPORT_TABLES
+  by `src/models/e2eResetTables.test.ts`.
 
 ## Progress
 
@@ -187,14 +209,14 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/space-weather/kp` GET
 - [x] `/api/user-medications` GET POST
 - [x] `/api/user-medications/[id]` PATCH
-- [ ] `/api/user/alerts` GET PUT
+- [x] `/api/user/alerts` GET PUT
 - [x] `/api/user/consent` DELETE GET POST
-- [ ] `/api/user/delete-account` DELETE
-- [ ] `/api/user/export` GET
-- [ ] `/api/user/pressure-alert` GET PUT
+- [x] `/api/user/delete-account` DELETE
+- [x] `/api/user/export` GET
+- [x] `/api/user/pressure-alert` GET PUT
 - [x] `/api/user/profile` GET PUT
 - [x] `/api/user/weather-settings` GET PUT
 - [x] `/api/weather-pain-index/current` GET
 - [x] `/api/weather-pain-index/forecast` GET
 - [x] `/api/weather-pain-index/history` GET
-- [ ] `/api/weather/pressure-outlook` GET
+- [x] `/api/weather/pressure-outlook` GET

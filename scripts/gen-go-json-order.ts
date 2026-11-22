@@ -30,6 +30,7 @@ const tables = Object.values(schema)
   .map(t => ({
     name: getTableName(t as PgTable),
     keys: Object.keys(getTableColumns(t as PgTable)),
+    columns: Object.values(getTableColumns(t as PgTable)).map((c: any) => c.name as string),
     onUpdate: Object.values(getTableColumns(t as PgTable)).filter((c: any) => c.onUpdateFn).map((c: any) => c.name as string),
   }))
   .sort((a, b) => a.name.localeCompare(b.name));
@@ -50,4 +51,8 @@ func (m ${name}) MarshalJSON() ([]byte, error) {
 }
 out += `func allModels() []any {\n\treturn []any{${tables.map(t => `${structName(t.keys)}{}`).join(', ')}}\n}\n`;
 out += `\n// OnUpdateColumns lists, per table, the columns Drizzle refreshed on every\n// UPDATE ($onUpdate). Go queries must set them explicitly.\nvar OnUpdateColumns = map[string][]string{\n${tables.filter(t => t.onUpdate.length).map(t => `\t${JSON.stringify(t.name)}: {${t.onUpdate.map(c => JSON.stringify(c)).join(', ')}},`).join('\n')}\n}\n`;
+out += `\n// Tables describes every table for generic reads (the data export): the
+// Drizzle keys and column names in schema order, and a scanner into the
+// table's sqlc model.
+var Tables = map[string]Table{\n${tables.map(t => `\t${JSON.stringify(t.name)}: {Keys: []string{${t.keys.map(k => JSON.stringify(k)).join(', ')}}, Columns: []string{${t.columns.map(k => JSON.stringify(k)).join(', ')}}, Scan: scanAll[${structName(t.keys)}]},`).join('\n')}\n}\n`;
 writeFileSync('internal/db/q/json_order_gen.go', out);
