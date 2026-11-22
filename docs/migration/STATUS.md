@@ -51,6 +51,11 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   text for routes that answered `error.message`.
 - `localdate.JSDateFromYMD`: `ymdToDbDate` with V8 day rollover
   (2024-02-30 is 2024-03-01) and "Invalid time value".
+- `jsx.Log` / `jsx.Exp`: fdlibm ports, bit-exact with V8's Math.log/exp
+  (Go's math.Log/Exp differ in the last bit). Beware Go constant folding:
+  `const z = 1.96; z*z` is exact, JS rounds; use variables in float formulas.
+- `tests/parity/scenarios/insights.mts` needs `ENABLE_F39_INSIGHTS=true` on
+  both servers to reach the engine (export it before `servers.sh`).
 - TS goldens run with `npx tsx --tsconfig scripts/golden.tsconfig.json ...`
   (stubs the Logger, whose top-level await tsx cannot load).
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
@@ -122,10 +127,10 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/factors/log` POST
 - [x] `/api/factors/options` GET
 - [ ] `/api/feature-requests` GET POST
-- [ ] `/api/insights` GET
-- [ ] `/api/insights/recompute` POST
-- [ ] `/api/insights/test-plans` GET POST
-- [ ] `/api/insights/test-plans/[id]` PATCH
+- [x] `/api/insights` GET
+- [x] `/api/insights/recompute` POST
+- [x] `/api/insights/test-plans` GET POST
+- [x] `/api/insights/test-plans/[id]` PATCH
 - [x] `/api/intake` GET PATCH
 - [x] `/api/intake/complete` POST
 - [x] `/api/intake/skip` POST

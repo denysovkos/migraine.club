@@ -293,3 +293,17 @@ func pad(n, width int) string {
 	}
 	return s
 }
+
+// SetTime is dt.set({ hour, minute, second, millisecond }) for a DateTime in
+// loc: the wall clock is replaced and resolved against dt's own offset, which
+// is how Luxon picks a side of a DST change.
+func SetTime(dt time.Time, loc *time.Location, hour, minute, second, ms int) (time.Time, bool) {
+	l := dt.In(loc)
+	_, off := l.Zone()
+	local := time.Date(l.Year(), l.Month(), l.Day(), hour, minute, second, ms*int(time.Millisecond), time.UTC).UnixMilli()
+	ts, ok := fixOffset(local, off, loc)
+	if !ok || math.Abs(float64(ts)) > maxEpochMilli {
+		return time.Time{}, false
+	}
+	return time.UnixMilli(ts).In(loc), true
+}
