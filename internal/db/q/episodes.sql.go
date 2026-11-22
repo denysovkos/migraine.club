@@ -343,15 +343,15 @@ WHERE user_id = $1
   AND ($2::timestamp IS NULL OR start_time >= $2)
   AND ($3::timestamp IS NULL OR start_time <= $3)
 ORDER BY start_time DESC
-LIMIT $5 OFFSET $4
+LIMIT $5::bigint OFFSET $4::bigint
 `
 
 type ListEpisodesParams struct {
 	UserID   string         `json:"userId"`
 	FromTime *jsontime.Time `json:"fromTime"`
 	ToTime   *jsontime.Time `json:"toTime"`
-	Off      int32          `json:"off"`
-	Lim      int32          `json:"lim"`
+	Off      int64          `json:"off"`
+	Lim      int64          `json:"lim"`
 }
 
 func (q *Queries) ListEpisodes(ctx context.Context, arg ListEpisodesParams) ([]Episode, error) {

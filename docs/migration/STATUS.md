@@ -89,6 +89,10 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   are parsed and the issue aborts (golden `array_cap`).
 - Community stats read posts without ORDER BY; its parity scenario runs
   `VACUUM FULL` so both servers see the same heap order.
+- `jsx.ParseIntNumber` is Number.parseInt as a JS number (digit runs past
+  int64 stay large numbers, not NaN). Episode paging computes LIMIT/OFFSET in
+  float64 like JS and sends them as bigint, so page 10000000000 is an empty
+  page instead of an int32 overflow (fidelity.mts probes these).
 - Mock auth ignores a client-sent `x-e2e-mock-user` header, as the Next
   proxy did by overwriting it.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
@@ -110,12 +114,6 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   so rows leaked between e2e tests. The list now lives in
   `scripts/e2eResetTables.ts`, checked against the schema and EXPORT_TABLES
   by `src/models/e2eResetTables.test.ts`.
-
-## Open fidelity items
-
-- `jsx.ParseInt` treats digit runs beyond int64 as NaN; JS parses them to a
-  large number. Affects only absurd ids/limits (episodes, WPI history).
-  Move those callers to `jsx.ParseIntNumber`.
 
 ## Progress
 

@@ -9,6 +9,13 @@ const scenarios: Scenario[] = [
   {
     name: 'fidelity: dates, ids and malformed bodies',
     steps: [
+      { name: 'episodes-huge-page', path: '/api/episodes?page=10000000000&limit=20' },
+      { name: 'episodes-huge-limit', path: '/api/episodes?limit=3000000000' },
+      { name: 'episodes-bigint-page', path: '/api/episodes?page=99999999999999999999' },
+      { name: 'episodes-nan-page', path: '/api/episodes?page=x&limit=-4' },
+      { name: 'episode-id-huge', path: '/api/episodes/99999999999999999999' },
+      { name: 'episodes-recent-huge', path: '/api/episodes/recent?limit=99999999999999999999' },
+      { name: 'wpi-history-huge', path: '/api/weather-pain-index/history?days=99999999999999999999' },
       { name: 'diary-day-rollover', path: '/api/diary/day?date=2026-02-30' },
       { name: 'diary-day-month13', path: '/api/diary/day?date=2026-13-01' },
       { name: 'diary-range-rollover', path: '/api/diary/range?from=2026-02-27&to=2026-02-31' },

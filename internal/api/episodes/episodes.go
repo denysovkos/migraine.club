@@ -113,8 +113,8 @@ func (h handlers) list(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	qp := r.URL.Query()
-	page, _ := jsx.ParseInt(orDefault(qp, "page", "1"))
-	limit, _ := jsx.ParseInt(orDefault(qp, "limit", "20"))
+	page := jsx.ParseIntNumber(orDefault(qp, "page", "1"))
+	limit := jsx.ParseIntNumber(orDefault(qp, "limit", "20"))
 	var from, to *time.Time
 	for _, b := range []struct {
 		key string
@@ -167,12 +167,12 @@ func (h handlers) recent(w http.ResponseWriter, r *http.Request) {
 	}
 	limit := 3
 	if v := r.URL.Query().Get("limit"); v != "" {
-		n, ok := jsx.ParseInt(v)
-		if !ok || n < 1 || n > 50 {
+		n := jsx.ParseIntNumber(v)
+		if math.IsNaN(n) || n < 1 || n > 50 {
 			httpx.Error(w, http.StatusBadRequest, "Invalid limit parameter. Must be between 1 and 50.")
 			return
 		}
-		limit = n
+		limit = int(n)
 	}
 	rows, err := h.d.Q.RecentEpisodes(r.Context(), userID, int32(limit))
 	if err != nil {
@@ -241,8 +241,8 @@ var errIDOutOfRange = errors.New("value out of range for type integer")
 // passed the check in Node and failed at the first query, so the handler
 // reports rangeErr where that query ran.
 func episodeID(w http.ResponseWriter, r *http.Request) (id int32, rangeErr error, ok bool) {
-	n, ok := jsx.ParseInt(chi.URLParam(r, "id"))
-	if !ok {
+	n := jsx.ParseIntNumber(chi.URLParam(r, "id"))
+	if math.IsNaN(n) {
 		httpx.Error(w, http.StatusBadRequest, "Invalid episode ID")
 		return 0, nil, false
 	}

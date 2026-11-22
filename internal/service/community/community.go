@@ -65,7 +65,7 @@ func AuthorPublic(a *Author, isAnonymous bool) *httpx.Object {
 }
 
 // joinedAuthor is the user the list and detail queries rebuilt from a left
-// join: displayName `?? ''`, role `?? 'user'`.
+// join: displayName `?? ”`, role `?? 'user'`.
 func joinedAuthor(name, handle, role, specialty *string) *Author {
 	a := &Author{CommunityHandle: handle, Role: "user", DoctorSpecialty: specialty}
 	if name != nil {

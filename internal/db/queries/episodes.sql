@@ -50,7 +50,7 @@ WHERE user_id = @user_id
   AND (sqlc.narg(from_time)::timestamp IS NULL OR start_time >= sqlc.narg(from_time))
   AND (sqlc.narg(to_time)::timestamp IS NULL OR start_time <= sqlc.narg(to_time))
 ORDER BY start_time DESC
-LIMIT @lim OFFSET @off;
+LIMIT @lim::bigint OFFSET @off::bigint;
 
 -- name: CountEpisodes :one
 SELECT count(*)::int FROM episode

@@ -648,19 +648,27 @@ func (s *Service) Update(ctx context.Context, userID string, id int32, body any)
 
 // ListResult is ListEpisodesResult.
 type ListResult struct {
-	Episodes []q.Episode
-	Page     int
-	Limit    int
-	Total    int
+	Episodes    []q.Episode
+	Page, Limit float64
+	Total       int
 }
 
-// List is list(): newest first, from/to applied to start_time.
-func (s *Service) List(ctx context.Context, userID string, page, limit int, from, to *time.Time) (ListResult, error) {
-	if page <= 0 {
+// errBigintRange is what Postgres answered when Drizzle sent a LIMIT or
+// OFFSET beyond bigint.
+var errBigintRange = errors.New("value out of range for type bigint")
+
+// List is list(): newest first, from/to applied to start_time. page and
+// limit are the parseInt results (NaN when absent or unparsable).
+func (s *Service) List(ctx context.Context, userID string, page, limit float64, from, to *time.Time) (ListResult, error) {
+	if !(page > 0) {
 		page = 1
 	}
-	if limit <= 0 {
+	if !(limit > 0) {
 		limit = 20
+	}
+	offset := (page - 1) * limit
+	if limit >= math.MaxInt64 || offset >= math.MaxInt64 {
+		return ListResult{}, errBigintRange
 	}
 	var f, t *jsontime.Time
 	if from != nil {
@@ -669,7 +677,7 @@ func (s *Service) List(ctx context.Context, userID string, page, limit int, from
 	if to != nil {
 		t = jsontime.Ptr(*to)
 	}
-	rows, err := s.Q.ListEpisodes(ctx, q.ListEpisodesParams{UserID: userID, FromTime: f, ToTime: t, Lim: int32(limit), Off: int32((page - 1) * limit)})
+	rows, err := s.Q.ListEpisodes(ctx, q.ListEpisodesParams{UserID: userID, FromTime: f, ToTime: t, Lim: int64(limit), Off: int64(offset)})
 	if err != nil {
 		return ListResult{}, err
 	}
@@ -681,4 +689,4 @@ func (s *Service) List(ctx context.Context, userID string, page, limit int, from
 }
 
 // TotalPages is Math.ceil(total / limit).
-func (r ListResult) TotalPages() int { return int(math.Ceil(float64(r.Total) / float64(r.Limit))) }
+func (r ListResult) TotalPages() float64 { return math.Ceil(float64(r.Total) / r.Limit) }

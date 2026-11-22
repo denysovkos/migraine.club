@@ -32,7 +32,7 @@ func reportAuthorDefault() *httpx.Object {
 	return httpx.O("displayName", nil, "isDoctor", false, "isDoctorVerified", false, "isAnonymous", true)
 }
 
-// snippet is body.slice(0, n) + (body.length > n ? '…' : '').
+// snippet is body.slice(0, n) + (body.length > n ? '…' : ”).
 func snippet(body string, n int) jsx.JSString {
 	out := jsx.SliceUTF16(body, 0, n)
 	if jsx.Len(body) > n {

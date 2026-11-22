@@ -2,6 +2,7 @@ package weather
 
 import (
 	"errors"
+	"math"
 	"net/http"
 	"strings"
 
@@ -106,12 +107,12 @@ func (h handlers) history(w http.ResponseWriter, r *http.Request) {
 	}
 	days := 14
 	if v := r.URL.Query().Get("days"); v != "" {
-		n, ok := jsx.ParseInt(v)
-		if !ok || n < 1 || n > 90 {
+		n := jsx.ParseIntNumber(v)
+		if math.IsNaN(n) || n < 1 || n > 90 {
 			httpx.Error(w, http.StatusBadRequest, "Invalid days parameter. Must be between 1 and 90.")
 			return
 		}
-		days = n
+		days = int(n)
 	}
 	points, err := h.wpi.History(r.Context(), userID, days)
 	if err != nil {

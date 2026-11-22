@@ -30,7 +30,9 @@ func intensityNumber(v any) (float64, bool) {
 
 // localDate is new Date(y, m, d) on the server's local clock, with JS
 // rollover of the day number.
-func localDate(y int, m time.Month, d int) time.Time { return time.Date(y, m, d, 0, 0, 0, 0, time.Local) }
+func localDate(y int, m time.Month, d int) time.Time {
+	return time.Date(y, m, d, 0, 0, 0, 0, time.Local)
+}
 
 // calculateSummary is the share route's calculateSummary; dates use the
 // server's local time zone like the Node Date methods did.
