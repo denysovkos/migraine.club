@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/go-chi/chi/v5"
 
+	"github.com/denysovkos/migraine.club/internal/api/alerts"
 	"github.com/denysovkos/migraine.club/internal/api/cycle"
 	"github.com/denysovkos/migraine.club/internal/api/diary"
 	"github.com/denysovkos/migraine.club/internal/api/episodes"
@@ -36,4 +37,5 @@ func mountAPI(r chi.Router, d *app.Deps) {
 	insights.Mount(r, d)
 	programs.Mount(r, d)
 	reports.Mount(r, d)
+	alerts.Mount(r, d)
 }
