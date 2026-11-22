@@ -75,10 +75,13 @@ func (t *Time) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+// Scan truncates to milliseconds: node-postgres handed the Node code JS
+// Dates, so every comparison and computation the ported logic does must see
+// millisecond values too.
 func (t *Time) Scan(src any) error {
 	switch v := src.(type) {
 	case time.Time:
-		t.Time = v.UTC()
+		t.Time = v.UTC().Truncate(time.Millisecond)
 		return nil
 	case nil:
 		t.Time = time.Time{}

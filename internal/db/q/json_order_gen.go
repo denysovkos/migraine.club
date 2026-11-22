@@ -250,3 +250,33 @@ func (m WeatherPainIndexSnapshot) MarshalJSON() ([]byte, error) {
 func allModels() []any {
 	return []any{AcuteDose{}, AppointmentPrep{}, CommunityComment{}, CommunityPost{}, CommunityReport{}, CommunityVote{}, CronRunLock{}, CycleBleedingDay{}, CycleSetting{}, DailyDiaryEntry{}, DoctorShareLink{}, DoctorVerificationApplication{}, DoctorVerificationFile{}, DoseOutcome{}, Episode{}, EpisodePainReading{}, Factor{}, FactorEvent{}, FeatureRequest{}, IdempotentRequest{}, InsightTestPlan{}, InsightsCache{}, IntakeResponse{}, McpToolCallAudit{}, MedicationIntake{}, MedicationsCatalog{}, PressureForecastCache{}, PreventiveIntakeEvent{}, PreventivePlan{}, PreventiveReminderLog{}, PreventiveStatusChange{}, PreventiveWeeklyCheckIn{}, ProgramAdherenceEvent{}, ProgramEnrollment{}, ProgramNotificationLog{}, ProgramRecommendationDismissal{}, ProgramSetting{}, PushSubscription{}, QuestionnaireResponse{}, ReliefSession{}, RiskAlertRun{}, SolarActivitySnapshot{}, User{}, UserConsent{}, UserMedication{}, UserOutcomeSetting{}, UserWeatherSetting{}, WeatherDailySnapshot{}, WeatherPainIndexSnapshot{}}
 }
+
+// OnUpdateColumns lists, per table, the columns Drizzle refreshed on every
+// UPDATE ($onUpdate). Go queries must set them explicitly.
+var OnUpdateColumns = map[string][]string{
+	"appointment_prep": {"updated_at"},
+	"community_comment": {"updated_at"},
+	"community_post": {"updated_at"},
+	"community_vote": {"updated_at"},
+	"cycle_bleeding_day": {"updated_at"},
+	"cycle_settings": {"updated_at"},
+	"daily_diary_entry": {"updated_at"},
+	"doctor_share_link": {"updated_at"},
+	"doctor_verification_application": {"updated_at"},
+	"dose_outcomes": {"updated_at"},
+	"episode": {"updated_at"},
+	"factor": {"updated_at"},
+	"feature_request": {"updated_at"},
+	"insight_test_plan": {"updated_at"},
+	"intake_response": {"updated_at"},
+	"preventive_plan": {"updated_at"},
+	"program_enrollment": {"updated_at"},
+	"program_settings": {"updated_at"},
+	"push_subscription": {"updated_at"},
+	"questionnaire_responses": {"updated_at"},
+	"user": {"updated_at"},
+	"user_consent": {"updated_at"},
+	"user_outcome_settings": {"updated_at"},
+	"user_weather_settings": {"updated_at"},
+	"weather_daily_snapshot": {"updated_at"},
+}
