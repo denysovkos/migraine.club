@@ -16,6 +16,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -148,3 +149,56 @@ func (d Date) Value() (driver.Value, error) {
 // YMD is the "YYYY-MM-DD" form used by string-mode date columns.
 func (d Date) YMD() string { return d.Format("2006-01-02") }
 
+
+// YMD is a `date` column in Drizzle's string mode: "YYYY-MM-DD".
+type YMD string
+
+func (d *YMD) Scan(src any) error {
+	switch v := src.(type) {
+	case time.Time:
+		*d = YMD(v.Format("2006-01-02"))
+	case string:
+		*d = YMD(v)
+	case nil:
+		*d = ""
+	default:
+		return fmt.Errorf("jsontime: cannot scan %T into YMD", src)
+	}
+	return nil
+}
+
+func (d YMD) Value() (driver.Value, error) { return string(d), nil }
+
+// Clock is a `time` column: "HH:MM:SS", as node-postgres returned it.
+type Clock string
+
+// pgText trims the fractional part the way Postgres prints time values:
+// "12:30:00.000000" is "12:30:00", "12:30:00.500000" is "12:30:00.5".
+func pgText(s string) string {
+	if i := strings.IndexByte(s, '.'); i >= 0 {
+		frac := strings.TrimRight(s[i+1:], "0")
+		if frac == "" {
+			return s[:i]
+		}
+		return s[:i+1] + frac
+	}
+	return s
+}
+
+func (c *Clock) Scan(src any) error {
+	switch v := src.(type) {
+	case string:
+		*c = Clock(pgText(v))
+	case []byte:
+		*c = Clock(pgText(string(v)))
+	case time.Time:
+		*c = Clock(v.Format("15:04:05"))
+	case nil:
+		*c = ""
+	default:
+		return fmt.Errorf("jsontime: cannot scan %T into Clock", src)
+	}
+	return nil
+}
+
+func (c Clock) Value() (driver.Value, error) { return string(c), nil }
