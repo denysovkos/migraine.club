@@ -416,3 +416,38 @@ func writeValue(b *bytes.Buffer, v any, indent, cur string) {
 		b.WriteByte('}')
 	}
 }
+
+// OwnKeys orders object keys as V8 enumerates them (Object.keys,
+// Object.entries, for-in): array indices ascending, then the rest in
+// insertion order.
+func OwnKeys(insertion []string) []string {
+	return (&JSONObject{keys: insertion}).orderedKeys()
+}
+
+// ToPropertyKey is String(v) for a value ParseJSON returns, which is what
+// using it as an object key does.
+func ToPropertyKey(v any) string {
+	switch x := v.(type) {
+	case nil:
+		return "null"
+	case string:
+		return x
+	case bool:
+		return strconv.FormatBool(x)
+	case float64:
+		return FormatNumber(x)
+	case []any:
+		parts := make([]string, len(x))
+		for i, e := range x {
+			if e != nil {
+				parts[i] = ToPropertyKey(e)
+			}
+		}
+		return strings.Join(parts, ",")
+	default:
+		return "[object Object]"
+	}
+}
+
+// MarshalJSON lets encoding/json embed the object as JSON.stringify prints it.
+func (o *JSONObject) MarshalJSON() ([]byte, error) { return Stringify(o, ""), nil }

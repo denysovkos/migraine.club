@@ -19,5 +19,8 @@ for (const a of words) {
     compare.push([a, b, Math.sign(a.localeCompare(b))]);
   }
 }
-writeFileSync('internal/jsx/testdata/format.json', `${JSON.stringify({ toFixed, compare })}\n`);
+const roundInputs = [0.49999999999999994, -0.49999999999999994, 0.5, -0.5, 1.5, -1.5, 2.5, -2.5, -0.4, 4503599627370497, -4503599627370497, 9007199254740991, 1.7976931348623157e308, 5e-324, -5e-324, 0, 2.4999999999999996, 1e21, -1e21, ...nums.slice(0, 600).map(x => x * 10)];
+// [x, Math.round(x), Object.is(result, -0)]
+const round = roundInputs.map(x => [x, Math.round(x), Object.is(Math.round(x), -0)]);
+writeFileSync('internal/jsx/testdata/format.json', `${JSON.stringify({ toFixed, compare, round })}\n`);
 console.log(toFixed.length, compare.length);

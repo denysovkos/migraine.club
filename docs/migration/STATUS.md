@@ -72,6 +72,13 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - The CSV export's ZIP members are deflated by Go's compress/flate: the
   compressed bytes differ from node:zlib's, the inflated contents, CRCs and
   every other header field are identical.
+- `jsx.Round` is Math.round exactly (golden in jsformat-golden.mts):
+  `floor(x + 0.5)` was wrong for 0.49999999999999994, odd integers above
+  2^52 and the sign of -0.
+- `jsx.OwnKeys` / `jsx.ToPropertyKey`: V8 property enumeration order and
+  String(key) for tallies kept in plain JS objects (share summary).
+- The share summary and new links' expiry use the server's local time zone
+  (`time.Local`), as the Node Date methods did.
 - Mock auth ignores a client-sent `x-e2e-mock-user` header, as the Next
   proxy did by overwriting it.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
@@ -204,8 +211,8 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/relief-sessions` GET POST
 - [ ] `/api/reports/clinician/pdf` POST (moves to the SPA: the browser renders the same @react-pdf document from the report model; proxied to Next until then)
 - [x] `/api/reports/clinician/preview` GET
-- [ ] `/api/share` DELETE GET POST
-- [ ] `/api/share/[token]` GET
+- [x] `/api/share` DELETE GET POST
+- [x] `/api/share/[token]` GET
 - [x] `/api/space-weather/kp` GET
 - [x] `/api/user-medications` GET POST
 - [x] `/api/user-medications/[id]` PATCH

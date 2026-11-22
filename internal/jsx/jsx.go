@@ -52,8 +52,23 @@ func ToInt32(f float64) int32 {
 	return int32(uint32(int64(math.Trunc(math.Mod(f, 4294967296)))))
 }
 
-// Round is Math.round: halves round towards +Infinity.
-func Round(f float64) float64 { return math.Floor(f + 0.5) }
+// Round is Math.round: halves round towards +Infinity. floor(f+0.5) is not
+// enough: the addition itself rounds (0.49999999999999994 + 0.5 is 1, and
+// odd integers above 2^52 gain one), and a negative input rounding to zero
+// gives -0.
+func Round(f float64) float64 {
+	if math.IsNaN(f) || math.IsInf(f, 0) || math.Abs(f) >= 1<<52 {
+		return f
+	}
+	r := math.Floor(f)
+	if f-r >= 0.5 {
+		r++
+	}
+	if r == 0 && math.Signbit(f) {
+		return math.Copysign(0, -1)
+	}
+	return r
+}
 
 // Mod is the % operator on numbers (sign follows the dividend).
 func Mod(a, b float64) float64 { return math.Mod(a, b) }
