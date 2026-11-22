@@ -74,3 +74,18 @@ const scenarios: Scenario[] = [
 ];
 
 export default scenarios;
+
+scenarios.push({
+  name: 'quick-add episode',
+  sql: [`DELETE FROM episode WHERE user_id = 'e2e_user_test_001'`, `DELETE FROM daily_diary_entry WHERE user_id = 'e2e_user_test_001'`],
+  steps: [
+    { name: 'headache', method: 'POST', path: '/api/quick-add/episode', body: { attackType: 'headache', startedAt: ago(30), onsetAt: ago(40) } },
+    { name: 'upgrade', method: 'POST', path: '/api/quick-add/episode', rawBody: 'not json' },
+    { name: 'conflict', method: 'POST', path: '/api/quick-add/episode', body: {} },
+    { name: 'historical', method: 'POST', path: '/api/quick-add/episode', body: { localDate: days(5).slice(0, 10), attackType: 'headache' } },
+    { name: 'bad-date', method: 'POST', path: '/api/quick-add/episode', body: { localDate: '5 May' } },
+    { name: 'too-old', method: 'POST', path: '/api/quick-add/episode', body: { startedAt: days(8) } },
+    { name: 'list', path: '/api/episodes' },
+    { name: 'diary', path: `/api/diary/range?from=${days(6).slice(0, 10)}&to=${ago(0).slice(0, 10)}` },
+  ],
+});

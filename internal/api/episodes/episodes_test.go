@@ -300,3 +300,32 @@ func TestPainReadings(t *testing.T) {
 	e.Exec(`UPDATE user_consent SET withdrawn_at = now() WHERE user_id = 'u' AND consent_type = 'health_data'`)
 	require.Equal(t, 403, e.Do(apitest.Request{Method: "POST", Path: base, User: "u", Body: map[string]any{"intensity": 2}}).Status)
 }
+
+func TestQuickAddEpisode(t *testing.T) {
+	e := newEnv(t)
+	res := e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode", User: "u", Body: map[string]any{"attackType": "headache"}})
+	require.Equal(t, 201, res.Status, string(res.Body))
+	head := res.Map(t)["episodeId"]
+
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode", User: "u", Raw: "not json"})
+	require.Equal(t, 201, res.Status, "an unreadable body is {} and starts a migraine, upgrading the headache")
+	m := res.Map(t)
+	require.Equal(t, head, m["upgradedFromEpisodeId"])
+	require.Equal(t, 0, e.Count(`SELECT count(*) FROM episode WHERE id = $1 AND is_ongoing`, head))
+
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode", User: "u", Body: map[string]any{}})
+	require.Equal(t, 409, res.Status)
+	require.Equal(t, fmt.Sprintf(`{"error":"An attack is already in progress.","code":"ONGOING_EXISTS","ongoing":{"episodeId":%v,"attackType":"migraine"}}`, m["episodeId"]), string(res.Body))
+
+	day := time.Now().UTC().AddDate(0, 0, -5).Format("2006-01-02")
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode", User: "u", Body: map[string]any{"localDate": day}})
+	require.Equal(t, 201, res.Status)
+	require.Equal(t, 1, e.Count(`SELECT count(*) FROM episode WHERE user_id = 'u' AND start_time = $1::date + interval '12 hours' AND NOT is_ongoing`, day))
+	require.Equal(t, 1, e.Count(`SELECT count(*) FROM daily_diary_entry WHERE user_id = 'u' AND local_date = $1 AND day_type = 'migraine_day'`, day))
+
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode", User: "other", Body: map[string]any{"startedAt": iso(time.Now().Add(-8 * 24 * time.Hour))}})
+	require.Equal(t, `{"error":"Timestamp is too old to sync","code":"INVALID_STARTED_AT"}`, string(res.Body))
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode", User: "other", Body: map[string]any{"localDate": "5 May"}})
+	require.Equal(t, 400, res.Status)
+	require.Equal(t, 401, e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode"}).Status)
+}
