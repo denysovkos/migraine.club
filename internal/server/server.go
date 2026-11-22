@@ -24,6 +24,7 @@ type Options struct {
 func New(d *app.Deps, opts Options) http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
+	r.Use(forwardedHeaders(d.Cfg.Port))
 
 	var resolver auth.Resolver = d.Clerk
 	if d.Cfg.E2EMockAuth {

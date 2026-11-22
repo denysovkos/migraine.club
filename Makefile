@@ -16,6 +16,7 @@ schema:
 
 sqlc:
 	@test -x $(GOBIN)/sqlc && $(GOBIN)/sqlc version | grep -q $(SQLC_VERSION) || go install github.com/sqlc-dev/sqlc/cmd/sqlc@$(SQLC_VERSION)
+	find internal/db/q -name '*.sql.go' -delete
 	$(GOBIN)/sqlc generate
 	npx tsx scripts/gen-go-json-order.ts
 

@@ -14,7 +14,8 @@ import (
 	"github.com/denysovkos/migraine.club/internal/zod"
 )
 
-// M is a JSON object literal.
+// M is an unordered JSON object. Prefer O for responses: Go maps marshal
+// with sorted keys, JavaScript objects keep insertion order.
 type M = map[string]any
 
 // Marshal encodes like JSON.stringify.
@@ -42,7 +43,7 @@ func JSON(w http.ResponseWriter, status int, v any) {
 
 // Error writes {"error": msg}.
 func Error(w http.ResponseWriter, status int, msg string) {
-	JSON(w, status, M{"error": msg})
+	JSON(w, status, O("error", msg))
 }
 
 // Unauthorized writes the 401 every authenticated route returns.
@@ -53,7 +54,7 @@ func Internal(w http.ResponseWriter) { Error(w, http.StatusInternalServerError, 
 
 // ValidationError writes {"error": "Validation error", "details": issues}.
 func ValidationError(w http.ResponseWriter, err *zod.Error) {
-	JSON(w, http.StatusBadRequest, M{"error": "Validation error", "details": err.Issues})
+	JSON(w, http.StatusBadRequest, O("error", "Validation error", "details", err.Issues))
 }
 
 // ErrInvalidJSON is returned by ReadJSON for a body `request.json()` would
@@ -86,4 +87,63 @@ func ReadJSONOr(r *http.Request, fallback any) any {
 		return fallback
 	}
 	return v
+}
+
+// Object is a JSON object that keeps insertion order, like a JavaScript
+// object built key by key. Setting an existing key keeps its position.
+type Object struct {
+	keys []string
+	vals map[string]any
+}
+
+// NewObject returns an empty ordered object.
+func NewObject() *Object { return &Object{vals: map[string]any{}} }
+
+// Set adds or replaces a key.
+func (o *Object) Set(k string, v any) *Object {
+	if _, ok := o.vals[k]; !ok {
+		o.keys = append(o.keys, k)
+	}
+	o.vals[k] = v
+	return o
+}
+
+// Get returns a value.
+func (o *Object) Get(k string) (any, bool) { v, ok := o.vals[k]; return v, ok }
+
+// Len is the number of keys.
+func (o *Object) Len() int { return len(o.keys) }
+
+// Keys returns the keys in insertion order.
+func (o *Object) Keys() []string { return append([]string{}, o.keys...) }
+
+// MarshalJSON writes keys in insertion order.
+func (o *Object) MarshalJSON() ([]byte, error) {
+	var b bytes.Buffer
+	b.WriteByte('{')
+	for i, k := range o.keys {
+		if i > 0 {
+			b.WriteByte(',')
+		}
+		kb, _ := Marshal(k)
+		b.Write(kb)
+		b.WriteByte(':')
+		vb, err := Marshal(o.vals[k])
+		if err != nil {
+			return nil, err
+		}
+		b.Write(vb)
+	}
+	b.WriteByte('}')
+	return b.Bytes(), nil
+}
+
+// O builds an ordered object from alternating keys and values:
+// O("a", 1, "b", 2) is {"a":1,"b":2} in that order.
+func O(pairs ...any) *Object {
+	o := NewObject()
+	for i := 0; i+1 < len(pairs); i += 2 {
+		o.Set(pairs[i].(string), pairs[i+1])
+	}
+	return o
 }
