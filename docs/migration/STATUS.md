@@ -88,11 +88,11 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/doctor-verification/files/[fileId]` GET
 - [ ] `/api/doctor-verification/upload` POST
 - [ ] `/api/dose-outcomes` POST
-- [ ] `/api/episodes` GET POST
-- [ ] `/api/episodes/[id]` DELETE GET PATCH
-- [ ] `/api/episodes/[id]/pain-readings` GET POST
-- [ ] `/api/episodes/[id]/pain-readings/[readingId]` DELETE
-- [ ] `/api/episodes/recent` GET
+- [x] `/api/episodes` GET POST
+- [x] `/api/episodes/[id]` DELETE GET PATCH
+- [x] `/api/episodes/[id]/pain-readings` GET POST
+- [x] `/api/episodes/[id]/pain-readings/[readingId]` DELETE
+- [x] `/api/episodes/recent` GET
 - [ ] `/api/factors/log` POST
 - [ ] `/api/factors/options` GET
 - [ ] `/api/feature-requests` GET POST
@@ -149,7 +149,7 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/reports/clinician/preview` GET
 - [ ] `/api/share` DELETE GET POST
 - [ ] `/api/share/[token]` GET
-- [ ] `/api/space-weather/kp` GET
+- [x] `/api/space-weather/kp` GET
 - [ ] `/api/user-medications` GET POST
 - [ ] `/api/user-medications/[id]` PATCH
 - [ ] `/api/user/alerts` GET PUT
@@ -158,8 +158,8 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/user/export` GET
 - [ ] `/api/user/pressure-alert` GET PUT
 - [x] `/api/user/profile` GET PUT
-- [ ] `/api/user/weather-settings` GET PUT
-- [ ] `/api/weather-pain-index/current` GET
-- [ ] `/api/weather-pain-index/forecast` GET
-- [ ] `/api/weather-pain-index/history` GET
+- [x] `/api/user/weather-settings` GET PUT
+- [x] `/api/weather-pain-index/current` GET
+- [x] `/api/weather-pain-index/forecast` GET
+- [x] `/api/weather-pain-index/history` GET
 - [ ] `/api/weather/pressure-outlook` GET

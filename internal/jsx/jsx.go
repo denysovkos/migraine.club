@@ -168,3 +168,27 @@ func FormatNumber(f float64) string {
 	digits := strings.TrimLeft(exp[1:], "0")
 	return mant + "e" + string(sign) + digits
 }
+
+// ParseInt is Number.parseInt(s, 10). ok is false when the result is NaN.
+func ParseInt(s string) (int, bool) {
+	s = Trim(s)
+	sign, i := 1, 0
+	if i < len(s) && (s[i] == '+' || s[i] == '-') {
+		if s[i] == '-' {
+			sign = -1
+		}
+		i++
+	}
+	start := i
+	for i < len(s) && s[i] >= '0' && s[i] <= '9' {
+		i++
+	}
+	if i == start {
+		return 0, false
+	}
+	n, err := strconv.Atoi(s[start:i])
+	if err != nil {
+		return 0, false
+	}
+	return sign * n, true
+}

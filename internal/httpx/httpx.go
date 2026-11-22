@@ -147,3 +147,11 @@ func O(pairs ...any) *Object {
 	}
 	return o
 }
+
+// ParseBody checks that b is a JSON document (what response.json() accepts).
+func ParseBody(b []byte) (any, error) {
+	if len(bytes.TrimSpace(b)) == 0 {
+		return nil, io.ErrUnexpectedEOF
+	}
+	return zod.Decode(b)
+}

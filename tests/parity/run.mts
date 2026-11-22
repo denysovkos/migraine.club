@@ -131,7 +131,17 @@ function normalise(v: unknown, ids: Map<string, string>): unknown {
     return v.map(x => normalise(x, ids));
   }
   if (v && typeof v === 'object') {
-    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, normalise(x, ids)]));
+    return Object.fromEntries(Object.entries(v).map(([k, x]) => {
+      // Serial ids differ between runs because sequences keep counting.
+      if (typeof x === 'number' && Number.isInteger(x) && /^(id|.*Id)$/.test(k)) {
+        const key = `int:${x}`;
+        if (!ids.has(key)) {
+          ids.set(key, `<id#${ids.size}>`);
+        }
+        return [k, ids.get(key)];
+      }
+      return [k, normalise(x, ids)];
+    }));
   }
   return v;
 }

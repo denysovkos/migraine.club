@@ -3,7 +3,6 @@ package weather
 import (
 	"errors"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/jackc/pgx/v5"
@@ -98,26 +97,6 @@ func (h handlers) forecast(w http.ResponseWriter, r *http.Request) {
 		"timestampUtc", jsontime.Format(latest.TimestampUtc.Time), "message", message))
 }
 
-// parseIntJS is Number.parseInt(s, 10): the leading integer, or NaN (ok=false).
-func parseIntJS(s string) (int, bool) {
-	s = jsx.Trim(s)
-	end := 0
-	for i, c := range s {
-		if (c == '-' || c == '+') && i == 0 {
-			continue
-		}
-		if c < '0' || c > '9' {
-			break
-		}
-		end = i + 1
-	}
-	if end == 0 || (end == 1 && (s[0] == '-' || s[0] == '+')) {
-		return 0, false
-	}
-	n, err := strconv.Atoi(s[:end])
-	return n, err == nil
-}
-
 // GET /api/weather-pain-index/history
 func (h handlers) history(w http.ResponseWriter, r *http.Request) {
 	userID := auth.UserID(r.Context())
@@ -127,7 +106,7 @@ func (h handlers) history(w http.ResponseWriter, r *http.Request) {
 	}
 	days := 14
 	if v := r.URL.Query().Get("days"); v != "" {
-		n, ok := parseIntJS(v)
+		n, ok := jsx.ParseInt(v)
 		if !ok || n < 1 || n > 90 {
 			httpx.Error(w, http.StatusBadRequest, "Invalid days parameter. Must be between 1 and 90.")
 			return
