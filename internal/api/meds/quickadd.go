@@ -32,6 +32,7 @@ func Mount(r chi.Router, d *app.Deps) {
 	r.Patch("/api/quick-add/medication-intake/{id}", h.patchIntake)
 	r.Post("/api/acute-doses", h.createDose)
 	r.Post("/api/dose-outcomes", h.doseOutcome)
+	mountCatalog(r, d)
 }
 
 var consentRequired = httpx.O(

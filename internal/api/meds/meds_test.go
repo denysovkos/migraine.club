@@ -176,3 +176,52 @@ func TestSanitizeNotes(t *testing.T) {
 }
 
 var _ = fmt.Sprint
+
+func TestUserMedicationCatalog(t *testing.T) {
+	e := newEnv(t)
+	e.Exec(`INSERT INTO medications_catalog (id, canonical_name, canonical_name_lc, search_text) VALUES
+		('aaaaaaaa-0000-4000-8000-000000000001', 'Ibuprofen', 'ibuprofen', 'ibuprofen nurofen'),
+		('aaaaaaaa-0000-4000-8000-000000000002', 'Ібупрофен', 'ібупрофен', 'ібупрофен нурофен'),
+		('aaaaaaaa-0000-4000-8000-000000000003', 'Sumatriptan', 'sumatriptan', 'sumatriptan imigran')`)
+
+	res := e.Do(apitest.Request{Method: "POST", Path: "/api/user-medications", User: "u", Body: map[string]any{"catalogMedicationId": "aaaaaaaa-0000-4000-8000-000000000003", "isPinned": true, "medicationClass": "triptan"}})
+	require.Equal(t, 201, res.Status, string(res.Body))
+	suma := res.Map(t)["userMedicationId"]
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/user-medications", User: "u", Body: map[string]any{"catalogMedicationId": "aaaaaaaa-0000-4000-8000-000000000003"}})
+	require.Equal(t, 200, res.Status)
+	require.Equal(t, suma, res.Map(t)["userMedicationId"])
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/user-medications", User: "u", Body: map[string]any{"customName": "  My   Mix "}})
+	require.Equal(t, 201, res.Status)
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/user-medications", User: "u", Body: map[string]any{}})
+	require.Equal(t, 500, res.Status, "no ZodError branch: the message is the 500 body")
+	require.Contains(t, string(res.Body), "catalogMedicationId or customName is required")
+
+	list := e.Do(apitest.Request{Path: "/api/user-medications", User: "u"}).Map(t)
+	require.Len(t, list["pinned"], 1)
+	require.Equal(t, "Sumatriptan", list["pinned"].([]any)[0].(map[string]any)["label"])
+	require.Len(t, list["all"], 2)
+	require.Equal(t, []any{}, list["recentlyUsed"])
+	require.Equal(t, `{"pinned":[],"recentlyUsed":[],"all":[]}`, string(e.Do(apitest.Request{Path: "/api/user-medications", User: "other"}).Body))
+
+	require.Equal(t, `{"success":true}`, string(e.Do(apitest.Request{Method: "PATCH", Path: fmt.Sprintf("/api/user-medications/%v", suma), User: "u", Body: map[string]any{"defaultDose": " 50 ", "isPinned": false}}).Body))
+	require.Equal(t, 1, e.Count(`SELECT count(*) FROM user_medications WHERE id = $1 AND default_dose = '50' AND NOT is_pinned`, suma))
+	require.Equal(t, 404, e.Do(apitest.Request{Method: "PATCH", Path: fmt.Sprintf("/api/user-medications/%v", suma), User: "other", Body: map[string]any{"isPinned": true}}).Status)
+	require.Equal(t, 500, e.Do(apitest.Request{Method: "PATCH", Path: fmt.Sprintf("/api/user-medications/%v", suma), User: "u", Body: map[string]any{}}).Status)
+
+	// Search: user meds first, owned catalog entries de-duplicated, script by language.
+	res = e.Do(apitest.Request{Path: "/api/medications/search?q=suma", User: "u"})
+	results := res.Map(t)["results"].([]any)
+	require.Len(t, results, 1)
+	require.Equal(t, "user", results[0].(map[string]any)["kind"])
+	res = e.Do(apitest.Request{Path: "/api/medications/search?q=ibu", User: "u"})
+	results = res.Map(t)["results"].([]any)
+	require.Len(t, results, 1)
+	require.Equal(t, "Ibuprofen", results[0].(map[string]any)["label"])
+	e.Exec(`UPDATE "user" SET preferred_language = 'uk' WHERE id = 'u'`)
+	results = e.Do(apitest.Request{Path: "/api/medications/search?q=" + "%D1%96%D0%B1%D1%83", User: "u"}).Map(t)["results"].([]any)
+	require.Len(t, results, 1)
+	require.Equal(t, "Ібупрофен", results[0].(map[string]any)["label"])
+	require.Equal(t, `{"results":[]}`, string(e.Do(apitest.Request{Path: "/api/medications/search?q=%20%20", User: "u"}).Body))
+	res = e.Do(apitest.Request{Path: "/api/medications/search?q=x", User: "nobody"})
+	require.Equal(t, `{"error":"Health data consent required","code":"CONSENT_REQUIRED","message":"You must provide explicit consent for health data processing before searching meds."}`, string(res.Body))
+}
