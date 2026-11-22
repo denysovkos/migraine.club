@@ -1,37 +1,21 @@
 package share
 
 import (
-	"sort"
 	"time"
 
 	"github.com/denysovkos/migraine.club/internal/httpx"
 	"github.com/denysovkos/migraine.club/internal/jsx"
 )
 
-// counter is a plain JS object used as a tally: Object.entries order, then
-// a stable sort by count.
-type counter struct {
-	keys   []string
-	counts map[string]int
-}
-
-func newCounter() *counter { return &counter{counts: map[string]int{}} }
-
-func (c *counter) add(k string) {
-	if _, ok := c.counts[k]; !ok {
-		c.keys = append(c.keys, k)
-	}
-	c.counts[k]++
-}
-
-// top is Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || null.
-func (c *counter) top() any {
-	keys := jsx.OwnKeys(c.keys)
-	sort.SliceStable(keys, func(i, j int) bool { return c.counts[keys[i]] > c.counts[keys[j]] })
-	if len(keys) == 0 || keys[0] == "" {
+// top is Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || null
+// for a tally kept in a plain object.
+func top(t *jsx.Tally) any {
+	entries := t.Entries()
+	jsx.ByCountDesc(entries)
+	if len(entries) == 0 || entries[0].Key == "" {
 		return nil
 	}
-	return keys[0]
+	return entries[0].Key
 }
 
 func intensityNumber(v any) (float64, bool) {
@@ -89,20 +73,20 @@ func calculateSummary(eps []sharedEpisode, nowUTC time.Time) *httpx.Object {
 		duration = jsx.Round(total / float64(completed) / (1000 * 60))
 	}
 
-	triggers, symptoms, meds := newCounter(), newCounter(), newCounter()
+	triggers, symptoms, meds := jsx.NewTally(), jsx.NewTally(), jsx.NewTally()
 	for _, e := range eps {
 		for _, t := range e.triggers {
-			triggers.add(jsx.ToPropertyKey(t))
+			triggers.Inc(jsx.ToPropertyKey(t))
 		}
 	}
 	for _, e := range eps {
 		for _, s := range e.symptoms {
-			symptoms.add(jsx.ToPropertyKey(s))
+			symptoms.Inc(jsx.ToPropertyKey(s))
 		}
 	}
 	for _, e := range eps {
 		for _, l := range e.medLabels {
-			meds.add(l)
+			meds.Inc(l)
 		}
 	}
 
@@ -132,6 +116,6 @@ func calculateSummary(eps []sharedEpisode, nowUTC time.Time) *httpx.Object {
 
 	return httpx.O("totalEpisodes", len(eps), "episodesThisMonth", thisMonth,
 		"averageIntensity", jsx.Round(avg*10)/10, "averageDurationMinutes", duration,
-		"mostCommonTrigger", triggers.top(), "mostCommonSymptom", symptoms.top(),
-		"mostCommonMedication", meds.top(), "weeklyTrend", trend)
+		"mostCommonTrigger", top(triggers), "mostCommonSymptom", top(symptoms),
+		"mostCommonMedication", top(meds), "weeklyTrend", trend)
 }

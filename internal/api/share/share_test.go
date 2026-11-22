@@ -171,3 +171,15 @@ func TestView(t *testing.T) {
 }
 
 func bytesReader(b []byte) *bytes.Reader { return bytes.NewReader(b) }
+
+func TestSummaryTalliesLikeAPlainObject(t *testing.T) {
+	time.Local = time.UTC
+	e := ep(now.Add(-time.Hour), 10, int32(2))
+	e.medLabels = []string{"constructor", "Ibuprofen", "Ibuprofen", "__proto__", "__proto__", "__proto__"}
+	b, _ := json.Marshal(calculateSummary([]sharedEpisode{e}, now))
+	var s map[string]any
+	require.NoError(t, json.Unmarshal(b, &s))
+	// "constructor" holds a string, so b - a is NaN and the sort keeps the
+	// object order; "__proto__" never becomes a key.
+	require.Equal(t, "constructor", s["mostCommonMedication"])
+}
