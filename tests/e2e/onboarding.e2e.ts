@@ -15,6 +15,7 @@
  */
 
 import { execSync } from 'node:child_process';
+import { E2E_USER_ID, query } from './_db';
 import { test as base, expect } from './_fixtures';
 
 const test = base.extend<{ seeded: void }>({
@@ -70,5 +71,34 @@ test.describe('baseline intake', () => {
     await page.goto('/en/dashboard');
 
     await expect(page).toHaveURL(/\/dashboard/);
+  });
+
+  // Regression: completing with a custom trigger used to fail (500) because
+  // the factor insert's ON CONFLICT could not use the partial unique index.
+  test('a custom trigger named during intake becomes a factor', async ({ page }) => {
+    await page.goto('/en/onboarding');
+
+    await page.getByText('4 to 7 a month').click();
+    await page.getByRole('button', { name: 'Next', exact: true }).click();
+
+    await page.getByPlaceholder('Add your own').fill('Red wine');
+    await page.getByRole('button', { name: 'Add', exact: true }).click();
+    await page.getByRole('button', { name: 'Next', exact: true }).click();
+
+    await page.getByRole('button', { name: 'Next', exact: true }).click();
+    await page.getByRole('button', { name: 'Finish' }).click();
+
+    await expect(page).toHaveURL(/\/dashboard/);
+
+    const factors = await query<{ display_name: string }>(
+      `select display_name from factor where user_id = $1 and key = 'intake.trigger:red_wine'`,
+      [E2E_USER_ID],
+    );
+
+    expect(factors).toEqual([{ display_name: 'Red wine' }]);
+
+    const intake = await query<{ status: string }>(`select status from intake_response where user_id = $1`, [E2E_USER_ID]);
+
+    expect(intake).toEqual([{ status: 'completed' }]);
   });
 });

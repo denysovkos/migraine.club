@@ -190,18 +190,17 @@ func TestCompleteWithoutAnswers(t *testing.T) {
 	require.Equal(t, 0, e.Count(`SELECT count(*) FROM user_medications WHERE user_id = 'u'`))
 }
 
-// Preserved upstream bug (docs/migration/STATUS.md): the custom-trigger
-// insert uses ON CONFLICT (user_id, key), which Postgres cannot match to the
-// partial index factor_user_key_uidx (WHERE key IS NOT NULL). Node answered
-// 500 and rolled back; so does the port, until the fix lands in both.
-func TestCompleteWithCustomTriggersFailsLikeNode(t *testing.T) {
+// Regression (fixed in Node and Go together): the custom-trigger insert's
+// ON CONFLICT now repeats the partial index predicate, so completion with
+// custom triggers seeds factors instead of failing with a 500.
+func TestCompleteSeedsCustomTriggers(t *testing.T) {
 	e := newEnv(t)
-	patch(t, e, "u", "medications", map[string]any{"acute": []any{map[string]any{"customName": "Rolled back"}}, "preventive": []any{}})
-	patch(t, e, "u", "triggers", map[string]any{"keys": []any{}, "custom": []any{"Red wine"}})
+	e.Exec(`INSERT INTO factor (user_id, key, type, display_name) VALUES ('u', 'intake.trigger:loud_noise', 'trigger', 'Loud noise')`)
+	patch(t, e, "u", "triggers", map[string]any{"keys": []any{"stress"}, "custom": []any{"Red  Wine", "red wine", "Loud noise"}})
 	res := e.Do(apitest.Request{Method: "POST", Path: "/api/intake/complete", User: "u"})
-	require.Equal(t, 500, res.Status)
-	require.Equal(t, `{"error":"Internal server error"}`, string(res.Body))
-	require.Equal(t, 0, e.Count(`SELECT count(*) FROM user_medications WHERE user_id = 'u'`))
-	require.Equal(t, 0, e.Count(`SELECT count(*) FROM factor WHERE user_id = 'u'`))
-	require.Equal(t, 1, e.Count(`SELECT count(*) FROM intake_response WHERE user_id = 'u' AND status = 'in_progress'`))
+	require.Equal(t, 200, res.Status, string(res.Body))
+	require.Equal(t, 1, e.Count(`SELECT count(*) FROM factor WHERE user_id = 'u' AND key = 'intake.trigger:red_wine' AND display_name = 'Red  Wine'`))
+	require.Equal(t, 2, e.Count(`SELECT count(*) FROM factor WHERE user_id = 'u'`))
+	require.Equal(t, 0, e.Count(`SELECT count(*) FROM factor WHERE user_id = 'u' AND key = 'intake.trigger:stress'`))
+	require.Equal(t, 1, e.Count(`SELECT count(*) FROM intake_response WHERE user_id = 'u' AND status = 'completed' AND jsonb_array_length(seeded->'factorIds') = 1`))
 }

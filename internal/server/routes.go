@@ -10,6 +10,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/api/intake"
 	"github.com/denysovkos/migraine.club/internal/api/meds"
 	"github.com/denysovkos/migraine.club/internal/api/preventives"
+	"github.com/denysovkos/migraine.club/internal/api/questionnaires"
 	"github.com/denysovkos/migraine.club/internal/api/user"
 	"github.com/denysovkos/migraine.club/internal/api/weather"
 	"github.com/denysovkos/migraine.club/internal/app"
@@ -26,4 +27,5 @@ func mountAPI(r chi.Router, d *app.Deps) {
 	cycle.Mount(r, d)
 	preventives.Mount(r, d)
 	intake.Mount(r, d)
+	questionnaires.Mount(r, d)
 }

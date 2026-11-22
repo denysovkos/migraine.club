@@ -3,7 +3,7 @@ import type { IntakeAnswers, IntakeSeededIds } from '@/models/intake';
 import type { MedicationClassType } from '@/models/Schema';
 import type { LocalDateString } from '@/services/localDate';
 
-import { eq, inArray } from 'drizzle-orm';
+import { eq, inArray, isNotNull } from 'drizzle-orm';
 
 import { factorSchema, MedicationClass, medicationsCatalogSchema, userMedicationsSchema } from '@/models/Schema';
 import { preventivePlansService } from '@/services/preventives/PreventivePlansService';
@@ -186,7 +186,9 @@ export async function seedFromIntake(
       const [row] = await tx
         .insert(factorSchema)
         .values({ userId, key, type: 'trigger', displayName: label.trim(), isActive: true })
-        .onConflictDoNothing({ target: [factorSchema.userId, factorSchema.key] })
+        // factor_user_key_uidx is partial (WHERE key IS NOT NULL): the
+        // conflict target must repeat the predicate or Postgres cannot use it.
+        .onConflictDoNothing({ target: [factorSchema.userId, factorSchema.key], where: isNotNull(factorSchema.key) })
         .returning({ id: factorSchema.id });
 
       if (row) {

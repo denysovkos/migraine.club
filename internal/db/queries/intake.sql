@@ -37,5 +37,5 @@ RETURNING id;
 -- name: InsertIntakeTriggerFactor :many
 INSERT INTO factor (user_id, key, type, display_name, is_active)
 VALUES (@user_id, @key, 'trigger', @display_name, true)
-ON CONFLICT (user_id, key) DO NOTHING
+ON CONFLICT (user_id, key) WHERE key IS NOT NULL DO NOTHING
 RETURNING id;

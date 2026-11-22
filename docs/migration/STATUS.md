@@ -56,13 +56,12 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
   the routes ported before these helpers; add steps there for new edges.
 
-## Upstream bugs found (kept identical, to fix in both after cutover)
+## Upstream bugs fixed on this branch (in Node and Go together)
 
-- `POST /api/intake/complete` with custom triggers is always a 500: the
-  factor insert uses `ON CONFLICT (user_id, key)`, which Postgres cannot match
-  to the partial index `factor_user_key_uidx ... WHERE key IS NOT NULL`
-  (42P10), so the transaction rolls back. Fix: add the index predicate
-  (`targetWhere: isNotNull(factor.key)` / `WHERE key IS NOT NULL`).
+- `POST /api/intake/complete` with custom triggers was always a 500: the
+  factor insert used `ON CONFLICT (user_id, key)`, which Postgres cannot match
+  to the partial index `factor_user_key_uidx ... WHERE key IS NOT NULL`.
+  The conflict target now repeats the predicate (e2e: onboarding.e2e.ts).
 
 ## Progress
 
@@ -166,7 +165,7 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/push/subscribe` POST
 - [ ] `/api/push/test` POST
 - [ ] `/api/push/unsubscribe` POST
-- [ ] `/api/questionnaires` GET POST
+- [x] `/api/questionnaires` GET POST
 - [x] `/api/quick-add/episode` POST
 - [x] `/api/quick-add/medication-intake` POST
 - [x] `/api/quick-add/medication-intake/[id]` DELETE PATCH

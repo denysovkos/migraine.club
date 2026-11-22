@@ -65,7 +65,7 @@ func (q *Queries) GetIntakeResponse(ctx context.Context, userID string) (IntakeR
 const insertIntakeTriggerFactor = `-- name: InsertIntakeTriggerFactor :many
 INSERT INTO factor (user_id, key, type, display_name, is_active)
 VALUES ($1, $2, 'trigger', $3, true)
-ON CONFLICT (user_id, key) DO NOTHING
+ON CONFLICT (user_id, key) WHERE key IS NOT NULL DO NOTHING
 RETURNING id
 `
 

@@ -57,8 +57,7 @@ const scenarios: Scenario[] = [
     ],
   },
   {
-    // Upstream bug kept for parity: ON CONFLICT (user_id, key) cannot use the
-    // partial factor_user_key_uidx, so completion with custom triggers is a 500.
+    // Was a 500 before ON CONFLICT repeated factor_user_key_uidx's predicate.
     name: 'intake complete with custom triggers',
     sql: [`DELETE FROM intake_response WHERE user_id = ${U}`],
     steps: [
