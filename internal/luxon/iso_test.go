@@ -40,3 +40,25 @@ func TestFromISOGolden(t *testing.T) {
 		require.Equal(t, *c.Date, ISODate(got), "%q in %s at %d", c.Input, c.Zone, c.Now)
 	}
 }
+
+// TestDiffDaysGolden compares DiffDays and PlusDays with Luxon
+// (scripts/luxon-diff-golden.mts).
+func TestDiffDaysGolden(t *testing.T) {
+	raw, err := os.ReadFile("testdata/diffdays.json")
+	require.NoError(t, err)
+	var cases []struct {
+		A, B         int64
+		AZone, BZone string
+		Days         float64
+		PlusN        int
+		Plus         int64
+	}
+	require.NoError(t, json.Unmarshal(raw, &cases))
+	require.NotEmpty(t, cases)
+	for _, c := range cases {
+		aLoc, _ := tz.Load(c.AZone)
+		bLoc, _ := tz.Load(c.BZone)
+		require.Equal(t, c.Days, DiffDays(time.UnixMilli(c.A), aLoc, time.UnixMilli(c.B), bLoc), "%+v", c)
+		require.Equal(t, c.Plus, PlusDays(time.UnixMilli(c.A), aLoc, c.PlusN).UnixMilli(), "%+v", c)
+	}
+}

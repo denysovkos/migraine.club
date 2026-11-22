@@ -1,6 +1,7 @@
 package jsx
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -54,4 +55,19 @@ func TestCollapseSpace(t *testing.T) {
 	require.Equal(t, "a b c", CollapseSpace("a \t  b　c", " "))
 	require.Equal(t, "a_b", CollapseSpace("a  b", "_"))
 	require.Equal(t, " x ", CollapseSpace("\n x  ", " "))
+}
+
+// Expectations are V8's Number(s).
+func TestStringToNumber(t *testing.T) {
+	cases := map[string]float64{
+		"0x10": 16, "0X1f": 31, "0b101": 5, "0o17": 15, " 12 ": 12, "1e400": math.Inf(1), "-1e400": math.Inf(-1),
+		"Infinity": math.Inf(1), "+Infinity": math.Inf(1), "5.": 5, ".5": 0.5, "+.5e3": 500, "": 0, " 1 ": 1,
+		"0.0000001": 1e-7,
+	}
+	for in, want := range cases {
+		require.Equal(t, want, StringToNumber(in), "%q", in)
+	}
+	for _, in := range []string{"-0x10", "inf", "1_0", "0x", "1e", "NaN", "12abc", "0xG", "0x1p-2"} {
+		require.True(t, math.IsNaN(StringToNumber(in)), "%q", in)
+	}
 }

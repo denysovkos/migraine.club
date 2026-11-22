@@ -67,6 +67,10 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   factor insert used `ON CONFLICT (user_id, key)`, which Postgres cannot match
   to the partial index `factor_user_key_uidx ... WHERE key IS NOT NULL`.
   The conflict target now repeats the predicate (e2e: onboarding.e2e.ts).
+- Program recommendations counted factor-log events instead of days and
+  gave today's logs `daysAgo = -1`, so the sleep program could say "Logged
+  sleep_issue 15 of last 14 days". Logs now count once per local calendar
+  day inside the window (collectSignals / recommendationEngine tests).
 
 ## Progress
 
@@ -153,20 +157,20 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/preventives/[id]/weekly-checkin` POST
 - [x] `/api/preventives/due` GET
 - [x] `/api/preventives/intake` POST
-- [ ] `/api/programs` GET
-- [ ] `/api/programs/[programId]` GET
-- [ ] `/api/programs/[programId]/end` POST
-- [ ] `/api/programs/[programId]/enroll` POST
-- [ ] `/api/programs/[programId]/pause` POST
-- [ ] `/api/programs/[programId]/progress` GET
-- [ ] `/api/programs/[programId]/resume` POST
-- [ ] `/api/programs/acute-med-timing/attack/[id]` GET
-- [ ] `/api/programs/enrollments` GET
-- [ ] `/api/programs/recommendations` GET
-- [ ] `/api/programs/recommendations/[programId]/dismiss` POST
-- [ ] `/api/programs/settings` GET PATCH
-- [ ] `/api/programs/sleep-regularity/log` POST
-- [ ] `/api/programs/sleep-regularity/today-status` GET
+- [x] `/api/programs` GET
+- [x] `/api/programs/[programId]` GET
+- [x] `/api/programs/[programId]/end` POST
+- [x] `/api/programs/[programId]/enroll` POST
+- [x] `/api/programs/[programId]/pause` POST
+- [x] `/api/programs/[programId]/progress` GET
+- [x] `/api/programs/[programId]/resume` POST
+- [x] `/api/programs/acute-med-timing/attack/[id]` GET
+- [x] `/api/programs/enrollments` GET
+- [x] `/api/programs/recommendations` GET
+- [x] `/api/programs/recommendations/[programId]/dismiss` POST
+- [x] `/api/programs/settings` GET PATCH
+- [x] `/api/programs/sleep-regularity/log` POST
+- [x] `/api/programs/sleep-regularity/today-status` GET
 - [ ] `/api/push/subscribe` POST
 - [ ] `/api/push/test` POST
 - [ ] `/api/push/unsubscribe` POST

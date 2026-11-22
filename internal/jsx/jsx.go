@@ -4,7 +4,9 @@
 package jsx
 
 import (
+	"errors"
 	"math"
+	"regexp"
 	"strconv"
 	"strings"
 	"unicode/utf16"
@@ -109,15 +111,7 @@ func ToNumber(v any) float64 {
 		}
 		return 0
 	case string:
-		t := Trim(x)
-		if t == "" {
-			return 0
-		}
-		f, err := strconv.ParseFloat(t, 64)
-		if err != nil || strings.ContainsAny(strings.ToLower(t), "inf_x") {
-			return math.NaN()
-		}
-		return f
+		return StringToNumber(x)
 	default:
 		return math.NaN()
 	}
@@ -226,3 +220,52 @@ func CollapseSpace(s, repl string) string {
 	}
 	return b.String()
 }
+
+var decimalLiteral = regexp.MustCompile(`^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$`)
+
+// StringToNumber is Number(s) for a string: ECMAScript's StringNumericLiteral
+// (whitespace-trimmed decimal, ±Infinity, unsigned 0x/0o/0b), NaN otherwise.
+func StringToNumber(s string) float64 {
+	t := Trim(s)
+	switch t {
+	case "":
+		return 0
+	case "Infinity", "+Infinity":
+		return math.Inf(1)
+	case "-Infinity":
+		return math.Inf(-1)
+	}
+	if len(t) > 2 && t[0] == '0' {
+		base := 0
+		switch t[1] {
+		case 'x', 'X':
+			base = 16
+		case 'o', 'O':
+			base = 8
+		case 'b', 'B':
+			base = 2
+		}
+		if base != 0 {
+			v := 0.0
+			for _, c := range strings.ToLower(t[2:]) {
+				d := strings.IndexRune("0123456789abcdef", c)
+				if d < 0 || d >= base {
+					return math.NaN()
+				}
+				v = v*float64(base) + float64(d)
+			}
+			return v
+		}
+	}
+	if !decimalLiteral.MatchString(t) {
+		return math.NaN()
+	}
+	f, err := strconv.ParseFloat(t, 64)
+	if err != nil && !errors.Is(err, strconv.ErrRange) {
+		return math.NaN()
+	}
+	return f
+}
+
+// IsFinite is Number.isFinite for a number.
+func IsFinite(f float64) bool { return !math.IsNaN(f) && !math.IsInf(f, 0) }

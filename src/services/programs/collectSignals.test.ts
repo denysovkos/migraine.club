@@ -12,6 +12,7 @@ vi.mock('drizzle-orm', async (importOriginal) => {
 });
 
 let intakeRow: { answers: unknown; status: string } | null = null;
+let factorEventRows: Array<{ key: string | null; occurredAt: Date }> = [];
 let intakeOwnerId = 'user-1';
 
 /**
@@ -40,7 +41,7 @@ vi.mock('@/libs/DB', () => ({
       from: () => ({
         where: whereClause,
         // Only the factor-events query joins; it doesn't touch intake gating.
-        innerJoin: () => ({ where: whereClause }),
+        innerJoin: () => ({ where: async () => factorEventRows }),
       }),
     }),
   },
@@ -102,5 +103,22 @@ describe('collectSignals — intake gate', () => {
     const signals = await collectSignals({ userId: 'user-1', today: '2026-09-10', timezone: 'UTC' });
 
     expect(signals.intake).toBeNull();
+  });
+});
+
+describe('collectSignals — factor log days', () => {
+  it('counts days ago as calendar days in the user\'s zone, today being 0', async () => {
+    factorEventRows = [
+      { key: 'sleep_issue', occurredAt: new Date('2025-03-10T07:00:00Z') }, // 08:00 today in Berlin
+      { key: 'sleep_issue', occurredAt: new Date('2025-03-09T22:30:00Z') }, // 23:30 yesterday
+      { key: 'sleep_issue', occurredAt: new Date('2025-03-09T23:30:00Z') }, // 00:30 today
+      { key: 'sleep_issue', occurredAt: new Date('2025-02-24T11:00:00Z') }, // 14 days ago
+      { key: null, occurredAt: new Date('2025-03-10T07:00:00Z') },
+    ];
+    const signals = await collectSignals({ userId: 'user-1', today: '2025-03-10', timezone: 'Europe/Berlin' });
+
+    expect(signals.factorLogsLast14d.map(l => l.daysAgo)).toEqual([0, 1, 0, 14]);
+
+    factorEventRows = [];
   });
 });

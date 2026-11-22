@@ -235,3 +235,36 @@ describe('program content: intake-answer trigger ordering', () => {
     expect(ranked[0]!.reason).not.toContain('You told us');
   });
 });
+
+describe('factor-frequency counts days, not events', () => {
+  const program = { id: 'sleep-regularity', triggers: [{ kind: 'factor-frequency' as const, factor: 'sleep_issue', values: [], minDays: 5, windowDays: 14 }] };
+  const signals = {
+    headacheDaysLast14d: 0,
+    diaryCoverageLast28d: 0,
+    avgOnsetToDoseMinutesLast28d: null,
+    acuteMedDaysLast28d: 0,
+    intake: null,
+  };
+
+  it('does not recommend when many logs fall on fewer than minDays days', () => {
+    const ranked = rankRecommendations({
+      programs: [program],
+      enrolledIds: [],
+      dismissedIds: [],
+      signals: { ...signals, factorLogsLast14d: [0, 0, 0, 1, 1, 2, 2, 3].map(daysAgo => ({ factor: 'sleep_issue', value: '', daysAgo })) },
+    });
+
+    expect(ranked).toEqual([]);
+  });
+
+  it('reports the number of distinct days inside the window', () => {
+    const ranked = rankRecommendations({
+      programs: [program],
+      enrolledIds: [],
+      dismissedIds: [],
+      signals: { ...signals, factorLogsLast14d: [0, 0, 1, 2, 3, 4, 13, 14, 15].map(daysAgo => ({ factor: 'sleep_issue', value: '', daysAgo })) },
+    });
+
+    expect(ranked).toEqual([{ id: 'sleep-regularity', reason: 'Logged sleep_issue 6 of last 14 days.' }]);
+  });
+});

@@ -307,3 +307,55 @@ func SetTime(dt time.Time, loc *time.Location, hour, minute, second, ms int) (ti
 	}
 	return time.UnixMilli(ts).In(loc), true
 }
+
+// PlusDays is dt.plus({ days: n }) for a DateTime in loc: the wall clock moves
+// by calendar days and is resolved against dt's offset.
+func PlusDays(dt time.Time, loc *time.Location, n int) time.Time {
+	l := dt.In(loc)
+	_, off := l.Zone()
+	local := time.Date(l.Year(), l.Month(), l.Day()+n, l.Hour(), l.Minute(), l.Second(), l.Nanosecond(), time.UTC).UnixMilli()
+	ts, _ := fixOffset(local, off, loc)
+	return time.UnixMilli(ts).In(loc)
+}
+
+// DiffDays is a.diff(b, 'days').days for a DateTime a in aLoc and b in bLoc,
+// following Luxon's calendar-day algorithm with a fractional remainder.
+func DiffDays(a time.Time, aLoc *time.Location, b time.Time, bLoc *time.Location) float64 {
+	otherIsLater := b.UnixMilli() > a.UnixMilli()
+	earlier, eLoc, later, lLoc := b, bLoc, a, aLoc
+	if otherIsLater {
+		earlier, eLoc, later, lLoc = a, aLoc, b, bLoc
+	}
+	dayStart := func(t time.Time, loc *time.Location) int64 {
+		l := t.In(loc)
+		return time.Date(l.Year(), l.Month(), l.Day(), 0, 0, 0, 0, time.UTC).UnixMilli()
+	}
+	days := int(math.Floor(float64(dayStart(later, lLoc)-dayStart(earlier, eLoc)) / 86400000))
+	lms := later.UnixMilli()
+	highWater := PlusDays(earlier, eLoc, days)
+	var cursor time.Time
+	same := false // highWater and cursor are the same DateTime object in Luxon
+	if highWater.UnixMilli() > lms {
+		days--
+		cursor = PlusDays(earlier, eLoc, days)
+		if cursor.UnixMilli() > lms {
+			highWater = cursor
+			days--
+			cursor = PlusDays(earlier, eLoc, days)
+		}
+	} else {
+		cursor, same = highWater, true
+	}
+	remaining := float64(lms - cursor.UnixMilli())
+	if highWater.UnixMilli() < lms {
+		highWater, same = PlusDays(cursor, eLoc, 1), false
+	}
+	result := float64(days)
+	if !same {
+		result += remaining / float64(highWater.UnixMilli()-cursor.UnixMilli())
+	}
+	if otherIsLater {
+		result = -result
+	}
+	return result
+}

@@ -1,4 +1,4 @@
-version: "2"
+version: '2'
 linters:
   settings:
     staticcheck:
@@ -16,4 +16,4 @@ linters:
     rules:
       # Closing response bodies and test connections: nothing to recover.
       - linters: [errcheck]
-        source: "\\.Close\\("
+        source: '\.Close\('

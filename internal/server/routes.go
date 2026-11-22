@@ -12,6 +12,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/api/meds"
 	"github.com/denysovkos/migraine.club/internal/api/outcomes"
 	"github.com/denysovkos/migraine.club/internal/api/preventives"
+	"github.com/denysovkos/migraine.club/internal/api/programs"
 	"github.com/denysovkos/migraine.club/internal/api/questionnaires"
 	"github.com/denysovkos/migraine.club/internal/api/user"
 	"github.com/denysovkos/migraine.club/internal/api/weather"
@@ -32,4 +33,5 @@ func mountAPI(r chi.Router, d *app.Deps) {
 	questionnaires.Mount(r, d)
 	outcomes.Mount(r, d)
 	insights.Mount(r, d)
+	programs.Mount(r, d)
 }

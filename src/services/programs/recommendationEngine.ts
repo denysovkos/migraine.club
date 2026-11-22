@@ -42,9 +42,12 @@ function evaluateTrigger(t: RecommendationTriggerT, s: EngineSignals): string | 
     case 'factor-frequency': {
       const matchesValue = (l: { value: string }) =>
         t.values.length === 0 ? true : t.values.includes(l.value);
-      const matches = s.factorLogsLast14d.filter(
-        l => l.factor === t.factor && matchesValue(l) && l.daysAgo < t.windowDays,
-      ).length;
+      // Distinct days, not events: three logs on one day are one day.
+      const matches = new Set(
+        s.factorLogsLast14d
+          .filter(l => l.factor === t.factor && matchesValue(l) && l.daysAgo >= 0 && l.daysAgo < t.windowDays)
+          .map(l => l.daysAgo),
+      ).size;
       const valuesLabel = t.values.length === 0 ? '' : ` as ${t.values.join('/')}`;
       return matches >= t.minDays
         ? `Logged ${t.factor}${valuesLabel} ${matches} of last ${t.windowDays} days.`

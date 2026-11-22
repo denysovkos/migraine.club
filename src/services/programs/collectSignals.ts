@@ -106,7 +106,9 @@ export async function collectSignals(args: {
   const factorLogsLast14d = factorEvents
     .filter(r => r.key !== null)
     .map((r) => {
-      const daysAgo = Math.floor(today.diff(DateTime.fromJSDate(r.occurredAt), 'days').days);
+      // Calendar days between the log's local date and today (today is 0).
+      const logDay = DateTime.fromJSDate(r.occurredAt, { zone: args.timezone }).startOf('day');
+      const daysAgo = Math.round(today.diff(logDay, 'days').days);
       return { factor: r.key as string, value: '', daysAgo };
     });
 
