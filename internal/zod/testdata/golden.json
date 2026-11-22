@@ -2980,6 +2980,59 @@
     ]
   },
   {
+    "name": "super_refine",
+    "results": [
+      {
+        "input": {
+          "a": {
+            "x": 1
+          }
+        },
+        "success": true,
+        "data": {
+          "a": {
+            "x": 1
+          }
+        }
+      },
+      {
+        "input": {
+          "a": {
+            "x": 2
+          }
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "too big",
+            "path": [
+              "a"
+            ]
+          },
+          {
+            "code": "custom",
+            "message": "with path",
+            "path": [
+              "a",
+              "x"
+            ]
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"too big\",\n    \"path\": [\n      \"a\"\n    ]\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"with path\",\n    \"path\": [\n      \"a\",\n      \"x\"\n    ]\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "too big",
+              "with path"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "native_enum_like",
     "results": [
       {

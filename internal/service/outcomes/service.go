@@ -278,3 +278,20 @@ func (s *Service) Monthly(ctx context.Context, uid string, months int) (*httpx.O
 	}
 	return httpx.O("timezone", zone, "months", out), nil
 }
+
+// RangeTotals is computeOutcomes for an explicit valid from..to window,
+// returning only the current totals (what the clinician report reads).
+func (s *Service) RangeTotals(ctx context.Context, uid, zone, from, to string, windowDays int) (Totals, error) {
+	loc := tz.LoadOrUTC(zone)
+	start, _ := s.LocalStartUTC(from, loc)
+	endDay, _ := s.LocalStartUTC(to, loc)
+	diary, err := s.diary(ctx, uid, from, to)
+	if err != nil {
+		return Totals{}, err
+	}
+	meds, err := s.intakes(ctx, uid, start, localdate.StartOfDay(endDay.AddDate(0, 0, 1), loc))
+	if err != nil {
+		return Totals{}, err
+	}
+	return ComputeForRange(zone, windowDays, from, to, diary, meds).Totals, nil
+}

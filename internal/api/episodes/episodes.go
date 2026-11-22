@@ -207,7 +207,6 @@ func rawOrNull(b []byte) any {
 	return jsonRaw(b)
 }
 
-
 // medicationIntakes is loadMedicationIntakes.
 func (h handlers) medicationIntakes(r *http.Request, userID string, id int32) ([]any, error) {
 	rows, err := h.d.Q.EpisodeMedicationIntakes(r.Context(), userID, &id)

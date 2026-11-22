@@ -101,4 +101,3 @@ func Score(kind string, answers any) (Scored, error) {
 			}}}}, nil
 	}
 }
-

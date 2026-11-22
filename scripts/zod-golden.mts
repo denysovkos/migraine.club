@@ -57,6 +57,12 @@ const cases: Array<{ name: string; schema: z.ZodTypeAny; inputs: unknown[] }> = 
   { name: 'union_nested', schema: z.object({ p: z.union([z.null(), z.object({ n: z.number().int().positive() }), z.array(z.number().int().min(1).max(7)), z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/))]).nullish() }), inputs: [{ p: null }, { p: { n: 2 } }, { p: { n: 0 } }, { p: { n: 1.5 } }, { p: [1, 'a'] }, { p: [9] }, { p: ['x'] }, { p: 'x' }, {}, { p: [[1]] }] },
   { name: 'union_checks', schema: z.union([z.string().min(3), z.number().max(2)]), inputs: ['ab', 5, true, 'abc'] },
   { name: 'union_two_soft', schema: z.object({ u: z.union([z.string().min(5), z.string().max(1)]) }), inputs: [{ u: 'abc' }, { u: 'a' }] },
+  { name: 'super_refine', schema: z.object({ a: z.object({ x: z.number() }).superRefine((v, ctx) => {
+    if (v.x > 1) {
+      ctx.addIssue({ code: 'custom', message: 'too big' });
+      ctx.addIssue({ code: 'custom', message: 'with path', path: ['x'] });
+    }
+  }) }), inputs: [{ a: { x: 1 } }, { a: { x: 2 } }] },
   { name: 'native_enum_like', schema: z.nativeEnum({ A: 'a', B: 'b' } as const), inputs: ['a', 'z'] },
 ];
 

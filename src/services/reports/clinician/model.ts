@@ -1,6 +1,7 @@
 import type { ClinicianReportConfig } from './config';
 import type { AppointmentPrepSnapshot } from '@/models/appointmentPrep';
 
+import type { LocalDateString } from '@/services/localDate';
 import { and, desc, eq, gte, lt, lte } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { db } from '@/libs/DB';
@@ -19,7 +20,7 @@ import {
   userSchema,
 } from '@/models/Schema';
 import { buildRelativeAttackHistogram, computeBleedingStartDates, isInPerimenstrualWindow } from '@/services/cycle/cycleDomain';
-import { dbDateToYmd } from '@/services/localDate';
+import { dbDateToYmd, ymdToDbDate } from '@/services/localDate';
 import { outcomesService } from '@/services/OutcomesService';
 import { calculateMohGuardrail } from '@/services/reports/clinician/mohGuardrail';
 import { toClinicianOutcomesPack } from '@/services/reports/clinician/outcomesPack';
@@ -128,6 +129,10 @@ export async function getClinicianReportModel(
   const cycleTimelineFrom = cycleTimelineTo.minus({ days: 89 }).startOf('day');
   const cycleTimelineStartUtc = cycleTimelineFrom.toUTC().toJSDate();
   const cycleTimelineEndExclusiveUtc = cycleTimelineTo.plus({ days: 1 }).toUTC().toJSDate();
+  // Date columns take the local calendar date. A JS Date of local midnight
+  // serializes to the previous UTC day east of UTC, dropping the last day.
+  const cycleTimelineFromDb = ymdToDbDate(cycleTimelineFrom.toISODate()! as LocalDateString);
+  const cycleTimelineToDb = ymdToDbDate(cycleTimelineTo.toISODate()! as LocalDateString);
 
   const [episodes, diaryRows, medIntakes, preventives, questionnaires, userRows, outcomes, cycleSettingsRows, cycleBleedingRows, cycleMigraineRows, cycleAttackRows, appointmentPrepRows] = await Promise.all([
     db
@@ -239,8 +244,8 @@ export async function getClinicianReportModel(
       .where(
         and(
           eq(cycleBleedingDaySchema.userId, userId),
-          gte(cycleBleedingDaySchema.localDate, cycleTimelineFrom.toJSDate()),
-          lte(cycleBleedingDaySchema.localDate, cycleTimelineTo.toJSDate()),
+          gte(cycleBleedingDaySchema.localDate, cycleTimelineFromDb),
+          lte(cycleBleedingDaySchema.localDate, cycleTimelineToDb),
         ),
       ),
     db
@@ -252,8 +257,8 @@ export async function getClinicianReportModel(
         and(
           eq(dailyDiaryEntrySchema.userId, userId),
           eq(dailyDiaryEntrySchema.dayType, 'migraine_day'),
-          gte(dailyDiaryEntrySchema.localDate, cycleTimelineFrom.toJSDate()),
-          lte(dailyDiaryEntrySchema.localDate, cycleTimelineTo.toJSDate()),
+          gte(dailyDiaryEntrySchema.localDate, cycleTimelineFromDb),
+          lte(dailyDiaryEntrySchema.localDate, cycleTimelineToDb),
         ),
       ),
     db

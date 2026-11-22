@@ -87,15 +87,15 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/.well-known/oauth-authorization-server` GET
 - [ ] `/.well-known/oauth-protected-resource/mcp` GET
 - [x] `/api/acute-doses` POST
-- [ ] `/api/acute-meds-report` GET
+- [x] `/api/acute-meds-report` GET
 - [ ] `/api/admin/doctor-verification/applications` GET
 - [ ] `/api/admin/doctor-verification/applications/[id]` GET
 - [ ] `/api/admin/doctor-verification/applications/[id]/approve` POST
 - [ ] `/api/admin/doctor-verification/applications/[id]/reject` POST
 - [ ] `/api/admin/doctor-verification/files/[fileId]` GET
 - [ ] `/api/admin/feature-requests` GET PATCH
-- [ ] `/api/appointment-preps` GET POST
-- [ ] `/api/appointment-preps/[id]` DELETE GET PATCH
+- [x] `/api/appointment-preps` GET POST
+- [x] `/api/appointment-preps/[id]` DELETE GET PATCH
 - [ ] `/api/community/comments` POST
 - [ ] `/api/community/posts` GET POST
 - [ ] `/api/community/posts/[id]` GET
@@ -144,7 +144,7 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/moderation/role` GET
 - [ ] `/api/moderation/users` GET POST
 - [ ] `/api/moderation/visibility` GET POST
-- [ ] `/api/moh-status` GET
+- [x] `/api/moh-status` GET
 - [x] `/api/outcomes` GET
 - [x] `/api/outcomes/monthly` GET
 - [x] `/api/outcomes/settings` GET PUT
@@ -180,8 +180,8 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/quick-add/medication-intake/[id]` DELETE PATCH
 - [x] `/api/quick-add/suggestions` GET
 - [x] `/api/relief-sessions` GET POST
-- [ ] `/api/reports/clinician/pdf` POST
-- [ ] `/api/reports/clinician/preview` GET
+- [ ] `/api/reports/clinician/pdf` POST (moves to the SPA: the browser renders the same @react-pdf document from the report model; proxied to Next until then)
+- [x] `/api/reports/clinician/preview` GET
 - [ ] `/api/share` DELETE GET POST
 - [ ] `/api/share/[token]` GET
 - [x] `/api/space-weather/kp` GET

@@ -732,7 +732,7 @@ func Compute(userID string, now time.Time, cfg Config, episodes []Episode, facto
 				factorID: fid, window: w.id, pValue: pv, caseRate: caseRate, controlRate: controlRate,
 				riskDiff: caseRate - controlRate, ci: ci, totalExposures: total, earlySign: early,
 				ciExcludesZero: ci.Low > 0 || ci.High < 0,
-				counts: Counts{setsUsed, Num(avg), caseExposed, caseTotal, controlsExposed, controlsTotal},
+				counts:         Counts{setsUsed, Num(avg), caseExposed, caseTotal, controlsExposed, controlsTotal},
 			})
 			pValues = append(pValues, pv)
 		}

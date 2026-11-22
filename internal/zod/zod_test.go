@@ -69,12 +69,18 @@ var goldenSchemas = map[string]Schema{
 	"int_unsafe":         Number().Int(),
 	"union_nested": Object(F("p", Nullish(Union(Null(), Object(F("n", Number().Int().Positive())),
 		Array(Number().Int().Min(1).Max(7)), Array(String().Regex(`^\d{4}-\d{2}-\d{2}$`)))))),
-	"union_checks":   Union(String().Min(3), Number().Max(2)),
-	"union_two_soft": Object(F("u", Union(String().Min(5), String().Max(1)))),
-	"unknown":            Object(F("u", Unknown())),
-	"null":               Null(),
-	"starts_ends":        String().StartsWith("ab").EndsWith("yz"),
-	"native_enum_like":   Enum("a", "b"),
+	"union_checks":     Union(String().Min(3), Number().Max(2)),
+	"union_two_soft":   Object(F("u", Union(String().Min(5), String().Max(1)))),
+	"super_refine": Object(F("a", SuperRefine(Object(F("x", Number())), func(v any, ctx *Ctx) {
+		if v.(map[string]any)["x"].(float64) > 1 {
+			ctx.Issue("code", "custom", "message", "too big")
+			ctx.Issue("code", "custom", "message", "with path", "path", []any{"x"})
+		}
+	}))),
+	"unknown":          Object(F("u", Unknown())),
+	"null":             Null(),
+	"starts_ends":      String().StartsWith("ab").EndsWith("yz"),
+	"native_enum_like": Enum("a", "b"),
 }
 
 type goldenResult struct {

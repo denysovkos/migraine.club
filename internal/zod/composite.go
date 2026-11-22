@@ -385,6 +385,28 @@ func (c *Ctx) AddIssue(message string, subpath ...any) {
 	c.issues = append(c.issues, newIssue("code", "custom").finish(p, message))
 }
 
+// Issue is ctx.addIssue({...}) inside superRefine: the issue keeps the
+// caller's key order (pairs of key, value) and gains the current path at the
+// end when the caller gave none, as Zod v4's finalizeIssue does. A "path"
+// value is relative to the refined value.
+func (c *Ctx) Issue(pairs ...any) {
+	is := newIssue()
+	hasPath := false
+	for i := 0; i+1 < len(pairs); i += 2 {
+		k := pairs[i].(string)
+		v := pairs[i+1]
+		if k == "path" {
+			hasPath = true
+			v = append(append([]any{}, c.path...), v.([]any)...)
+		}
+		is.fields = append(is.fields, kv{k, v})
+	}
+	if !hasPath {
+		is.fields = append(is.fields, kv{"path", append([]any{}, c.path...)})
+	}
+	c.issues = append(c.issues, is)
+}
+
 type refineSchema struct {
 	inner Schema
 	fn    func(any, *Ctx)
