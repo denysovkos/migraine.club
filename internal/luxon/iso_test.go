@@ -62,3 +62,15 @@ func TestDiffDaysGolden(t *testing.T) {
 		require.Equal(t, c.Plus, PlusDays(time.UnixMilli(c.A), aLoc, c.PlusN).UnixMilli(), "%+v", c)
 	}
 }
+
+func TestToISO(t *testing.T) {
+	berlin, _ := tz.Load("Europe/Berlin")
+	kolkata, _ := tz.Load("Asia/Kolkata")
+	ny, _ := tz.Load("America/New_York")
+	at := time.Date(2026, 1, 15, 10, 4, 5, 123_456_789, time.UTC)
+	// Values from luxon: DateTime.fromJSDate(at, { zone }).toISO()
+	require.Equal(t, "2026-01-15T11:04:05.123+01:00", ToISO(at, berlin))
+	require.Equal(t, "2026-01-15T15:34:05.123+05:30", ToISO(at, kolkata))
+	require.Equal(t, "2026-01-15T05:04:05.123-05:00", ToISO(at, ny))
+	require.Equal(t, "2026-01-15T10:04:05.123Z", ToISO(at, time.UTC))
+}

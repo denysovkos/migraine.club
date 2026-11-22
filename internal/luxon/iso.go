@@ -359,3 +359,20 @@ func DiffDays(a time.Time, aLoc *time.Location, b time.Time, bLoc *time.Location
 	}
 	return result
 }
+
+// ToISO is DateTime#toISO() for t in loc: milliseconds and the offset, "Z"
+// only for UTC itself (a fixed zero offset).
+func ToISO(t time.Time, loc *time.Location) string {
+	l := t.In(loc)
+	_, off := l.Zone()
+	base := ISODate(l) + "T" + pad(l.Hour(), 2) + ":" + pad(l.Minute(), 2) + ":" + pad(l.Second(), 2) + "." +
+		pad(l.Nanosecond()/int(time.Millisecond), 3)
+	if loc == time.UTC {
+		return base + "Z"
+	}
+	sign := "+"
+	if off < 0 {
+		sign, off = "-", -off
+	}
+	return base + sign + pad(off/3600, 2) + ":" + pad(off%3600/60, 2)
+}
