@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 
@@ -57,7 +58,10 @@ func (h handlers) painError(w http.ResponseWriter, err error, action string) {
 	case errors.As(err, &zerr):
 		httpx.ValidationError(w, zerr)
 	default:
-		h.d.Log.Error("Error "+action+" pain reading", "error", err)
+		if !strings.HasSuffix(action, "relief session") {
+			action += " pain reading"
+		}
+		h.d.Log.Error("Error "+action, "error", err)
 		httpx.Internal(w)
 	}
 }

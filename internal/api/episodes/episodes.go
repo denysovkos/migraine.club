@@ -43,6 +43,8 @@ func Mount(r chi.Router, d *app.Deps) {
 	r.Patch("/api/episodes/{id}", h.patch)
 	r.Delete("/api/episodes/{id}", h.delete)
 	r.Post("/api/quick-add/episode", h.quickEpisode)
+	r.Get("/api/relief-sessions", h.listRelief)
+	r.Post("/api/relief-sessions", h.addRelief)
 	mountPainReadings(r, d)
 }
 

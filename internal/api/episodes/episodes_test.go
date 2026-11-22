@@ -329,3 +329,30 @@ func TestQuickAddEpisode(t *testing.T) {
 	require.Equal(t, 400, res.Status)
 	require.Equal(t, 401, e.Do(apitest.Request{Method: "POST", Path: "/api/quick-add/episode"}).Status)
 }
+
+func TestReliefSessions(t *testing.T) {
+	e := newEnv(t)
+	ep := create(t, e, "u", map[string]any{"mode": "quick", "intensity": 3})
+	started := time.Now().Add(-5 * time.Minute).UTC().Truncate(time.Millisecond)
+	res := e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "u", Body: map[string]any{
+		"exercise": "breathing", "startedAt": iso(started), "durationSeconds": 180, "completed": true, "helped": "a_little", "episodeId": ep["id"],
+	}})
+	require.Equal(t, 201, res.Status, string(res.Body))
+	require.Equal(t, fmt.Sprintf(`{"session":{"id":"%s","episodeId":%v,"exercise":"breathing","startedAt":"%s","durationSeconds":180,"completed":true,"helped":"a_little"}}`,
+		res.Map(t)["session"].(map[string]any)["id"], ep["id"], iso(started)), string(res.Body))
+	require.Equal(t, 201, e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "u", Body: map[string]any{"exercise": "pmr", "startedAt": iso(started), "durationSeconds": 30, "completed": false}}).Status)
+
+	require.Len(t, e.Do(apitest.Request{Path: "/api/relief-sessions", User: "u"}).Map(t)["sessions"], 2)
+	require.Len(t, e.Do(apitest.Request{Path: fmt.Sprintf("/api/relief-sessions?episodeId=%v", ep["id"]), User: "u"}).Map(t)["sessions"], 1)
+	require.Equal(t, `{"sessions":[]}`, string(e.Do(apitest.Request{Path: "/api/relief-sessions", User: "other"}).Body))
+	for _, bad := range []string{"", "0", "-1", "1.5", "abc"} {
+		require.Equal(t, `{"error":"Invalid episode ID"}`, string(e.Do(apitest.Request{Path: "/api/relief-sessions?episodeId=" + bad, User: "u"}).Body), bad)
+	}
+
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "other", Body: map[string]any{"exercise": "pmr", "startedAt": iso(started), "durationSeconds": 30, "completed": true, "episodeId": ep["id"]}})
+	require.Equal(t, `{"error":"Episode not found","code":"NOT_FOUND"}`, string(res.Body))
+	res = e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "u", Body: map[string]any{"exercise": "pmr", "startedAt": iso(time.Now().Add(time.Hour)), "durationSeconds": 30, "completed": true}})
+	require.Equal(t, `{"error":"The session starts in the future.","code":"VALIDATION_ERROR","details":{"reason":"in_future"}}`, string(res.Body))
+	require.Equal(t, 400, e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "u", Body: map[string]any{"exercise": "yoga", "durationSeconds": 99999}}).Status)
+	require.Equal(t, `{"error":"Invalid JSON body"}`, string(e.Do(apitest.Request{Method: "POST", Path: "/api/relief-sessions", User: "u", Raw: "{"}).Body))
+}
