@@ -79,6 +79,16 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   String(key) for tallies kept in plain JS objects (share summary).
 - The share summary and new links' expiry use the server's local time zone
   (`time.Local`), as the Node Date methods did.
+- `jsx.SortJS`: V8's TimSort, so NaN-returning or inconsistent comparators
+  order like Node (golden `scripts/js-sort-golden.mts`). `jsx.Tally`: counts
+  kept in a plain object, where `__proto__` is dropped and Object.prototype
+  names (`constructor`, `toString`, ...) become strings; used for user tags.
+- `jsx.SliceUTF16` + `jsx.JSString`: `str.slice()` in UTF-16 units; a cut
+  surrogate pair is written as `\udXXX` like JSON.stringify does.
+- zod: Zod 4.6's capSize, an array over `.max()` fails before its elements
+  are parsed and the issue aborts (golden `array_cap`).
+- Community stats read posts without ORDER BY; its parity scenario runs
+  `VACUUM FULL` so both servers see the same heap order.
 - Mock auth ignores a client-sent `x-e2e-mock-user` header, as the Next
   proxy did by overwriting it.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
@@ -100,6 +110,12 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   so rows leaked between e2e tests. The list now lives in
   `scripts/e2eResetTables.ts`, checked against the schema and EXPORT_TABLES
   by `src/models/e2eResetTables.test.ts`.
+
+## Open fidelity items
+
+- `jsx.ParseInt` treats digit runs beyond int64 as NaN; JS parses them to a
+  large number. Affects only absurd ids/limits (episodes, WPI history).
+  Move those callers to `jsx.ParseIntNumber`.
 
 ## Progress
 
@@ -125,12 +141,12 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/api/admin/feature-requests` GET PATCH
 - [x] `/api/appointment-preps` GET POST
 - [x] `/api/appointment-preps/[id]` DELETE GET PATCH
-- [ ] `/api/community/comments` POST
-- [ ] `/api/community/posts` GET POST
-- [ ] `/api/community/posts/[id]` GET
-- [ ] `/api/community/posts/[id]/vote` POST
-- [ ] `/api/community/report` POST
-- [ ] `/api/community/stats` GET
+- [x] `/api/community/comments` POST
+- [x] `/api/community/posts` GET POST
+- [x] `/api/community/posts/[id]` GET
+- [x] `/api/community/posts/[id]/vote` POST
+- [x] `/api/community/report` POST
+- [x] `/api/community/stats` GET
 - [ ] `/api/cron/daily-risk` GET POST
 - [ ] `/api/cron/insights` GET POST
 - [ ] `/api/cron/medication-reminders` GET POST
@@ -169,10 +185,10 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/intake/skip` POST
 - [ ] `/api/mcp` GET POST
 - [x] `/api/medications/search` GET
-- [ ] `/api/moderation/reports` GET POST
-- [ ] `/api/moderation/role` GET
-- [ ] `/api/moderation/users` GET POST
-- [ ] `/api/moderation/visibility` GET POST
+- [x] `/api/moderation/reports` GET POST
+- [x] `/api/moderation/role` GET
+- [x] `/api/moderation/users` GET POST
+- [x] `/api/moderation/visibility` GET POST
 - [x] `/api/moh-status` GET
 - [x] `/api/outcomes` GET
 - [x] `/api/outcomes/monthly` GET

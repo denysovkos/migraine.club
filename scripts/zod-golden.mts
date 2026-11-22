@@ -56,6 +56,9 @@ const cases: Array<{ name: string; schema: z.ZodTypeAny; inputs: unknown[] }> = 
   { name: 'starts_ends', schema: z.string().startsWith('ab').endsWith('yz'), inputs: ['abxyz', 'xx'] },
   { name: 'union_nested', schema: z.object({ p: z.union([z.null(), z.object({ n: z.number().int().positive() }), z.array(z.number().int().min(1).max(7)), z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/))]).nullish() }), inputs: [{ p: null }, { p: { n: 2 } }, { p: { n: 0 } }, { p: { n: 1.5 } }, { p: [1, 'a'] }, { p: [9] }, { p: ['x'] }, { p: 'x' }, {}, { p: [[1]] }] },
   { name: 'union_checks', schema: z.union([z.string().min(3), z.number().max(2)]), inputs: ['ab', 5, true, 'abc'] },
+  { name: 'array_cap', schema: z.object({ tags: z.array(z.string().min(1).max(32)).max(3).optional() }), inputs: [{ tags: ['', 1, 'x'.repeat(33), 'a'] }, { tags: ['', 1] }, { tags: ['a', 'b', 'c'] }] },
+  { name: 'array_cap_union', schema: z.union([z.array(z.number()).max(1), z.string()]), inputs: [[1, 2], ['x', 'y'], ['x']] },
+  { name: 'vote_literals', schema: z.object({ value: z.union([z.literal(-1), z.literal(0), z.literal(1)]) }), inputs: [{ value: 2 }, { value: '1' }, { value: -1 }, {}] },
   { name: 'union_two_soft', schema: z.object({ u: z.union([z.string().min(5), z.string().max(1)]) }), inputs: [{ u: 'abc' }, { u: 'a' }] },
   { name: 'super_refine', schema: z.object({ a: z.object({ x: z.number() }).superRefine((v, ctx) => {
     if (v.x > 1) {

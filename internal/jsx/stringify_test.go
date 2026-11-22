@@ -2,6 +2,7 @@ package jsx_test
 
 import (
 	"encoding/json"
+	"math"
 	"os"
 	"testing"
 
@@ -53,4 +54,19 @@ func TestJSONObjectMarshalJSON(t *testing.T) {
 	b, err := json.Marshal(map[string]any{"o": o})
 	require.NoError(t, err)
 	require.JSONEq(t, `{"o":{"1":["x",null],"b":1}}`, string(b))
+}
+
+func TestSliceUTF16AndJSString(t *testing.T) {
+	s := "ab😀cd"
+	require.Equal(t, "ab😀", jsx.SliceUTF16(s, 0, 4))
+	b, err := json.Marshal(map[string]any{"v": jsx.JSString(jsx.SliceUTF16(s, 0, 3))})
+	require.NoError(t, err)
+	require.Equal(t, `{"v":"ab\ud83d"}`, string(b))
+	out, err := jsx.Restringify(b, "")
+	require.NoError(t, err)
+	require.Equal(t, `{"v":"ab\ud83d"}`, string(out))
+	require.Equal(t, `"\ude00cd"`, jsx.QuoteJSON(jsx.SliceUTF16(s, 3, -1)))
+	require.True(t, math.IsNaN(jsx.ParseIntNumber("x1")))
+	require.InDelta(t, 1e20, jsx.ParseIntNumber(" 100000000000000000000abc"), 0)
+	require.InDelta(t, -12, jsx.ParseIntNumber("-12.9"), 0)
 }

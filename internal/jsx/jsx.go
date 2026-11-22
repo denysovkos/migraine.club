@@ -284,3 +284,63 @@ func StringToNumber(s string) float64 {
 
 // IsFinite is Number.isFinite for a number.
 func IsFinite(f float64) bool { return !math.IsNaN(f) && !math.IsInf(f, 0) }
+
+// ParseIntNumber is Number.parseInt(s, 10) as a JS number: NaN when no
+// digits lead, and digit runs beyond int64 still give their (rounded) value.
+func ParseIntNumber(s string) float64 {
+	s = Trim(s)
+	i := 0
+	neg := false
+	if i < len(s) && (s[i] == '+' || s[i] == '-') {
+		neg = s[i] == '-'
+		i++
+	}
+	start := i
+	for i < len(s) && s[i] >= '0' && s[i] <= '9' {
+		i++
+	}
+	if i == start {
+		return math.NaN()
+	}
+	f, _ := strconv.ParseFloat(s[start:i], 64)
+	if neg {
+		return -f
+	}
+	return f
+}
+
+// SliceUTF16 is String.prototype.slice(start, end) in UTF-16 code units,
+// keeping a surrogate the cut leaves alone as WTF-8 so JSString can write
+// it the way JSON.stringify does. end < 0 means "to the end".
+func SliceUTF16(s string, start, end int) string {
+	u := utf16.Encode([]rune(s))
+	if end < 0 || end > len(u) {
+		end = len(u)
+	}
+	if start >= end {
+		return ""
+	}
+	var b strings.Builder
+	part := u[start:end]
+	for i := 0; i < len(part); i++ {
+		c := rune(part[i])
+		if utf16.IsSurrogate(c) && c < 0xDC00 && i+1 < len(part) && part[i+1] >= 0xDC00 && part[i+1] < 0xE000 {
+			b.WriteRune(utf16.DecodeRune(c, rune(part[i+1])))
+			i++
+			continue
+		}
+		if utf16.IsSurrogate(c) {
+			b.Write([]byte{0xED, byte(0x80 | (c>>6)&0x3F), byte(0x80 | c&0x3F)})
+			continue
+		}
+		b.WriteRune(c)
+	}
+	return b.String()
+}
+
+// JSString marshals like JSON.stringify(string), including lone surrogates
+// left by SliceUTF16 (encoding/json would turn them into U+FFFD).
+type JSString string
+
+// MarshalJSON implements json.Marshaler.
+func (s JSString) MarshalJSON() ([]byte, error) { return []byte(QuoteJSON(string(s))), nil }

@@ -31,6 +31,9 @@ var Undefined = undefinedT{}
 // Issue is one Zod issue. Fields keep Zod's key order when marshalled.
 type Issue struct {
 	fields []kv
+	// abort marks an issue raised with continue: false although its code
+	// usually continues (an array over its size cap).
+	abort bool
 }
 
 type kv struct {

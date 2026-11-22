@@ -30,10 +30,25 @@ func (a *ArraySchema) Max(n int, msg ...string) *ArraySchema {
 	return &c
 }
 
+func (a *ArraySchema) tooBig(path []any) Issue {
+	msg := fmt.Sprintf("Too big: expected array to have <=%d items", *a.max)
+	if a.maxMsg != "" {
+		msg = a.maxMsg
+	}
+	return newIssue("origin", "array", "code", "too_big", "maximum", float64(*a.max), "inclusive", true).finish(path, msg)
+}
+
 func (a *ArraySchema) run(v any, path []any) (any, []Issue) {
 	arr, ok := v.([]any)
 	if !ok {
 		return nil, []Issue{invalidType("array", v, path)}
+	}
+	// Zod 4's capSize: an array longer than its max fails that check before
+	// any element is parsed, and the issue aborts.
+	if a.max != nil && len(arr) > *a.max {
+		is := a.tooBig(path)
+		is.abort = true
+		return nil, []Issue{is}
 	}
 	out := make([]any, len(arr))
 	var issues []Issue
@@ -48,13 +63,6 @@ func (a *ArraySchema) run(v any, path []any) (any, []Issue) {
 			msg = a.minMsg
 		}
 		issues = append(issues, newIssue("origin", "array", "code", "too_small", "minimum", float64(*a.min), "inclusive", true).finish(path, msg))
-	}
-	if a.max != nil && len(arr) > *a.max {
-		msg := fmt.Sprintf("Too big: expected array to have <=%d items", *a.max)
-		if a.maxMsg != "" {
-			msg = a.maxMsg
-		}
-		issues = append(issues, newIssue("origin", "array", "code", "too_big", "maximum", float64(*a.max), "inclusive", true).finish(path, msg))
 	}
 	if len(issues) > 0 {
 		return nil, issues
@@ -290,7 +298,7 @@ var continuing = map[string]bool{"too_small": true, "too_big": true, "invalid_fo
 // aborted is util.aborted: some issue stops parsing.
 func aborted(issues []Issue) bool {
 	for _, is := range issues {
-		if !continuing[is.Code()] {
+		if is.abort || !continuing[is.Code()] {
 			return true
 		}
 	}
