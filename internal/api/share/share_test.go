@@ -57,7 +57,6 @@ func ep(start time.Time, minutes int, intensity any, triggers ...any) sharedEpis
 }
 
 func TestCalculateSummary(t *testing.T) {
-	time.Local = time.UTC
 	empty, _ := json.Marshal(calculateSummary(nil, now))
 	require.JSONEq(t, `{"totalEpisodes":0,"episodesThisMonth":0,"averageIntensity":0,"averageDurationMinutes":null,
 		"mostCommonTrigger":null,"mostCommonSymptom":null,"mostCommonMedication":null,"weeklyTrend":[]}`, string(empty))
@@ -173,7 +172,6 @@ func TestView(t *testing.T) {
 func bytesReader(b []byte) *bytes.Reader { return bytes.NewReader(b) }
 
 func TestSummaryTalliesLikeAPlainObject(t *testing.T) {
-	time.Local = time.UTC
 	e := ep(now.Add(-time.Hour), 10, int32(2))
 	e.medLabels = []string{"constructor", "Ibuprofen", "Ibuprofen", "__proto__", "__proto__", "__proto__"}
 	b, _ := json.Marshal(calculateSummary([]sharedEpisode{e}, now))

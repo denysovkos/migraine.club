@@ -203,7 +203,6 @@ func TestStatsTalliesTags(t *testing.T) {
 		('me', 't', 'b', 'sleep, stress', '2026-03-18 08:00'), ('doc', 't', 'b', 'sleep,__proto__', '2026-03-17 08:00'),
 		('doc', 't', 'b', 'old', '2026-03-01 08:00')`)
 	e.exec(`INSERT INTO community_post (author_id, title, body, tags, visibility, created_at) VALUES ('me', 't', 'b', 'hidden', 'HIDDEN', '2026-03-18 08:00')`)
-	time.Local = time.UTC
 	st, err := e.s.Stats(e.ctx, now)
 	require.NoError(t, err)
 	b, _ := httpx.Marshal(st)
