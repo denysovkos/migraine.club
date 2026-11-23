@@ -13,6 +13,7 @@ test.describe('clinician report PDF', () => {
       [E2E_USER_ID],
     );
     await page.goto('/dashboard/reports/clinician');
+    await page.getByRole('button', { name: 'Continue to preview' }).click();
 
     const downloadPromise = page.waitForEvent('download');
     await page.getByRole('button', { name: 'Download PDF' }).click();
@@ -30,13 +31,13 @@ test.describe('clinician report PDF', () => {
     expect(pdf.byteLength).toBeGreaterThan(1200);
   });
 
-  test('the model API rejects invalid configs and anonymous callers', async ({ page }) => {
+  test('the model API validates configs and covers only the caller', async ({ page }) => {
     const invalid = await page.request.post('/api/reports/clinician/model', { data: { template: 'nope' } });
 
     expect(invalid.status()).toBe(400);
     expect((await invalid.json()).error).toBe('Invalid config');
 
-    const badJson = await page.request.post('/api/reports/clinician/model', { data: '{bad', headers: { 'content-type': 'application/json' } });
+    const badJson = await page.request.post('/api/reports/clinician/model', { data: Buffer.from('{bad'), headers: { 'content-type': 'application/json' } });
 
     expect(await badJson.json()).toEqual({ error: 'Invalid JSON body' });
 

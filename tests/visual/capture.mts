@@ -28,7 +28,15 @@ const FREEZE = `*, *::before, *::after { animation: none !important; transition:
 
 /** Body HTML without the parts each framework injects on its own. */
 const NORMALISE = `(() => {
+  // Server-rendered markup keeps React's style string and selected options;
+  // the browser re-serialises both when React sets them on the client.
+  const values = [...document.body.querySelectorAll('select')].map(s => s.value);
   const body = document.body.cloneNode(true);
+  body.querySelectorAll('[style]').forEach(el => el.setAttribute('style', el.style.cssText));
+  body.querySelectorAll('select').forEach((s, i) => {
+    s.setAttribute('data-value', values[i]);
+    s.querySelectorAll('option').forEach(o => o.removeAttribute('selected'));
+  });
   body.querySelectorAll('script, noscript, next-route-announcer, nextjs-portal, link[rel="preload"], style[data-visual-freeze]').forEach(n => n.remove());
   // React streaming markers (comments, and the hidden div Next parks them
   // in) never render.
