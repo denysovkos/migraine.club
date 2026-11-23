@@ -56,7 +56,8 @@ async function main() {
   // VISUAL_CHROMIUM points at a preinstalled browser when Playwright's own is missing.
   const browser = await chromium.launch(process.env.VISUAL_CHROMIUM ? { executablePath: process.env.VISUAL_CHROMIUM } : {});
   const index: Record<string, unknown> = {};
-  for (const vp of VIEWPORTS) {
+  const origin = new URL(base).origin;
+  await Promise.all(VIEWPORTS.map(async (vp) => {
     const context = await browser.newContext({
       viewport: { width: vp.width, height: vp.height },
       deviceScaleFactor: 1,
@@ -66,6 +67,9 @@ async function main() {
       locale: 'en-US',
       baseURL: base,
     });
+    // Third-party scripts (tag manager, analytics) never load: both servers
+    // are captured offline alike.
+    await context.route(url => new URL(url).origin !== origin, route => route.abort());
     for (const route of routes().filter(r => !filter || r.includes(filter))) {
       const page = await context.newPage();
       await page.clock.install({ time: now });
@@ -88,7 +92,7 @@ async function main() {
       await page.close();
     }
     await context.close();
-  }
+  }));
   writeFileSync(path.join(out, 'index.json'), `${JSON.stringify(index, null, 2)}\n`);
   await browser.close();
 }
