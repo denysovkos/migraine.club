@@ -109,3 +109,14 @@ describe('setLocaleCookie', () => {
     expect(document.cookie).toBe('NEXT_LOCALE=uk');
   });
 });
+
+describe('middlewareHref outside the browser', () => {
+  it('returns the href unchanged', async () => {
+    vi.stubGlobal('window', undefined);
+    try {
+      expect(middlewareHref('/dashboard/reports')).toBe('/dashboard/reports');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+});

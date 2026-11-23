@@ -5,7 +5,11 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"regexp"
+	"sort"
 	"strings"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 // What the Next server did before any route: its URL normalisation, the
@@ -14,6 +18,7 @@ import (
 // nextRedirect answers like Next's redirects: 308, Location and Refresh
 // headers, and the target as the body.
 func nextRedirect(w http.ResponseWriter, r *http.Request, location string) {
+	w.Header()["Content-Type"] = nil // no sniffed type: Next sent none
 	w.Header().Set("Location", location)
 	w.Header().Set("Refresh", "0;url="+location)
 	w.WriteHeader(http.StatusPermanentRedirect)
@@ -124,4 +129,131 @@ var umamiURL = func() *url.URL { return &url.URL{Scheme: "https", Host: "cloud.u
 // umamiScript is the /umami/script.js rewrite to Umami's hosted script.
 func umamiScript() http.Handler {
 	return externalRewrite(func(*http.Request) *url.URL { return umamiURL() })
+}
+
+// nodeMethods is Node's http.METHODS: its parser answered any other method
+// with a bare 400 before Next saw the request.
+var nodeMethods = map[string]bool{}
+
+func init() {
+	for _, m := range strings.Fields(`ACL BIND CHECKOUT CONNECT COPY DELETE GET HEAD LINK LOCK M-SEARCH MERGE
+		MKACTIVITY MKCALENDAR MKCOL MOVE NOTIFY OPTIONS PATCH POST PROPFIND PROPPATCH PURGE PUT QUERY
+		REBIND REPORT SEARCH SOURCE SUBSCRIBE TRACE UNBIND UNLINK UNLOCK UNSUBSCRIBE`) {
+		nodeMethods[m] = true
+	}
+}
+
+func knownMethods(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !nodeMethods[r.Method] {
+			w.Header().Set("Connection", "close")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+// NextVary is the Vary header Next put on everything it rendered: route
+// handlers, pages, 404s and metadata routes, not on middleware redirects or
+// public files. (Compression adds Accept-Encoding.)
+const NextVary = "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"
+
+// routeVary sets NextVary on requests a route handler answers, including
+// with a method it lacks; the SPA handler sets it on what it renders.
+func routeVary(router chi.Routes) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if isRouteHandler(router, r) {
+				w.Header().Set("Vary", NextVary)
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
+// isRouteHandler reports whether a Next route handler owns the path: any
+// method matches it. The rewrites (tunnel, Umami) were not route handlers.
+func isRouteHandler(router chi.Routes, r *http.Request) bool {
+	if r.URL.Path == "/monitoring" || r.URL.Path == "/umami/script.js" || r.URL.Path == "/healthz" {
+		return false
+	}
+	for _, m := range []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete} {
+		if router.Match(chi.NewRouteContext(), m, r.URL.Path) {
+			return true
+		}
+	}
+	return false
+}
+
+// compress is Next's compression middleware: gzip for compressible types.
+// It added Vary: Accept-Encoding whenever the type qualified, HEAD
+// included, but had nothing to compress for HEAD.
+func compress(next http.Handler) http.Handler {
+	gz := middleware.Compress(5, compressible...)(next)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodHead {
+			next.ServeHTTP(&headVary{ResponseWriter: w}, r)
+			return
+		}
+		gz.ServeHTTP(w, r)
+	})
+}
+
+type headVary struct {
+	http.ResponseWriter
+	done bool
+}
+
+func (h *headVary) WriteHeader(code int) {
+	if !h.done {
+		h.done = true
+		ct, _, _ := strings.Cut(h.Header().Get("Content-Type"), ";")
+		for _, c := range compressible {
+			if strings.EqualFold(strings.TrimSpace(ct), c) {
+				h.Header().Add("Vary", "Accept-Encoding")
+				break
+			}
+		}
+	}
+	h.ResponseWriter.WriteHeader(code)
+}
+
+func (h *headVary) Write(b []byte) (int, error) {
+	if !h.done {
+		h.WriteHeader(http.StatusOK)
+	}
+	return h.ResponseWriter.Write(b)
+}
+
+// compressible is what Next's compression middleware gzipped among the
+// types this server sends. Event streams set no-transform, which it
+// respected, so they stay uncompressed.
+var compressible = []string{
+	"text/html", "text/css", "text/plain", "text/javascript", "text/xml",
+	"application/javascript", "application/json", "application/xml",
+	"application/manifest+json", "image/svg+xml", "image/x-icon",
+}
+
+// routeMethods answers a route handler path with a method it does not
+// export, as Next's app route module did: OPTIONS lists the methods (204),
+// anything else is a bare 405. (HEAD runs GET: middleware.GetHead.)
+func routeMethods(router chi.Routes, w http.ResponseWriter, r *http.Request) {
+	has := func(m string) bool { return router.Match(chi.NewRouteContext(), m, r.URL.Path) }
+	if r.Method == http.MethodOptions {
+		allow := []string{http.MethodOptions}
+		for _, m := range []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete} {
+			if has(m) {
+				allow = append(allow, m)
+				if m == http.MethodGet {
+					allow = append(allow, http.MethodHead)
+				}
+			}
+		}
+		sort.Strings(allow)
+		w.Header().Set("Allow", strings.Join(allow, ", "))
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+	w.WriteHeader(http.StatusMethodNotAllowed)
 }

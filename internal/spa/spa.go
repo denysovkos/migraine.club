@@ -41,6 +41,9 @@ type Handler struct {
 	config string
 }
 
+// nextVary is the Vary header Next put on what it rendered.
+const nextVary = "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch"
+
 // notFoundHead is the head Next sent with its built-in 404 page.
 const notFoundHead = `<meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="robots" content="noindex"/><title>404: This page could not be found.</title>`
 
@@ -107,6 +110,7 @@ func (h *Handler) static(w http.ResponseWriter, r *http.Request, name string, bo
 		w.Header().Set("Cache-Control", "public, max-age=0")
 	}
 	w.Header().Set("Content-Type", ct)
+	w.WriteHeader(http.StatusOK)
 	if r.Method == http.MethodHead {
 		return
 	}
@@ -166,6 +170,15 @@ func (h *Handler) match(pathname string, localized bool) (Route, bool) {
 // serveRoute answers a matched page: its redirect, or the shell with the
 // head for the locale.
 func (h *Handler) serveRoute(w http.ResponseWriter, r *http.Request, rt Route, locale string) {
+	switch r.Method {
+	case http.MethodOptions:
+		w.Header().Set("Vary", nextVary)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	case http.MethodTrace:
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
 	target := rt.Redirect
 	if target == "" && rt.SignedInRedirect != "" && auth.UserID(r.Context()) != "" {
 		target = rt.SignedInRedirect
@@ -174,6 +187,8 @@ func (h *Handler) serveRoute(w http.ResponseWriter, r *http.Request, rt Route, l
 		target = signInPath(locale)
 	}
 	if target != "" {
+		// Thrown by the page or a layout while rendering.
+		w.Header().Set("Vary", nextVary)
 		w.Header().Set("Location", target)
 		w.WriteHeader(http.StatusTemporaryRedirect)
 		return
@@ -190,6 +205,7 @@ func signInPath(locale string) string {
 }
 
 func (h *Handler) page(w http.ResponseWriter, status int, head string) {
+	w.Header().Set("Vary", nextVary)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "private, no-cache, no-store, max-age=0, must-revalidate")
 	w.WriteHeader(status)
@@ -199,10 +215,11 @@ func (h *Handler) page(w http.ResponseWriter, status int, head string) {
 
 func (h *Handler) notFound(w http.ResponseWriter) { h.page(w, http.StatusNotFound, notFoundHead) }
 
-// skipsMiddleware is the Next proxy matcher's exclusions: files with an
-// extension, Next internals, monitoring, share pages, discovery documents
-// and the PWA files.
-var skipsMiddleware = regexp.MustCompile(`^/(?:.+\.\w+$|_next|monitoring|share|\.well-known|sw\.js|manifest\.webmanifest)`)
+// skipsMiddleware is where next-intl never ran: the Next proxy matcher's
+// exclusions (files with an extension, Next internals, monitoring, share
+// pages, discovery documents, the PWA files) and the API paths the proxy
+// only authenticated.
+var skipsMiddleware = regexp.MustCompile(`^/(?:.+\.\w+$|_next|monitoring|share|\.well-known|sw\.js|manifest\.webmanifest|api|trpc)`)
 
 // requestOrigin is the URL origin next-intl built its links from.
 func requestOrigin(r *http.Request) string {
@@ -218,13 +235,22 @@ func requestOrigin(r *http.Request) string {
 }
 
 // ServeHTTP serves files, then pages.
+//
+// Methods as Next answered them: files only GET and HEAD (405 with Allow
+// otherwise), pages render for any method but OPTIONS (400) and TRACE
+// (Next failed with a 500 there; 405 here).
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet && r.Method != http.MethodHead {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
 	name := strings.TrimPrefix(path.Clean(r.URL.Path), "/")
 	if body, ok := h.file(name); ok {
+		if name == "robots.txt" || name == "sitemap.xml" {
+			// Metadata routes: rendered by Next, for any method.
+			w.Header().Set("Vary", nextVary)
+		}
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
+			w.Header()["Allow"] = []string{http.MethodGet, http.MethodHead}
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
 		h.static(w, r, name, body)
 		return
 	}

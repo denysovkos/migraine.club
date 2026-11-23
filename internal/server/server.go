@@ -26,7 +26,11 @@ type Options struct {
 func New(d *app.Deps, opts Options) http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
+	r.Use(knownMethods)
 	r.Use(nextNormalize)
+	r.Use(routeVary(r))
+	r.Use(compress)
+	r.Use(middleware.GetHead)
 	r.Use(forwardedHeaders(d.Cfg.Port))
 
 	var resolver auth.Resolver = d.Clerk
@@ -49,9 +53,9 @@ func New(d *app.Deps, opts Options) http.Handler {
 	r.Handle("/monitoring", sentryTunnel(fallback))
 	r.Handle("/umami/script.js", umamiScript())
 
+	r.MethodNotAllowed(func(w http.ResponseWriter, req *http.Request) { routeMethods(r, w, req) })
 	if opts.Fallback != nil {
 		r.NotFound(opts.Fallback.ServeHTTP)
-		r.MethodNotAllowed(opts.Fallback.ServeHTTP)
 	}
 	return r
 }

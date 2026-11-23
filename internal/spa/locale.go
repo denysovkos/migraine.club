@@ -60,7 +60,15 @@ func acceptLanguageLocale(header string) string {
 	if strings.TrimSpace(header) == "" {
 		return ""
 	}
-	for _, tag := range acceptLanguages(header) {
+	tags := acceptLanguages(header)
+	// @formatjs/intl-localematcher throws on a tag that is not BCP 47 (such
+	// as "*" or "en_US"), and next-intl then has no locale at all.
+	for _, tag := range tags {
+		if !validLanguageTag(tag) {
+			return ""
+		}
+	}
+	for _, tag := range tags {
 		primary := strings.ToLower(strings.SplitN(tag, "-", 2)[0])
 		for _, l := range Locales {
 			if primary == l {
@@ -265,4 +273,40 @@ func alternateLinks(r *http.Request, origin, unprefixed string) string {
 	}
 	links = append(links, entry(unprefixed, "x-default"))
 	return strings.Join(links, ", ")
+}
+
+// validLanguageTag is the structural check Intl.getCanonicalLocales makes:
+// a 2-3 or 5-8 letter language, then subtags of 1-8 letters or digits, a
+// single-character subtag always followed by another.
+func validLanguageTag(tag string) bool {
+	parts := strings.Split(tag, "-")
+	isAlpha := func(s string) bool {
+		for _, c := range s {
+			if (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') {
+				return false
+			}
+		}
+		return true
+	}
+	isAlnum := func(s string) bool {
+		for _, c := range s {
+			if (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') {
+				return false
+			}
+		}
+		return true
+	}
+	lang := parts[0]
+	if !isAlpha(lang) || len(lang) < 2 || len(lang) == 4 || len(lang) > 8 {
+		return false
+	}
+	for i, p := range parts[1:] {
+		if p == "" || len(p) > 8 || !isAlnum(p) {
+			return false
+		}
+		if len(p) == 1 && i == len(parts)-2 {
+			return false
+		}
+	}
+	return true
 }

@@ -93,6 +93,11 @@ function redirectOf(pathname: string): string | undefined {
 
 /** Where a client navigation to `href` ended up after next-intl's redirects. */
 export function middlewareHref(href: string): string {
+  // Outside the browser (the prerender) a redirect is a plain 307 the
+  // server answers with; the middleware sees the next request.
+  if (typeof window === 'undefined') {
+    return href;
+  }
   const url = new URL(href, window.location.href);
   if (url.origin !== window.location.origin || SKIPS.test(url.pathname)) {
     return href;

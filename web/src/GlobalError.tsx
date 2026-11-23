@@ -29,8 +29,7 @@ export function GlobalError({ error, locale }: { error: unknown; locale?: string
             Application error: a client-side exception has occurred
             {' '}
             {' '}
-            (see the browser console for more information)
-            .
+            (see the browser console for more information).
           </h2>
         </div>
       </div>

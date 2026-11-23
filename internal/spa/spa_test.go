@@ -142,6 +142,36 @@ func TestSignedOutVisitorsGoToSignIn(t *testing.T) {
 	require.Equal(t, 200, serve("/fr/dashboard/episodes/12", true).Code)
 }
 
+func TestMethods(t *testing.T) {
+	h := newHandler(t)
+	serve := func(method, target string) *httptest.ResponseRecorder {
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, httptest.NewRequest(method, target, nil))
+		return w
+	}
+	// Pages render for any method, as Next's did.
+	post := serve(http.MethodPost, "/fr/dashboard/episodes/12")
+	require.Equal(t, 200, post.Code)
+	require.Contains(t, post.Body.String(), "<title>Épisode</title>")
+	require.Equal(t, 200, serve(http.MethodDelete, "/share/abc").Code)
+	require.Equal(t, 307, serve(http.MethodPut, "/fr/reports").Code)
+	require.Equal(t, 404, serve(http.MethodPatch, "/no-such-page").Code)
+	opt := serve(http.MethodOptions, "/fr/dashboard/episodes/12")
+	require.Equal(t, 400, opt.Code)
+	require.Equal(t, nextVary, opt.Header().Get("Vary"))
+	require.Equal(t, 405, serve(http.MethodTrace, "/").Code)
+	require.Equal(t, 404, serve(http.MethodOptions, "/no-such-page").Code, "no page: 404 for any method")
+
+	// Files: GET and HEAD only.
+	put := serve(http.MethodPut, "/robots.txt")
+	require.Equal(t, 405, put.Code)
+	require.Equal(t, []string{"GET", "HEAD"}, put.Header().Values("Allow"))
+	require.Equal(t, 405, serve(http.MethodPost, "/sw.js").Code)
+	require.Equal(t, nextVary, put.Header().Get("Vary"), "robots.txt is a metadata route")
+	require.Empty(t, serve(http.MethodGet, "/sw.js").Header().Get("Vary"), "public files carry no Vary")
+	require.Equal(t, nextVary, serve(http.MethodHead, "/robots.txt").Header().Get("Vary"))
+}
+
 func TestStaticFiles(t *testing.T) {
 	h := newHandler(t)
 	for target, want := range map[string][2]string{
@@ -158,6 +188,18 @@ func TestStaticFiles(t *testing.T) {
 	}
 	require.Equal(t, 404, get(h, "/heads.json").Code, "build metadata is not served")
 	require.False(t, strings.Contains(get(h, "/index.html").Body.String(), "<!--app-head-->"))
+}
+
+func TestAcceptLanguageMatchesNextIntl(t *testing.T) {
+	// Negotiator + @formatjs/intl-localematcher as next-intl ran them
+	// (en, fr, uk; default en); "" is next-intl's undefined.
+	for header, want := range map[string]string{
+		"*": "", "": "", "en": "en", "uk-UA,uk;q=0.9": "uk", "fr-CA": "fr", "de": "en", "en_US": "",
+		"de, *;q=0.5": "", "x": "", "zh-Hant-TW": "en", "uk;q=0, fr": "fr", "EN-us": "en",
+		"en-US-u-ca-gregory": "en", "i-klingon": "", "fr;q=0.5, *": "", "de-DE, uk": "uk", "es-419": "en",
+	} {
+		require.Equal(t, want, acceptLanguageLocale(header), header)
+	}
 }
 
 func TestAcceptLanguage(t *testing.T) {

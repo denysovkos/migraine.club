@@ -209,6 +209,21 @@ State:
   parameters rendered the landing page with lang="monitoring" (the path
   skipped the locale middleware and [locale] took any segment). It is a
   404 now.
+- HTTP level: `node --import tsx tests/visual/statuses.mts <next> <go>`
+  compares status, Location, Set-Cookie, Link, Allow, Content-Type, Vary
+  and Content-Encoding for every visual route and the edge cases (slashes,
+  methods, locale hints): 576/576. Left out on purpose: Next's Link
+  preload hints for its own build files (the SPA's files are different
+  ones), the HTML body Next wrote with a page's 3xx, and /monitoring
+  without the tunnel's parameters.
+- Methods as Next answered them: route handlers (HEAD through GET,
+  OPTIONS 204 with Allow, else 405), pages (any method renders; OPTIONS
+  400), files (GET and HEAD, else 405 with Allow), methods Node's parser
+  rejected (400). Next's 500s for PUT on some public files and for TRACE
+  were bugs; those are 405 now.
+- next-intl's Accept-Language matching includes its failure: a header
+  with a tag that is not BCP 47 (`*`, `en_US`) gives no locale, so the
+  cookie is written.
 - Page auth: Next ran clerkMiddleware on /dashboard, /quick/attack, /admin
   and the sign-in pages; guarded layouts sent signed-out visitors to the
   localized sign-in (307). The Go server does the same when Clerk's

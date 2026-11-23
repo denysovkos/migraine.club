@@ -141,6 +141,8 @@ async function staticRedirect(load: (f: string) => Promise<any>, file: string, d
     if (error instanceof Response && error.status >= 300 && error.status < 400) {
       return { redirect: error.headers.get('Location') ?? undefined };
     }
+    // Anything else would silently turn a server redirect into a page.
+    throw new Error(`${file}: calling the page threw ${String(error)}`, { cause: error });
   }
   return {};
 }
