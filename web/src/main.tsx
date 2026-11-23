@@ -6,9 +6,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { applyMetadata } from './metadata';
 import { routes } from './routes';
 import { initSentry } from './sentry';
+import { installSessionRefresh } from './sessionRefresh';
 import '@/styles/global.css';
 
 initSentry();
+installSessionRefresh();
 
 const router = createBrowserRouter(routes());
 
