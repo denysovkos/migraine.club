@@ -1,7 +1,8 @@
 /**
  * Stand-in OAuth verification for /api/mcp under E2E_MOCK_AUTH, so e2e and
  * parity tests can call the MCP endpoint without Clerk. Tokens look like
- * `e2e-mcp|<userId>|<scope scope>|<clientId>`; `e2e-mcp-throw` makes the
+ * `e2e-mcp|<userId>|<scope,scope>|<clientId>` (no spaces: mcp-handler splits
+ * the Authorization header on spaces); `e2e-mcp-throw` makes the
  * verifier throw; anything else counts as no authorization. NEVER enable mock
  * auth in production.
  */
@@ -20,5 +21,5 @@ export async function verifyE2EMcpToken(token: string | undefined): Promise<E2EM
     return undefined;
   }
   const [, userId, scopes, clientId] = token.split('|');
-  return { token, clientId: clientId ?? 'e2e-client', scopes: scopes ? scopes.split(' ') : [], extra: { userId } };
+  return { token, clientId: clientId ?? 'e2e-client', scopes: scopes ? scopes.split(',') : [], extra: { userId } };
 }

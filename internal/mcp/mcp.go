@@ -31,7 +31,7 @@ func NewHandler(srv *Server, verify Verifier, log *slog.Logger) *Handler {
 }
 
 // E2EVerifier is src/server/mcp/e2eToken.ts: tokens
-// `e2e-mcp|<userId>|<scope scope>|<clientId>`, and `e2e-mcp-throw` fails.
+// `e2e-mcp|<userId>|<scope,scope>|<clientId>`, and `e2e-mcp-throw` fails.
 func E2EVerifier(_ context.Context, _ *http.Request, token string, present bool) (*AuthInfo, error) {
 	if present && token == "e2e-mcp-throw" {
 		return nil, errors.New("verifier failed")
@@ -45,7 +45,7 @@ func E2EVerifier(_ context.Context, _ *http.Request, token string, present bool)
 		info.UserID = parts[1]
 	}
 	if len(parts) > 2 && parts[2] != "" {
-		info.Scopes = strings.Split(parts[2], " ")
+		info.Scopes = strings.Split(parts[2], ",")
 	}
 	if len(parts) > 3 {
 		info.ClientID = parts[3]

@@ -353,8 +353,19 @@ func (h *Handler) streamLegacy(ctx context.Context, sse *sseWriter, requests []*
 			closed = true
 		}
 	}
-	var slow []*jsx.JSONObject
+	// Protocol answered a method without a handler synchronously while the
+	// batch was still being dispatched; handlers answered afterwards.
+	var rest []*jsx.JSONObject
 	for _, m := range requests {
+		switch methodOf(m) {
+		case "initialize", "ping", "tools/list", "tools/call":
+			rest = append(rest, m)
+		default:
+			deliver(methodNotFound(mustGet(m, "id")).msg)
+		}
+	}
+	var slow []*jsx.JSONObject
+	for _, m := range rest {
 		if h.isInstant(m, auth) {
 			deliver(h.srv.handleLegacy(ctx, m, auth).msg)
 		} else {

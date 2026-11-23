@@ -184,7 +184,7 @@ func buildTools(svc Services, now func() time.Time) map[string]toolDef {
 			if err != nil {
 				return toolResult{}, err
 			}
-			return toolResult{fmt.Sprintf("Logged %s at intensity %d/5 (attack id %d).", ep.AttackType, ep.Intensity, ep.ID), ep}, nil
+			return toolResult{fmt.Sprintf("Logged %s at intensity %d/5 (attack id %d).", ep.AttackType, ep.Intensity, ep.ID), episodes.DTO(ep)}, nil
 		}},
 
 		{name: "update_attack", scope: ScopeWrite, input: z.Object(append([]z.Field{

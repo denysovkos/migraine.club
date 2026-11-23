@@ -4,8 +4,8 @@ import { verifyE2EMcpToken } from './e2eToken';
 
 describe('verifyE2EMcpToken', () => {
   it('reads the user, scopes and client from the token', async () => {
-    await expect(verifyE2EMcpToken('e2e-mcp|u1|migraine:read migraine:write|c1')).resolves.toEqual({
-      token: 'e2e-mcp|u1|migraine:read migraine:write|c1',
+    await expect(verifyE2EMcpToken('e2e-mcp|u1|migraine:read,migraine:write|c1')).resolves.toEqual({
+      token: 'e2e-mcp|u1|migraine:read,migraine:write|c1',
       clientId: 'c1',
       scopes: ['migraine:read', 'migraine:write'],
       extra: { userId: 'u1' },
