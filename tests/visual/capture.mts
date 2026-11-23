@@ -30,7 +30,20 @@ const FREEZE = `*, *::before, *::after { animation: none !important; transition:
 const NORMALISE = `(() => {
   const body = document.body.cloneNode(true);
   body.querySelectorAll('script, noscript, next-route-announcer, nextjs-portal, link[rel="preload"], style[data-visual-freeze]').forEach(n => n.remove());
-  return body.innerHTML.replace(/ data-(?:nextjs|next)[\\w-]*="[^"]*"/g, '');
+  // React streaming markers (comments, and the hidden div Next parks them
+  // in) never render.
+  return body.innerHTML
+    .replace(/<!--[\\s\\S]*?-->/g, '')
+    .replace(/<div hidden=""><\\/div>/g, '')
+    .replace(/ data-(?:nextjs|next)[\\w-]*="[^"]*"/g, '')
+    // useId values differ between server and client rendering; number them
+    // in order of appearance.
+    .replace(/_[rR]_[\\w]*?_/g, ((ids) => (id) => {
+      if (!ids.has(id)) {
+        ids.set(id, '_id' + ids.size + '_');
+      }
+      return ids.get(id);
+    })(new Map()));
 })()`;
 
 async function main() {

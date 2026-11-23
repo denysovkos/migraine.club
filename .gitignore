@@ -67,3 +67,4 @@ docs/superpowers
 .claude
 graphify-out/
 /bin/
+/web/dist

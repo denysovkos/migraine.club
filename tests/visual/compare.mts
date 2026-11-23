@@ -4,7 +4,12 @@
  * the screenshots pixel by pixel. Writes a diff PNG next to each mismatch
  * and exits non-zero when anything differs.
  *
- * Usage: node --import tsx tests/visual/compare.mts <expectedDir> <actualDir> [diffDir]
+ * Usage: node --import tsx tests/visual/compare.mts <expectedDir[,expectedDir...]> <actualDir> [diffDir]
+ *
+ * Chromium's rasteriser is not fully deterministic at a few anti-aliased
+ * edges: two captures of the same server can differ by one colour step in
+ * single pixels. With several expected captures a pixel passes when it
+ * matches any of them.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -24,7 +29,8 @@ function firstDifference(a: string, b: string): string {
 }
 
 function main() {
-  const [expectedDir, actualDir, diffDir = path.join(actualDir ?? '.', 'diff')] = process.argv.slice(2);
+  const [expectedArg, actualDir, diffDir = path.join(actualDir ?? '.', 'diff')] = process.argv.slice(2);
+  const [expectedDir, ...extraDirs] = (expectedArg ?? '').split(',');
   if (!expectedDir || !actualDir) {
     throw new Error('usage: compare.mts <expectedDir> <actualDir> [diffDir]');
   }
@@ -59,7 +65,17 @@ function main() {
           problems.push(`size ${pa.width}x${pa.height} vs ${pb.width}x${pb.height}`);
         } else {
           const diff = new PNG({ width: pa.width, height: pa.height });
-          const n = pixelmatch(pa.data, pb.data, diff.data, pa.width, pa.height, { threshold: 0 });
+          let n = pixelmatch(pa.data, pb.data, diff.data, pa.width, pa.height, { threshold: 0 });
+          if (n > 0 && extraDirs.length) {
+            const others = extraDirs.map(d => PNG.sync.read(readFileSync(path.join(d, `${name}.png`)))).filter(o => o.width === pb.width && o.height === pb.height);
+            n = 0;
+            for (let i = 0; i < pb.data.length; i += 4) {
+              const same = (img: PNG) => img.data[i] === pb.data[i] && img.data[i + 1] === pb.data[i + 1] && img.data[i + 2] === pb.data[i + 2] && img.data[i + 3] === pb.data[i + 3];
+              if (!same(pa) && !others.some(same)) {
+                n++;
+              }
+            }
+          }
           if (n > 0) {
             problems.push(`${n} pixels differ`);
             writeFileSync(path.join(diffDir, `${name}.png`), PNG.sync.write(diff));
