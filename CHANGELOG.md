@@ -1,3 +1,9 @@
+## [1.6.1](https://github.com/denysovkos/migraine.club/compare/v1.6.0...v1.6.1) (2026-11-23)
+
+### Bug Fixes
+
+* **web:** hold API calls until Clerk has refreshed an expired session ([#13](https://github.com/denysovkos/migraine.club/issues/13)) ([1049f20](https://github.com/denysovkos/migraine.club/commit/1049f2065fd887bb4c2f340515ecfa0193db90db))
+
 # [1.6.0](https://github.com/denysovkos/migraine.club/compare/v1.5.0...v1.6.0) (2026-11-23)
 
 ### Features
