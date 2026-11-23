@@ -248,8 +248,11 @@ State:
   with an active client, dev instances) are not redirected through Clerk's
   Frontend API: they get the page, and clerk-js refreshes the session in
   the browser, after which the same layouts redirect on the client if the
-  visitor is signed out. One redirect round trip fewer; the visitor ends
-  on the same page.
+  visitor is signed out. Until then web/src/sessionRefresh.ts holds every
+  same-origin /api/ request, so none goes out with the stale token (in
+  production that showed as a burst of 401s on the first page load after
+  a pause). One redirect round trip fewer; the visitor ends on the same
+  page with the same data.
 - Visual run: `node --import tsx tests/visual/prepare.mts`, then
   `capture.mts http://localhost:3001,http://localhost:3001,http://localhost:3003 next1,next2,spa`
   (each route on all three in a row, so server-side now() agrees), then
