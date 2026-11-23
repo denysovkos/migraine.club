@@ -391,6 +391,19 @@ describe('service worker: caching', () => {
     expect(sw.fetchMock).toHaveBeenCalledTimes(1);
   });
 
+  it('serves the frontend build\'s hashed assets cache-first too', async () => {
+    const sw = loadSw();
+    sw.fetchMock.mockResolvedValue(new Response('bundle-v1'));
+
+    const first = await sw.fetchEvent('/assets/index-AbC123.js');
+    sw.fetchMock.mockRejectedValue(new TypeError('offline'));
+    const second = await sw.fetchEvent('/assets/index-AbC123.js');
+
+    expect(await first!.text()).toBe('bundle-v1');
+    expect(await second!.text()).toBe('bundle-v1');
+    expect(sw.fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it('caches dashboard pages network-first and serves them offline', async () => {
     const sw = loadSw();
     sw.fetchMock.mockResolvedValue(new Response('<html>diary v1</html>'));

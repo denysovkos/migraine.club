@@ -24,6 +24,9 @@ export default antfu({
     'migrations/**/*',
     'next-env.d.ts',
     'reestr.json',
+    // Go code and goldens generated from the TS implementation.
+    'internal/**/testdata/**',
+    'bin/**',
   ],
 }, jsxA11y.flatConfigs.recommended, {
   plugins: {

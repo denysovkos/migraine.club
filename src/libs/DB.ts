@@ -4,10 +4,10 @@ import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
 import { migrate as migratePg } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
 
-import * as schema from '@/models/Schema';
+import { logger } from '@/libs/Logger';
 
+import * as schema from '@/models/Schema';
 import { Env } from './Env';
-import { logger } from './Logger';
 
 const pool = new Pool({
   connectionString: Env.DATABASE_URL,

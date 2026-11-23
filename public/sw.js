@@ -4,7 +4,7 @@
  * Handles push notifications and basic caching for PWA functionality.
  *
  * Offline support (see docs/OFFLINE_LOGGING.md):
- * - Hashed Next.js build assets are cached on first use (cache-first).
+ * - Hashed build assets (/assets/) are cached on first use (cache-first).
  * - Dashboard pages and a short allowlist of read APIs the logging forms need
  *   are cached network-first, so the app still opens and the forms still
  *   populate without a connection. These caches hold the signed-in user's
@@ -15,7 +15,7 @@
  * Writes and auth requests are never cached or intercepted.
  */
 
-const SW_VERSION = '1.2.0';
+const SW_VERSION = '1.3.0';
 const CACHE_NAME = `migrennity-sw-v${SW_VERSION}`;
 // Build assets are content-hashed, so this cache survives SW upgrades.
 const NEXT_STATIC_CACHE = 'migrennity-next-static';
@@ -140,7 +140,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (url.pathname.startsWith('/_next/static/')) {
+  // Content-hashed build files: the frontend build's /assets/ (and the
+  // /_next/static/ of the old Next build, still in installed clients' caches).
+  if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/_next/static/')) {
     event.respondWith(cacheFirst(request, NEXT_STATIC_CACHE));
     return;
   }

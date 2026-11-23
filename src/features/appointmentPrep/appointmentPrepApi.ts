@@ -1,4 +1,5 @@
 import type { AppointmentPrepSnapshot } from '@/models/appointmentPrep';
+import { requestClinicianReportPdf } from '@/features/reports/clinician/clinicianPdf';
 
 export type AppointmentPrepDraftListItem = {
   id: string;
@@ -109,14 +110,10 @@ export async function createAppointmentPrepShareLink(prepId: string): Promise<st
 }
 
 export async function exportAppointmentPrepPdf(prepId: string): Promise<Blob> {
-  const response = await fetch('/api/reports/clinician/pdf', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      template: 'quick',
-      rangePreset: 'last90',
-      appointmentPrepId: prepId,
-    }),
+  const response = await requestClinicianReportPdf({
+    template: 'quick',
+    rangePreset: 'last90',
+    appointmentPrepId: prepId,
   });
   if (!response.ok) {
     throw new Error('Failed to export appointment prep PDF');

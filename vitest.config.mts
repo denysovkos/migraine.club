@@ -2,6 +2,8 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
+import { spaAliases } from './web/aliases';
+
 export default defineConfig({
   // In sandboxed/CI environments, the repo root may contain a gitignored `.env`
   // that isn't readable. Point Vite/Vitest at a dedicated envDir instead.
@@ -41,6 +43,16 @@ export default defineConfig({
             'src/**/*.test.{jsx,tsx}',
             'src/hooks/**/*.test.ts',
           ],
+          environment: 'jsdom',
+        },
+      },
+      {
+        extends: true,
+        test: {
+          // The SPA's shims and router (web/src).
+          name: 'web',
+          alias: spaAliases(false),
+          include: ['web/src/**/*.test.{ts,tsx}'],
           environment: 'jsdom',
         },
       },

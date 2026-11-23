@@ -1,12 +1,12 @@
-import { desc } from 'drizzle-orm';
 import Link from 'next/link';
+
+import { adminGet } from '@/features/admin/adminApi';
 
 import { AdminFeatureRequestActions } from '@/features/admin/AdminFeatureRequestActions';
 import { requireUserOrRedirect } from '@/libs/AuthGuard';
-import { db } from '@/libs/DB';
-import { featureRequestSchema } from '@/models/Schema';
-import { moderationService } from '@/services/ModerationService';
 import { AppConfig } from '@/utils/AppConfig';
+
+type Request = { id: string; userId: string; title: string; description: string; resolution: string; createdAt: string; updatedAt: string };
 
 const getResolutionLabelKey = (resolution: string) => {
   if (resolution === 'SENT') {
@@ -23,29 +23,17 @@ const getResolutionLabelKey = (resolution: string) => {
 
 export default async function AdminFeatureRequestsPage() {
   // Admin routes are not localized; signed-out visitors go to the default-locale sign-in.
-  const userId = await requireUserOrRedirect(AppConfig.defaultLocale);
+  await requireUserOrRedirect(AppConfig.defaultLocale);
 
-  const isAdmin = await moderationService.isAdmin(userId);
-  if (!isAdmin) {
+  const res = await adminGet<{ requests: Request[] }>('/api/admin/feature-requests');
+  if (res.status === 403) {
     return (
       <main className="mx-auto max-w-4xl p-6">
         <h1 className="text-lg font-semibold">Forbidden</h1>
       </main>
     );
   }
-
-  const requests = await db
-    .select({
-      id: featureRequestSchema.id,
-      userId: featureRequestSchema.userId,
-      title: featureRequestSchema.title,
-      description: featureRequestSchema.description,
-      resolution: featureRequestSchema.resolution,
-      createdAt: featureRequestSchema.createdAt,
-      updatedAt: featureRequestSchema.updatedAt,
-    })
-    .from(featureRequestSchema)
-    .orderBy(desc(featureRequestSchema.createdAt));
+  const requests = res.data!.requests;
 
   return (
     <main className="mx-auto max-w-4xl p-6">
@@ -84,7 +72,7 @@ export default async function AdminFeatureRequestsPage() {
               {' · '}
               Submitted:
               {' '}
-              {request.createdAt.toISOString()}
+              {request.createdAt}
             </div>
 
             <AdminFeatureRequestActions

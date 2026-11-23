@@ -1,0 +1,201 @@
+{
+ "decode": [
+  {
+   "hex": "6162",
+   "strip": "ab",
+   "keep": "ab"
+  },
+  {
+   "hex": "efbbbf61",
+   "strip": "a",
+   "keep": "﻿a"
+  },
+  {
+   "hex": "c3",
+   "strip": "�",
+   "keep": "�"
+  },
+  {
+   "hex": "c328",
+   "strip": "�(",
+   "keep": "�("
+  },
+  {
+   "hex": "e282",
+   "strip": "�",
+   "keep": "�"
+  },
+  {
+   "hex": "e28228",
+   "strip": "�(",
+   "keep": "�("
+  },
+  {
+   "hex": "e228a1",
+   "strip": "�(�",
+   "keep": "�(�"
+  },
+  {
+   "hex": "f09f98",
+   "strip": "�",
+   "keep": "�"
+  },
+  {
+   "hex": "f09f9880",
+   "strip": "😀",
+   "keep": "😀"
+  },
+  {
+   "hex": "eda080",
+   "strip": "���",
+   "keep": "���"
+  },
+  {
+   "hex": "f4908080",
+   "strip": "����",
+   "keep": "����"
+  },
+  {
+   "hex": "c0af",
+   "strip": "��",
+   "keep": "��"
+  },
+  {
+   "hex": "ff61",
+   "strip": "�a",
+   "keep": "�a"
+  },
+  {
+   "hex": "e08080",
+   "strip": "���",
+   "keep": "���"
+  },
+  {
+   "hex": "f0808080",
+   "strip": "����",
+   "keep": "����"
+  },
+  {
+   "hex": "8080",
+   "strip": "��",
+   "keep": "��"
+  },
+  {
+   "hex": "f888808080",
+   "strip": "�����",
+   "keep": "�����"
+  },
+  {
+   "hex": "e180e18080",
+   "strip": "�က",
+   "keep": "�က"
+  }
+ ],
+ "uri": [
+  {
+   "in": "plain",
+   "out": "plain",
+   "err": false
+  },
+  {
+   "in": "a%20b",
+   "out": "a b",
+   "err": false
+  },
+  {
+   "in": "%41%42",
+   "out": "AB",
+   "err": false
+  },
+  {
+   "in": "%",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%4",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%zz",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%C3%A9",
+   "out": "é",
+   "err": false
+  },
+  {
+   "in": "%C3",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%C3%28",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%E2%82%AC",
+   "out": "€",
+   "err": false
+  },
+  {
+   "in": "%F0%9F%98%80",
+   "out": "😀",
+   "err": false
+  },
+  {
+   "in": "%ED%A0%80",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%C0%AF",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%80",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%FF",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "caf%C3%A9.pdf",
+   "out": "café.pdf",
+   "err": false
+  },
+  {
+   "in": "%25",
+   "out": "%",
+   "err": false
+  },
+  {
+   "in": "x%2Fy",
+   "out": "x/y",
+   "err": false
+  },
+  {
+   "in": "ünï%20",
+   "out": "ünï ",
+   "err": false
+  },
+  {
+   "in": "%E2%82%AC%",
+   "out": "",
+   "err": true
+  },
+  {
+   "in": "%f0%9f%98%80",
+   "out": "😀",
+   "err": false
+  }
+ ]
+}

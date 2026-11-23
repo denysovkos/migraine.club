@@ -1,0 +1,19 @@
+version: '2'
+linters:
+  settings:
+    staticcheck:
+      checks:
+        - all
+        # Error texts are the exact messages the Node API returned to clients.
+        - -ST1005
+        # Package comments and naming follow the ported TS modules.
+        - -ST1000
+        - -ST1003
+        - -ST1020
+        - -ST1021
+        - -ST1022
+  exclusions:
+    rules:
+      # Closing response bodies and test connections: nothing to recover.
+      - linters: [errcheck]
+        source: '\.Close\('

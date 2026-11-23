@@ -1,0 +1,116 @@
+version: '2'
+sql:
+  - engine: postgresql
+    schema: internal/db/schema.sql
+    queries: internal/db/queries
+    gen:
+      go:
+        package: q
+        out: internal/db/q
+        sql_package: pgx/v5
+        emit_json_tags: true
+        json_tags_case_style: camel
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        query_parameter_limit: 4
+        overrides:
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: appointment_prep.appointment_date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: cycle_bleeding_day.local_date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: daily_diary_entry.local_date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: insight_test_plan.start_date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: preventive_intake_event.local_date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: preventive_plan.start_date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: preventive_weekly_check_in.week_start_local_date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          # Drizzle read this column in 'date' mode (a JS Date at UTC midnight).
+          - column: weather_daily_snapshot.date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Date
+          - db_type: uuid
+            go_type: string
+          - db_type: uuid
+            nullable: true
+            go_type:
+              type: string
+              pointer: true
+          - db_type: timestamp
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Time
+          - db_type: timestamp
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: Time
+              pointer: true
+          - db_type: timestamptz
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Time
+          - db_type: timestamptz
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: Time
+              pointer: true
+          - db_type: date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.YMD
+          - db_type: date
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: YMD
+              pointer: true
+          - db_type: time
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Clock
+          - db_type: time
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: Clock
+              pointer: true
+          - db_type: jsonb
+            go_type: encoding/json.RawMessage
+          - db_type: jsonb
+            nullable: true
+            go_type: encoding/json.RawMessage
+          - db_type: pg_catalog.timestamp
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Time
+          - db_type: pg_catalog.timestamp
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: Time
+              pointer: true
+          - db_type: pg_catalog.timestamptz
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Time
+          - db_type: pg_catalog.timestamptz
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: Time
+              pointer: true
+          - db_type: pg_catalog.date
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.YMD
+          - db_type: pg_catalog.date
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: YMD
+              pointer: true
+          - db_type: pg_catalog.time
+            go_type: github.com/denysovkos/migraine.club/internal/jsontime.Clock
+          - db_type: pg_catalog.time
+            nullable: true
+            go_type:
+              import: github.com/denysovkos/migraine.club/internal/jsontime
+              type: Clock
+              pointer: true

@@ -1,0 +1,3783 @@
+[
+  {
+    "name": "string",
+    "results": [
+      {
+        "input": "a",
+        "success": true,
+        "data": "a"
+      },
+      {
+        "input": 1,
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received number"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": null,
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received null"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received null\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received null"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "__undefined__",
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received undefined"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": true,
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received boolean"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received boolean\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received boolean"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [],
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received array"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received array\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received array"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": {},
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received object"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received object\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received object"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_min_max",
+    "results": [
+      {
+        "input": "a",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_small",
+            "minimum": 2,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected string to have >=2 characters"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_small\",\n    \"minimum\": 2,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected string to have >=2 characters\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected string to have >=2 characters"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "ab",
+        "success": true,
+        "data": "ab"
+      },
+      {
+        "input": "abcde",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_big",
+            "maximum": 4,
+            "inclusive": true,
+            "path": [],
+            "message": "Too big: expected string to have <=4 characters"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 4,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected string to have <=4 characters\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected string to have <=4 characters"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_trim_min",
+    "results": [
+      {
+        "input": "  ",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected string to have >=1 characters"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected string to have >=1 characters\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected string to have >=1 characters"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": " ab ",
+        "success": true,
+        "data": "ab"
+      },
+      {
+        "input": " abcd ",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_big",
+            "maximum": 3,
+            "inclusive": true,
+            "path": [],
+            "message": "Too big: expected string to have <=3 characters"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 3,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected string to have <=3 characters\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected string to have <=3 characters"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_length",
+    "results": [
+      {
+        "input": "ab",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_small",
+            "minimum": 3,
+            "inclusive": true,
+            "exact": true,
+            "path": [],
+            "message": "Too small: expected string to have exactly 3 characters"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_small\",\n    \"minimum\": 3,\n    \"inclusive\": true,\n    \"exact\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected string to have exactly 3 characters\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected string to have exactly 3 characters"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "abc",
+        "success": true,
+        "data": "abc"
+      },
+      {
+        "input": "abcd",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_big",
+            "maximum": 3,
+            "inclusive": true,
+            "exact": true,
+            "path": [],
+            "message": "Too big: expected string to have exactly 3 characters"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_big\",\n    \"maximum\": 3,\n    \"inclusive\": true,\n    \"exact\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected string to have exactly 3 characters\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected string to have exactly 3 characters"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_uuid",
+    "results": [
+      {
+        "input": "x",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "uuid",
+            "pattern": "/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/",
+            "path": [],
+            "message": "Invalid UUID"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"uuid\",\n    \"pattern\": \"/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\",\n    \"path\": [],\n    \"message\": \"Invalid UUID\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid UUID"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "7c1d3e2a-1b2c-4d5e-8f90-1234567890ab",
+        "success": true,
+        "data": "7c1d3e2a-1b2c-4d5e-8f90-1234567890ab"
+      },
+      {
+        "input": "00000000-0000-0000-0000-000000000000",
+        "success": true,
+        "data": "00000000-0000-0000-0000-000000000000"
+      }
+    ]
+  },
+  {
+    "name": "string_guid",
+    "results": [
+      {
+        "input": "x",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "guid",
+            "pattern": "/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/",
+            "path": [],
+            "message": "Invalid GUID"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"guid\",\n    \"pattern\": \"/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/\",\n    \"path\": [],\n    \"message\": \"Invalid GUID\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid GUID"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "7C1D3E2A-1B2C-4D5E-8F90-1234567890AB",
+        "success": true,
+        "data": "7C1D3E2A-1B2C-4D5E-8F90-1234567890AB"
+      }
+    ]
+  },
+  {
+    "name": "string_email",
+    "results": [
+      {
+        "input": "a@b.co",
+        "success": true,
+        "data": "a@b.co"
+      },
+      {
+        "input": "nope",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "email",
+            "pattern": "/^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/",
+            "path": [],
+            "message": "Invalid email address"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"email\",\n    \"pattern\": \"/^(?:[A-Za-z0-9_'+\\\\-]+\\\\.)*[A-Za-z0-9_'+\\\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\\\-]*\\\\.)+[A-Za-z]{2,}$/\",\n    \"path\": [],\n    \"message\": \"Invalid email address\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid email address"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_url",
+    "results": [
+      {
+        "input": "https://x.y/z",
+        "success": true,
+        "data": "https://x.y/z"
+      },
+      {
+        "input": "nope",
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_format",
+            "format": "url",
+            "path": [],
+            "message": "Invalid URL"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_format\",\n    \"format\": \"url\",\n    \"path\": [],\n    \"message\": \"Invalid URL\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid URL"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_datetime",
+    "results": [
+      {
+        "input": "2026-01-02T03:04:05Z",
+        "success": true,
+        "data": "2026-01-02T03:04:05Z"
+      },
+      {
+        "input": "2026-01-02T03:04:05.123Z",
+        "success": true,
+        "data": "2026-01-02T03:04:05.123Z"
+      },
+      {
+        "input": "2026-01-02T03:04:05+02:00",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "datetime",
+            "pattern": "/^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$/",
+            "path": [],
+            "message": "Invalid ISO datetime"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"datetime\",\n    \"pattern\": \"/^(?:(?:\\\\d\\\\d[2468][048]|\\\\d\\\\d[13579][26]|\\\\d\\\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\\\d|30)|(?:02)-(?:0[1-9]|1\\\\d|2[0-8])))T(?:(?:[01]\\\\d|2[0-3]):[0-5]\\\\d:[0-5]\\\\d(?:\\\\.\\\\d+)?(?:Z))$/\",\n    \"path\": [],\n    \"message\": \"Invalid ISO datetime\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid ISO datetime"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "2026-01-02",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "datetime",
+            "pattern": "/^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$/",
+            "path": [],
+            "message": "Invalid ISO datetime"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"datetime\",\n    \"pattern\": \"/^(?:(?:\\\\d\\\\d[2468][048]|\\\\d\\\\d[13579][26]|\\\\d\\\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\\\d|30)|(?:02)-(?:0[1-9]|1\\\\d|2[0-8])))T(?:(?:[01]\\\\d|2[0-3]):[0-5]\\\\d:[0-5]\\\\d(?:\\\\.\\\\d+)?(?:Z))$/\",\n    \"path\": [],\n    \"message\": \"Invalid ISO datetime\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid ISO datetime"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "x",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "datetime",
+            "pattern": "/^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$/",
+            "path": [],
+            "message": "Invalid ISO datetime"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"datetime\",\n    \"pattern\": \"/^(?:(?:\\\\d\\\\d[2468][048]|\\\\d\\\\d[13579][26]|\\\\d\\\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\\\d|30)|(?:02)-(?:0[1-9]|1\\\\d|2[0-8])))T(?:(?:[01]\\\\d|2[0-3]):[0-5]\\\\d:[0-5]\\\\d(?:\\\\.\\\\d+)?(?:Z))$/\",\n    \"path\": [],\n    \"message\": \"Invalid ISO datetime\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid ISO datetime"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_datetime_offset",
+    "results": [
+      {
+        "input": "2026-01-02T03:04:05+02:00",
+        "success": true,
+        "data": "2026-01-02T03:04:05+02:00"
+      },
+      {
+        "input": "2026-01-02T03:04:05Z",
+        "success": true,
+        "data": "2026-01-02T03:04:05Z"
+      },
+      {
+        "input": "2026-01-02T03:04",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "datetime",
+            "pattern": "/^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$/",
+            "path": [],
+            "message": "Invalid ISO datetime"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"datetime\",\n    \"pattern\": \"/^(?:(?:\\\\d\\\\d[2468][048]|\\\\d\\\\d[13579][26]|\\\\d\\\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\\\d|30)|(?:02)-(?:0[1-9]|1\\\\d|2[0-8])))T(?:(?:[01]\\\\d|2[0-3]):[0-5]\\\\d:[0-5]\\\\d(?:\\\\.\\\\d+)?(?:Z|([+-](?:[01]\\\\d|2[0-3]):[0-5]\\\\d)))$/\",\n    \"path\": [],\n    \"message\": \"Invalid ISO datetime\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid ISO datetime"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_regex",
+    "results": [
+      {
+        "input": "2026-01-02",
+        "success": true,
+        "data": "2026-01-02"
+      },
+      {
+        "input": "2026-1-2",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "regex",
+            "pattern": "/^\\d{4}-\\d{2}-\\d{2}$/",
+            "path": [],
+            "message": "Invalid string: must match pattern /^\\d{4}-\\d{2}-\\d{2}$/"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^\\\\d{4}-\\\\d{2}-\\\\d{2}$/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^\\\\d{4}-\\\\d{2}-\\\\d{2}$/\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid string: must match pattern /^\\d{4}-\\d{2}-\\d{2}$/"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_regex_msg",
+    "results": [
+      {
+        "input": "12:30",
+        "success": true,
+        "data": "12:30"
+      },
+      {
+        "input": "1230",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "regex",
+            "pattern": "/^\\d{2}:\\d{2}$/",
+            "path": [],
+            "message": "Expected HH:MM"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^\\\\d{2}:\\\\d{2}$/\",\n    \"path\": [],\n    \"message\": \"Expected HH:MM\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Expected HH:MM"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "string_min_msg",
+    "results": [
+      {
+        "input": "",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [],
+            "message": "Name is required"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Name is required\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Name is required"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "number",
+    "results": [
+      {
+        "input": 1,
+        "success": true,
+        "data": 1
+      },
+      {
+        "input": 1.5,
+        "success": true,
+        "data": 1.5
+      },
+      {
+        "input": "1",
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected number, received string"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected number, received string\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected number, received string"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": null,
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected number, received null"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected number, received null\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected number, received null"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": null,
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "received": "NaN",
+            "path": [],
+            "message": "Invalid input: expected number, received NaN"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"received\": \"NaN\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected number, received NaN\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected number, received NaN"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "__undefined__",
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected number, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected number, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected number, received undefined"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "number_int_range",
+    "results": [
+      {
+        "input": 0,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected number to be >=1"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >=1\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >=1"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 1,
+        "success": true,
+        "data": 1
+      },
+      {
+        "input": 2.5,
+        "success": false,
+        "issues": [
+          {
+            "expected": "int",
+            "format": "safeint",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected int, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"int\",\n    \"format\": \"safeint\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected int, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected int, received number"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 6,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_big",
+            "maximum": 5,
+            "inclusive": true,
+            "path": [],
+            "message": "Too big: expected number to be <=5"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_big\",\n    \"maximum\": 5,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected number to be <=5\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected number to be <=5"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "number_positive",
+    "results": [
+      {
+        "input": 0,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 0,
+            "inclusive": false,
+            "path": [],
+            "message": "Too small: expected number to be >0"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >0\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >0"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": -1,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 0,
+            "inclusive": false,
+            "path": [],
+            "message": "Too small: expected number to be >0"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >0\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >0"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 1,
+        "success": true,
+        "data": 1
+      }
+    ]
+  },
+  {
+    "name": "number_nonnegative",
+    "results": [
+      {
+        "input": -1,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 0,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected number to be >=0"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >=0\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >=0"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 0,
+        "success": true,
+        "data": 0
+      }
+    ]
+  },
+  {
+    "name": "number_gt_lt",
+    "results": [
+      {
+        "input": 0,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 0,
+            "inclusive": false,
+            "path": [],
+            "message": "Too small: expected number to be >0"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >0\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >0"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 10,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_big",
+            "maximum": 10,
+            "inclusive": false,
+            "path": [],
+            "message": "Too big: expected number to be <10"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_big\",\n    \"maximum\": 10,\n    \"inclusive\": false,\n    \"path\": [],\n    \"message\": \"Too big: expected number to be <10\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected number to be <10"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 5,
+        "success": true,
+        "data": 5
+      }
+    ]
+  },
+  {
+    "name": "coerce_number",
+    "results": [
+      {
+        "input": "3",
+        "success": true,
+        "data": 3
+      },
+      {
+        "input": "0",
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected number to be >=1"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >=1\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >=1"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "abc",
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "received": "NaN",
+            "path": [],
+            "message": "Invalid input: expected number, received NaN"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"received\": \"NaN\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected number, received NaN\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected number, received NaN"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "",
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected number to be >=1"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >=1\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >=1"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": null,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected number to be >=1"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected number to be >=1\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected number to be >=1"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 2,
+        "success": true,
+        "data": 2
+      }
+    ]
+  },
+  {
+    "name": "boolean",
+    "results": [
+      {
+        "input": true,
+        "success": true,
+        "data": true
+      },
+      {
+        "input": "true",
+        "success": false,
+        "issues": [
+          {
+            "expected": "boolean",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected boolean, received string"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected boolean, received string\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected boolean, received string"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 1,
+        "success": false,
+        "issues": [
+          {
+            "expected": "boolean",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected boolean, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected boolean, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected boolean, received number"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "enum",
+    "results": [
+      {
+        "input": "a",
+        "success": true,
+        "data": "a"
+      },
+      {
+        "input": "d",
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "values": [
+              "a",
+              "b",
+              "c"
+            ],
+            "path": [],
+            "message": "Invalid option: expected one of \"a\"|\"b\"|\"c\""
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"a\",\n      \"b\",\n      \"c\"\n    ],\n    \"path\": [],\n    \"message\": \"Invalid option: expected one of \\\"a\\\"|\\\"b\\\"|\\\"c\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid option: expected one of \"a\"|\"b\"|\"c\""
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 1,
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "values": [
+              "a",
+              "b",
+              "c"
+            ],
+            "path": [],
+            "message": "Invalid option: expected one of \"a\"|\"b\"|\"c\""
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"a\",\n      \"b\",\n      \"c\"\n    ],\n    \"path\": [],\n    \"message\": \"Invalid option: expected one of \\\"a\\\"|\\\"b\\\"|\\\"c\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid option: expected one of \"a\"|\"b\"|\"c\""
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "enum_one",
+    "results": [
+      {
+        "input": "x",
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "values": [
+              "only"
+            ],
+            "path": [],
+            "message": "Invalid input: expected \"only\""
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"only\"\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input: expected \\\"only\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected \"only\""
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "literal",
+    "results": [
+      {
+        "input": "x",
+        "success": true,
+        "data": "x"
+      },
+      {
+        "input": "y",
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "values": [
+              "x"
+            ],
+            "path": [],
+            "message": "Invalid input: expected \"x\""
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"x\"\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input: expected \\\"x\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected \"x\""
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "literal_num",
+    "results": [
+      {
+        "input": 3,
+        "success": true,
+        "data": 3
+      },
+      {
+        "input": 4,
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "values": [
+              3
+            ],
+            "path": [],
+            "message": "Invalid input: expected 3"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      3\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input: expected 3\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected 3"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "array",
+    "results": [
+      {
+        "input": [],
+        "success": false,
+        "issues": [
+          {
+            "origin": "array",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected array to have >=1 items"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected array to have >=1 items\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected array to have >=1 items"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [
+          "a"
+        ],
+        "success": true,
+        "data": [
+          "a"
+        ]
+      },
+      {
+        "input": [
+          "a",
+          "b",
+          "c"
+        ],
+        "success": false,
+        "issues": [
+          {
+            "origin": "array",
+            "code": "too_big",
+            "maximum": 2,
+            "inclusive": true,
+            "path": [],
+            "message": "Too big: expected array to have <=2 items"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_big\",\n    \"maximum\": 2,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected array to have <=2 items\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected array to have <=2 items"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "x",
+        "success": false,
+        "issues": [
+          {
+            "expected": "array",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected array, received string"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected array, received string\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected array, received string"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [
+          1
+        ],
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              0
+            ],
+            "message": "Invalid input: expected string, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      0\n    ],\n    \"message\": \"Invalid input: expected string, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "0": [
+              "Invalid input: expected string, received number"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "optional",
+    "results": [
+      {
+        "input": "__undefined__",
+        "success": true,
+        "data": "__undefined__"
+      },
+      {
+        "input": "a",
+        "success": true,
+        "data": "a"
+      },
+      {
+        "input": null,
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received null"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received null\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received null"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "nullable",
+    "results": [
+      {
+        "input": null,
+        "success": true,
+        "data": null
+      },
+      {
+        "input": "a",
+        "success": true,
+        "data": "a"
+      },
+      {
+        "input": "__undefined__",
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received undefined"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "nullish",
+    "results": [
+      {
+        "input": null,
+        "success": true,
+        "data": null
+      },
+      {
+        "input": "__undefined__",
+        "success": true,
+        "data": "__undefined__"
+      },
+      {
+        "input": 1,
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected string, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected string, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected string, received number"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "default",
+    "results": [
+      {
+        "input": "__undefined__",
+        "success": true,
+        "data": 5
+      },
+      {
+        "input": 2,
+        "success": true,
+        "data": 2
+      },
+      {
+        "input": null,
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected number, received null"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected number, received null\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected number, received null"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "object",
+    "results": [
+      {
+        "input": {
+          "a": "x"
+        },
+        "success": true,
+        "data": {
+          "a": "x",
+          "c": false
+        }
+      },
+      {
+        "input": {
+          "a": "x",
+          "b": 2,
+          "c": true,
+          "extra": 1
+        },
+        "success": true,
+        "data": {
+          "a": "x",
+          "b": 2,
+          "c": true
+        }
+      },
+      {
+        "input": {},
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected string, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected string, received undefined"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "a": 1,
+          "b": "x"
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected string, received number"
+          },
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [
+              "b"
+            ],
+            "message": "Invalid input: expected number, received string"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected string, received number\"\n  },\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"b\"\n    ],\n    \"message\": \"Invalid input: expected number, received string\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected string, received number"
+            ],
+            "b": [
+              "Invalid input: expected number, received string"
+            ]
+          }
+        }
+      },
+      {
+        "input": null,
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected object, received null"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received null\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected object, received null"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "x",
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected object, received string"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received string\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected object, received string"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [],
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected object, received array"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected object, received array"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "object_nested",
+    "results": [
+      {
+        "input": {
+          "p": {
+            "q": [
+              {
+                "r": 1
+              },
+              {
+                "r": 9
+              }
+            ]
+          }
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_big",
+            "maximum": 3,
+            "inclusive": true,
+            "path": [
+              "p",
+              "q",
+              1,
+              "r"
+            ],
+            "message": "Too big: expected number to be <=3"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_big\",\n    \"maximum\": 3,\n    \"inclusive\": true,\n    \"path\": [\n      \"p\",\n      \"q\",\n      1,\n      \"r\"\n    ],\n    \"message\": \"Too big: expected number to be <=3\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Too big: expected number to be <=3"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "p": {}
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "array",
+            "code": "invalid_type",
+            "path": [
+              "p",
+              "q"
+            ],
+            "message": "Invalid input: expected array, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"array\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"p\",\n      \"q\"\n    ],\n    \"message\": \"Invalid input: expected array, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Invalid input: expected array, received undefined"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "object_strict",
+    "results": [
+      {
+        "input": {
+          "a": "x",
+          "b": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "unrecognized_keys",
+            "keys": [
+              "b"
+            ],
+            "path": [],
+            "message": "Unrecognized key: \"b\""
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"b\"\n    ],\n    \"path\": [],\n    \"message\": \"Unrecognized key: \\\"b\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Unrecognized key: \"b\""
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": {
+          "a": "x",
+          "b": 1,
+          "c": 2
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "unrecognized_keys",
+            "keys": [
+              "b",
+              "c"
+            ],
+            "path": [],
+            "message": "Unrecognized keys: \"b\", \"c\""
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"b\",\n      \"c\"\n    ],\n    \"path\": [],\n    \"message\": \"Unrecognized keys: \\\"b\\\", \\\"c\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Unrecognized keys: \"b\", \"c\""
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "union",
+    "results": [
+      {
+        "input": "a",
+        "success": true,
+        "data": "a"
+      },
+      {
+        "input": 1,
+        "success": true,
+        "data": 1
+      },
+      {
+        "input": true,
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected string, received boolean"
+                }
+              ],
+              [
+                {
+                  "expected": "number",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected number, received boolean"
+                }
+              ]
+            ],
+            "path": [],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected string, received boolean\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"number\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected number, received boolean\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "discriminated",
+    "results": [
+      {
+        "input": {
+          "kind": "a",
+          "x": 1
+        },
+        "success": true,
+        "data": {
+          "kind": "a",
+          "x": 1
+        }
+      },
+      {
+        "input": {
+          "kind": "b",
+          "y": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "y"
+            ],
+            "message": "Invalid input: expected string, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"y\"\n    ],\n    \"message\": \"Invalid input: expected string, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "y": [
+              "Invalid input: expected string, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "kind": "c"
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [],
+            "note": "No matching discriminator",
+            "discriminator": "kind",
+            "options": [
+              "a",
+              "b"
+            ],
+            "path": [
+              "kind"
+            ],
+            "message": "Invalid discriminator value. Expected 'a' | 'b'"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [],\n    \"note\": \"No matching discriminator\",\n    \"discriminator\": \"kind\",\n    \"options\": [\n      \"a\",\n      \"b\"\n    ],\n    \"path\": [\n      \"kind\"\n    ],\n    \"message\": \"Invalid discriminator value. Expected 'a' | 'b'\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "kind": [
+              "Invalid discriminator value. Expected 'a' | 'b'"
+            ]
+          }
+        }
+      },
+      {
+        "input": {},
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [],
+            "note": "No matching discriminator",
+            "discriminator": "kind",
+            "options": [
+              "a",
+              "b"
+            ],
+            "path": [
+              "kind"
+            ],
+            "message": "Invalid discriminator value. Expected 'a' | 'b'"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [],\n    \"note\": \"No matching discriminator\",\n    \"discriminator\": \"kind\",\n    \"options\": [\n      \"a\",\n      \"b\"\n    ],\n    \"path\": [\n      \"kind\"\n    ],\n    \"message\": \"Invalid discriminator value. Expected 'a' | 'b'\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "kind": [
+              "Invalid discriminator value. Expected 'a' | 'b'"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "record",
+    "results": [
+      {
+        "input": {
+          "a": 1
+        },
+        "success": true,
+        "data": {
+          "a": 1
+        }
+      },
+      {
+        "input": {
+          "a": "x"
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected number, received string"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected number, received string\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected number, received string"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "refine",
+    "results": [
+      {
+        "input": {
+          "from": "a",
+          "to": "b"
+        },
+        "success": true,
+        "data": {
+          "from": "a",
+          "to": "b"
+        }
+      },
+      {
+        "input": {
+          "from": "b",
+          "to": "a"
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "path": [
+              "to"
+            ],
+            "message": "from must be before to"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"custom\",\n    \"path\": [\n      \"to\"\n    ],\n    \"message\": \"from must be before to\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "to": [
+              "from must be before to"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "refine_root",
+    "results": [
+      {
+        "input": 2,
+        "success": true,
+        "data": 2
+      },
+      {
+        "input": 3,
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "path": [],
+            "message": "Must be even"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"custom\",\n    \"path\": [],\n    \"message\": \"Must be even\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Must be even"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "refine_with_field_error",
+    "results": [
+      {
+        "input": {
+          "a": "x",
+          "b": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected number, received string"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected number, received string\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected number, received string"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "a": 2,
+          "b": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "path": [],
+            "message": "a<b"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"custom\",\n    \"path\": [],\n    \"message\": \"a<b\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "a<b"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "object_defaults",
+    "results": [
+      {
+        "input": {},
+        "success": true,
+        "data": {
+          "n": 3,
+          "l": []
+        }
+      },
+      {
+        "input": {
+          "s": "x",
+          "n": 4
+        },
+        "success": true,
+        "data": {
+          "n": 4,
+          "s": "x",
+          "l": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "catch",
+    "results": [
+      {
+        "input": {
+          "n": "x"
+        },
+        "success": true,
+        "data": {
+          "n": 7
+        }
+      },
+      {
+        "input": {
+          "n": 1
+        },
+        "success": true,
+        "data": {
+          "n": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "coerce_boolean",
+    "results": [
+      {
+        "input": "false",
+        "success": true,
+        "data": true
+      },
+      {
+        "input": "",
+        "success": true,
+        "data": false
+      },
+      {
+        "input": 0,
+        "success": true,
+        "data": false
+      },
+      {
+        "input": 1,
+        "success": true,
+        "data": true
+      },
+      {
+        "input": null,
+        "success": true,
+        "data": false
+      }
+    ]
+  },
+  {
+    "name": "lowercase",
+    "results": [
+      {
+        "input": " A@B.CO ",
+        "success": true,
+        "data": "a@b.co"
+      },
+      {
+        "input": "X",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "email",
+            "pattern": "/^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/",
+            "path": [],
+            "message": "Invalid email address"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"email\",\n    \"pattern\": \"/^(?:[A-Za-z0-9_'+\\\\-]+\\\\.)*[A-Za-z0-9_'+\\\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\\\-]*\\\\.)+[A-Za-z]{2,}$/\",\n    \"path\": [],\n    \"message\": \"Invalid email address\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid email address"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "multi_check",
+    "results": [
+      {
+        "input": "b",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_small",
+            "minimum": 5,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected string to have >=5 characters"
+          },
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "regex",
+            "pattern": "/^a/",
+            "path": [],
+            "message": "Invalid string: must match pattern /^a/"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_small\",\n    \"minimum\": 5,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected string to have >=5 characters\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^a/\",\n    \"path\": [],\n    \"message\": \"Invalid string: must match pattern /^a/\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected string to have >=5 characters",
+            "Invalid string: must match pattern /^a/"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "nullable_obj_field",
+    "results": [
+      {
+        "input": {
+          "y": null
+        },
+        "success": true,
+        "data": {
+          "y": null
+        }
+      },
+      {
+        "input": {},
+        "success": false,
+        "issues": [
+          {
+            "expected": "number",
+            "code": "invalid_type",
+            "path": [
+              "y"
+            ],
+            "message": "Invalid input: expected number, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"number\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"y\"\n    ],\n    \"message\": \"Invalid input: expected number, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "y": [
+              "Invalid input: expected number, received undefined"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "x": null,
+          "y": 1
+        },
+        "success": true,
+        "data": {
+          "x": null,
+          "y": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "array_of_objects",
+    "results": [
+      {
+        "input": [
+          {
+            "id": "7c1d3e2a-1b2c-4d5e-8f90-1234567890ab",
+            "v": 11
+          }
+        ],
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_big",
+            "maximum": 10,
+            "inclusive": true,
+            "path": [
+              0,
+              "v"
+            ],
+            "message": "Too big: expected number to be <=10"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_big\",\n    \"maximum\": 10,\n    \"inclusive\": true,\n    \"path\": [\n      0,\n      \"v\"\n    ],\n    \"message\": \"Too big: expected number to be <=10\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "0": [
+              "Too big: expected number to be <=10"
+            ]
+          }
+        }
+      },
+      {
+        "input": [
+          {
+            "id": "x",
+            "v": 1
+          }
+        ],
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "guid",
+            "pattern": "/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/",
+            "path": [
+              0,
+              "id"
+            ],
+            "message": "Invalid GUID"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"guid\",\n    \"pattern\": \"/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/\",\n    \"path\": [\n      0,\n      \"id\"\n    ],\n    \"message\": \"Invalid GUID\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "0": [
+              "Invalid GUID"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "int_unsafe",
+    "results": [
+      {
+        "input": 9007199254740994,
+        "success": false,
+        "issues": [
+          {
+            "code": "too_big",
+            "maximum": 9007199254740991,
+            "note": "Integers must be within the safe integer range.",
+            "origin": "int",
+            "inclusive": true,
+            "path": [],
+            "message": "Too big: expected int to be <=9007199254740991"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"too_big\",\n    \"maximum\": 9007199254740991,\n    \"note\": \"Integers must be within the safe integer range.\",\n    \"origin\": \"int\",\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected int to be <=9007199254740991\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected int to be <=9007199254740991"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 1e+300,
+        "success": false,
+        "issues": [
+          {
+            "code": "too_big",
+            "maximum": 9007199254740991,
+            "note": "Integers must be within the safe integer range.",
+            "origin": "int",
+            "inclusive": true,
+            "path": [],
+            "message": "Too big: expected int to be <=9007199254740991"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"too_big\",\n    \"maximum\": 9007199254740991,\n    \"note\": \"Integers must be within the safe integer range.\",\n    \"origin\": \"int\",\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected int to be <=9007199254740991\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected int to be <=9007199254740991"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "unknown",
+    "results": [
+      {
+        "input": {},
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_type",
+            "expected": "nonoptional",
+            "path": [
+              "u"
+            ],
+            "message": "Invalid input: expected nonoptional, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"nonoptional\",\n    \"path\": [\n      \"u\"\n    ],\n    \"message\": \"Invalid input: expected nonoptional, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "u": [
+              "Invalid input: expected nonoptional, received undefined"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "u": [
+            1,
+            {
+              "a": 2
+            }
+          ]
+        },
+        "success": true,
+        "data": {
+          "u": [
+            1,
+            {
+              "a": 2
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "null",
+    "results": [
+      {
+        "input": null,
+        "success": true,
+        "data": null
+      },
+      {
+        "input": 0,
+        "success": false,
+        "issues": [
+          {
+            "expected": "null",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected null, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"null\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected null, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected null, received number"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "starts_ends",
+    "results": [
+      {
+        "input": "abxyz",
+        "success": true,
+        "data": "abxyz"
+      },
+      {
+        "input": "xx",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "starts_with",
+            "prefix": "ab",
+            "path": [],
+            "message": "Invalid string: must start with \"ab\""
+          },
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "ends_with",
+            "suffix": "yz",
+            "path": [],
+            "message": "Invalid string: must end with \"yz\""
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"starts_with\",\n    \"prefix\": \"ab\",\n    \"path\": [],\n    \"message\": \"Invalid string: must start with \\\"ab\\\"\"\n  },\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"ends_with\",\n    \"suffix\": \"yz\",\n    \"path\": [],\n    \"message\": \"Invalid string: must end with \\\"yz\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid string: must start with \"ab\"",
+            "Invalid string: must end with \"yz\""
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "union_nested",
+    "results": [
+      {
+        "input": {
+          "p": null
+        },
+        "success": true,
+        "data": {
+          "p": null
+        }
+      },
+      {
+        "input": {
+          "p": {
+            "n": 2
+          }
+        },
+        "success": true,
+        "data": {
+          "p": {
+            "n": 2
+          }
+        }
+      },
+      {
+        "input": {
+          "p": {
+            "n": 0
+          }
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_small",
+            "minimum": 0,
+            "inclusive": false,
+            "path": [
+              "p",
+              "n"
+            ],
+            "message": "Too small: expected number to be >0"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [\n      \"p\",\n      \"n\"\n    ],\n    \"message\": \"Too small: expected number to be >0\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Too small: expected number to be >0"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "p": {
+            "n": 1.5
+          }
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "null",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected null, received object"
+                }
+              ],
+              [
+                {
+                  "expected": "int",
+                  "format": "safeint",
+                  "code": "invalid_type",
+                  "path": [
+                    "n"
+                  ],
+                  "message": "Invalid input: expected int, received number"
+                }
+              ],
+              [
+                {
+                  "expected": "array",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected array, received object"
+                }
+              ],
+              [
+                {
+                  "expected": "array",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected array, received object"
+                }
+              ]
+            ],
+            "path": [
+              "p"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"null\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected null, received object\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"int\",\n          \"format\": \"safeint\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            \"n\"\n          ],\n          \"message\": \"Invalid input: expected int, received number\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected array, received object\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected array, received object\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"p\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Invalid input"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "p": [
+            1,
+            "a"
+          ]
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "null",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected null, received array"
+                }
+              ],
+              [
+                {
+                  "expected": "object",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected object, received array"
+                }
+              ],
+              [
+                {
+                  "expected": "number",
+                  "code": "invalid_type",
+                  "path": [
+                    1
+                  ],
+                  "message": "Invalid input: expected number, received string"
+                }
+              ],
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [
+                    0
+                  ],
+                  "message": "Invalid input: expected string, received number"
+                },
+                {
+                  "origin": "string",
+                  "code": "invalid_format",
+                  "format": "regex",
+                  "pattern": "/^\\d{4}-\\d{2}-\\d{2}$/",
+                  "path": [
+                    1
+                  ],
+                  "message": "Invalid string: must match pattern /^\\d{4}-\\d{2}-\\d{2}$/"
+                }
+              ]
+            ],
+            "path": [
+              "p"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"null\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected null, received array\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received array\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"number\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            1\n          ],\n          \"message\": \"Invalid input: expected number, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            0\n          ],\n          \"message\": \"Invalid input: expected string, received number\"\n        },\n        {\n          \"origin\": \"string\",\n          \"code\": \"invalid_format\",\n          \"format\": \"regex\",\n          \"pattern\": \"/^\\\\d{4}-\\\\d{2}-\\\\d{2}$/\",\n          \"path\": [\n            1\n          ],\n          \"message\": \"Invalid string: must match pattern /^\\\\d{4}-\\\\d{2}-\\\\d{2}$/\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"p\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Invalid input"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "p": [
+            9
+          ]
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_big",
+            "maximum": 7,
+            "inclusive": true,
+            "path": [
+              "p",
+              0
+            ],
+            "message": "Too big: expected number to be <=7"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_big\",\n    \"maximum\": 7,\n    \"inclusive\": true,\n    \"path\": [\n      \"p\",\n      0\n    ],\n    \"message\": \"Too big: expected number to be <=7\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Too big: expected number to be <=7"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "p": [
+            "x"
+          ]
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "regex",
+            "pattern": "/^\\d{4}-\\d{2}-\\d{2}$/",
+            "path": [
+              "p",
+              0
+            ],
+            "message": "Invalid string: must match pattern /^\\d{4}-\\d{2}-\\d{2}$/"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"regex\",\n    \"pattern\": \"/^\\\\d{4}-\\\\d{2}-\\\\d{2}$/\",\n    \"path\": [\n      \"p\",\n      0\n    ],\n    \"message\": \"Invalid string: must match pattern /^\\\\d{4}-\\\\d{2}-\\\\d{2}$/\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Invalid string: must match pattern /^\\d{4}-\\d{2}-\\d{2}$/"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "p": "x"
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "null",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected null, received string"
+                }
+              ],
+              [
+                {
+                  "expected": "object",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected object, received string"
+                }
+              ],
+              [
+                {
+                  "expected": "array",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected array, received string"
+                }
+              ],
+              [
+                {
+                  "expected": "array",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected array, received string"
+                }
+              ]
+            ],
+            "path": [
+              "p"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"null\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected null, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected array, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"array\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected array, received string\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"p\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Invalid input"
+            ]
+          }
+        }
+      },
+      {
+        "input": {},
+        "success": true,
+        "data": {}
+      },
+      {
+        "input": {
+          "p": [
+            [
+              1
+            ]
+          ]
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "null",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected null, received array"
+                }
+              ],
+              [
+                {
+                  "expected": "object",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected object, received array"
+                }
+              ],
+              [
+                {
+                  "expected": "number",
+                  "code": "invalid_type",
+                  "path": [
+                    0
+                  ],
+                  "message": "Invalid input: expected number, received array"
+                }
+              ],
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [
+                    0
+                  ],
+                  "message": "Invalid input: expected string, received array"
+                }
+              ]
+            ],
+            "path": [
+              "p"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"null\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected null, received array\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received array\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"number\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            0\n          ],\n          \"message\": \"Invalid input: expected number, received array\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            0\n          ],\n          \"message\": \"Invalid input: expected string, received array\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"p\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "p": [
+              "Invalid input"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "union_checks",
+    "results": [
+      {
+        "input": "ab",
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_small",
+            "minimum": 3,
+            "inclusive": true,
+            "path": [],
+            "message": "Too small: expected string to have >=3 characters"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_small\",\n    \"minimum\": 3,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too small: expected string to have >=3 characters\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too small: expected string to have >=3 characters"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": 5,
+        "success": false,
+        "issues": [
+          {
+            "origin": "number",
+            "code": "too_big",
+            "maximum": 2,
+            "inclusive": true,
+            "path": [],
+            "message": "Too big: expected number to be <=2"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_big\",\n    \"maximum\": 2,\n    \"inclusive\": true,\n    \"path\": [],\n    \"message\": \"Too big: expected number to be <=2\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Too big: expected number to be <=2"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": true,
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected string, received boolean"
+                }
+              ],
+              [
+                {
+                  "expected": "number",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected number, received boolean"
+                }
+              ]
+            ],
+            "path": [],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected string, received boolean\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"number\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected number, received boolean\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": "abc",
+        "success": true,
+        "data": "abc"
+      }
+    ]
+  },
+  {
+    "name": "array_cap",
+    "results": [
+      {
+        "input": {
+          "tags": [
+            "",
+            1,
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "a"
+          ]
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "array",
+            "code": "too_big",
+            "maximum": 3,
+            "inclusive": true,
+            "path": [
+              "tags"
+            ],
+            "message": "Too big: expected array to have <=3 items"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_big\",\n    \"maximum\": 3,\n    \"inclusive\": true,\n    \"path\": [\n      \"tags\"\n    ],\n    \"message\": \"Too big: expected array to have <=3 items\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "tags": [
+              "Too big: expected array to have <=3 items"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "tags": [
+            "",
+            1
+          ]
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "too_small",
+            "minimum": 1,
+            "inclusive": true,
+            "path": [
+              "tags",
+              0
+            ],
+            "message": "Too small: expected string to have >=1 characters"
+          },
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "tags",
+              1
+            ],
+            "message": "Invalid input: expected string, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [\n      \"tags\",\n      0\n    ],\n    \"message\": \"Too small: expected string to have >=1 characters\"\n  },\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"tags\",\n      1\n    ],\n    \"message\": \"Invalid input: expected string, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "tags": [
+              "Too small: expected string to have >=1 characters",
+              "Invalid input: expected string, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "tags": [
+            "a",
+            "b",
+            "c"
+          ]
+        },
+        "success": true,
+        "data": {
+          "tags": [
+            "a",
+            "b",
+            "c"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "array_cap_union",
+    "results": [
+      {
+        "input": [
+          1,
+          2
+        ],
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "origin": "array",
+                  "code": "too_big",
+                  "maximum": 1,
+                  "inclusive": true,
+                  "path": [],
+                  "message": "Too big: expected array to have <=1 items"
+                }
+              ],
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected string, received array"
+                }
+              ]
+            ],
+            "path": [],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"origin\": \"array\",\n          \"code\": \"too_big\",\n          \"maximum\": 1,\n          \"inclusive\": true,\n          \"path\": [],\n          \"message\": \"Too big: expected array to have <=1 items\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected string, received array\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [
+          "x",
+          "y"
+        ],
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "origin": "array",
+                  "code": "too_big",
+                  "maximum": 1,
+                  "inclusive": true,
+                  "path": [],
+                  "message": "Too big: expected array to have <=1 items"
+                }
+              ],
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected string, received array"
+                }
+              ]
+            ],
+            "path": [],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"origin\": \"array\",\n          \"code\": \"too_big\",\n          \"maximum\": 1,\n          \"inclusive\": true,\n          \"path\": [],\n          \"message\": \"Too big: expected array to have <=1 items\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected string, received array\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [
+          "x"
+        ],
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "number",
+                  "code": "invalid_type",
+                  "path": [
+                    0
+                  ],
+                  "message": "Invalid input: expected number, received string"
+                }
+              ],
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected string, received array"
+                }
+              ]
+            ],
+            "path": [],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"number\",\n          \"code\": \"invalid_type\",\n          \"path\": [\n            0\n          ],\n          \"message\": \"Invalid input: expected number, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"string\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected string, received array\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "vote_literals",
+    "results": [
+      {
+        "input": {
+          "value": 2
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    -1
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected -1"
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    0
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected 0"
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    1
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected 1"
+                }
+              ]
+            ],
+            "path": [
+              "value"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            -1\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected -1\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            0\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected 0\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            1\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected 1\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"value\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "value": [
+              "Invalid input"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "value": "1"
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    -1
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected -1"
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    0
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected 0"
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    1
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected 1"
+                }
+              ]
+            ],
+            "path": [
+              "value"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            -1\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected -1\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            0\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected 0\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            1\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected 1\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"value\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "value": [
+              "Invalid input"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "value": -1
+        },
+        "success": true,
+        "data": {
+          "value": -1
+        }
+      },
+      {
+        "input": {},
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    -1
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected -1"
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    0
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected 0"
+                }
+              ],
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    1
+                  ],
+                  "path": [],
+                  "message": "Invalid input: expected 1"
+                }
+              ]
+            ],
+            "path": [
+              "value"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            -1\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected -1\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            0\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected 0\"\n        }\n      ],\n      [\n        {\n          \"code\": \"invalid_value\",\n          \"values\": [\n            1\n          ],\n          \"path\": [],\n          \"message\": \"Invalid input: expected 1\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"value\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "value": [
+              "Invalid input"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "refine_after_soft",
+    "results": [
+      {
+        "input": {
+          "e": "nope",
+          "ok": false
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "email",
+            "pattern": "/^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid email address"
+          },
+          {
+            "code": "custom",
+            "path": [
+              "ok"
+            ],
+            "message": "must be ok"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"email\",\n    \"pattern\": \"/^(?:[A-Za-z0-9_'+\\\\-]+\\\\.)*[A-Za-z0-9_'+\\\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\\\-]*\\\\.)+[A-Za-z]{2,}$/\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid email address\"\n  },\n  {\n    \"code\": \"custom\",\n    \"path\": [\n      \"ok\"\n    ],\n    \"message\": \"must be ok\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid email address"
+            ],
+            "ok": [
+              "must be ok"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "e": "nope",
+          "ok": true
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "email",
+            "pattern": "/^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid email address"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"email\",\n    \"pattern\": \"/^(?:[A-Za-z0-9_'+\\\\-]+\\\\.)*[A-Za-z0-9_'+\\\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\\\-]*\\\\.)+[A-Za-z]{2,}$/\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid email address\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid email address"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "e": 1,
+          "ok": false
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid input: expected string, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid input: expected string, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid input: expected string, received number"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "union_two_soft",
+    "results": [
+      {
+        "input": {
+          "u": "abc"
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "origin": "string",
+                  "code": "too_small",
+                  "minimum": 5,
+                  "inclusive": true,
+                  "path": [],
+                  "message": "Too small: expected string to have >=5 characters"
+                }
+              ],
+              [
+                {
+                  "origin": "string",
+                  "code": "too_big",
+                  "maximum": 1,
+                  "inclusive": true,
+                  "path": [],
+                  "message": "Too big: expected string to have <=1 characters"
+                }
+              ]
+            ],
+            "path": [
+              "u"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"origin\": \"string\",\n          \"code\": \"too_small\",\n          \"minimum\": 5,\n          \"inclusive\": true,\n          \"path\": [],\n          \"message\": \"Too small: expected string to have >=5 characters\"\n        }\n      ],\n      [\n        {\n          \"origin\": \"string\",\n          \"code\": \"too_big\",\n          \"maximum\": 1,\n          \"inclusive\": true,\n          \"path\": [],\n          \"message\": \"Too big: expected string to have <=1 characters\"\n        }\n      ]\n    ],\n    \"path\": [\n      \"u\"\n    ],\n    \"message\": \"Invalid input\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "u": [
+              "Invalid input"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "u": "a"
+        },
+        "success": true,
+        "data": {
+          "u": "a"
+        }
+      }
+    ]
+  },
+  {
+    "name": "super_refine",
+    "results": [
+      {
+        "input": {
+          "a": {
+            "x": 1
+          }
+        },
+        "success": true,
+        "data": {
+          "a": {
+            "x": 1
+          }
+        }
+      },
+      {
+        "input": {
+          "a": {
+            "x": 2
+          }
+        },
+        "success": false,
+        "issues": [
+          {
+            "code": "custom",
+            "message": "too big",
+            "path": [
+              "a"
+            ]
+          },
+          {
+            "code": "custom",
+            "message": "with path",
+            "path": [
+              "a",
+              "x"
+            ]
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"too big\",\n    \"path\": [\n      \"a\"\n    ]\n  },\n  {\n    \"code\": \"custom\",\n    \"message\": \"with path\",\n    \"path\": [\n      \"a\",\n      \"x\"\n    ]\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "too big",
+              "with path"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "loose_object",
+    "results": [
+      {
+        "input": {
+          "a": "x",
+          "b": 1
+        },
+        "success": true,
+        "data": {
+          "a": "x",
+          "b": 1
+        }
+      },
+      {
+        "input": {
+          "b": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected string, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected string, received undefined"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "intersection",
+    "results": [
+      {
+        "input": {
+          "a": true,
+          "b": 1
+        },
+        "success": true,
+        "data": {
+          "a": true,
+          "b": 1
+        }
+      },
+      {
+        "input": {
+          "a": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "boolean",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected boolean, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected boolean, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected boolean, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": 5,
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected object, received number"
+          },
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected record, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected record, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected object, received number",
+            "Invalid input: expected record, received number"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [],
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected object, received array"
+          },
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected record, received array"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected record, received array\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected object, received array",
+            "Invalid input: expected record, received array"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "elicitation_like",
+    "results": [
+      {
+        "input": {
+          "e": {}
+        },
+        "success": true,
+        "data": {
+          "e": {
+            "form": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "e": 5
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid input: expected object, received number"
+          },
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid input: expected record, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid input: expected object, received number\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid input: expected record, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid input: expected object, received number",
+              "Invalid input: expected record, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "e": {
+            "form": 1
+          }
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [
+              "e",
+              "form"
+            ],
+            "message": "Invalid input: expected record, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\",\n      \"form\"\n    ],\n    \"message\": \"Invalid input: expected record, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid input: expected record, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": {},
+        "success": true,
+        "data": {}
+      }
+    ]
+  },
+  {
+    "name": "native_enum_like",
+    "results": [
+      {
+        "input": "a",
+        "success": true,
+        "data": "a"
+      },
+      {
+        "input": "z",
+        "success": false,
+        "issues": [
+          {
+            "code": "invalid_value",
+            "values": [
+              "a",
+              "b"
+            ],
+            "path": [],
+            "message": "Invalid option: expected one of \"a\"|\"b\""
+          }
+        ],
+        "message": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"a\",\n      \"b\"\n    ],\n    \"path\": [],\n    \"message\": \"Invalid option: expected one of \\\"a\\\"|\\\"b\\\"\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid option: expected one of \"a\"|\"b\""
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  }
+]

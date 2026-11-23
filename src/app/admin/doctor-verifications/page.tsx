@@ -1,43 +1,24 @@
-import { and, desc, eq, isNotNull } from 'drizzle-orm';
 import Link from 'next/link';
 
+import { adminGet } from '@/features/admin/adminApi';
 import { requireUserOrRedirect } from '@/libs/AuthGuard';
-import { db } from '@/libs/DB';
-import { doctorVerificationApplicationSchema } from '@/models/Schema';
-import { moderationService } from '@/services/ModerationService';
 import { AppConfig } from '@/utils/AppConfig';
+
+type Row = { id: string; fullName: string; country: string; specialty: string; verificationMethod: string; submittedAt: string | null; status: string };
 
 export default async function AdminDoctorVerificationsPage() {
   // Admin routes are not localized; signed-out visitors go to the default-locale sign-in.
-  const userId = await requireUserOrRedirect(AppConfig.defaultLocale);
+  await requireUserOrRedirect(AppConfig.defaultLocale);
 
-  const isAdmin = await moderationService.isAdmin(userId);
-  if (!isAdmin) {
+  const res = await adminGet<{ applications: Row[] }>('/api/admin/doctor-verification/applications?status=pending');
+  if (res.status === 403) {
     return (
       <main className="mx-auto max-w-3xl p-6">
         <h1 className="text-lg font-semibold">Forbidden</h1>
       </main>
     );
   }
-
-  const pending = await db
-    .select({
-      id: doctorVerificationApplicationSchema.id,
-      fullName: doctorVerificationApplicationSchema.fullName,
-      country: doctorVerificationApplicationSchema.country,
-      specialty: doctorVerificationApplicationSchema.specialty,
-      verificationMethod: doctorVerificationApplicationSchema.verificationMethod,
-      submittedAt: doctorVerificationApplicationSchema.submittedAt,
-      status: doctorVerificationApplicationSchema.status,
-    })
-    .from(doctorVerificationApplicationSchema)
-    .where(
-      and(
-        eq(doctorVerificationApplicationSchema.status, 'pending' as any),
-        isNotNull(doctorVerificationApplicationSchema.submittedAt),
-      ),
-    )
-    .orderBy(desc(doctorVerificationApplicationSchema.submittedAt));
+  const pending = res.data!.applications;
 
   return (
     <main className="mx-auto max-w-3xl p-6">
@@ -75,7 +56,7 @@ export default async function AdminDoctorVerificationsPage() {
                 </div>
               </div>
               <div className="text-xs text-muted-foreground">
-                {app.submittedAt ? app.submittedAt.toISOString() : ''}
+                {app.submittedAt ?? ''}
               </div>
             </div>
           </Link>
