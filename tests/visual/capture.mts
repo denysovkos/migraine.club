@@ -3,7 +3,7 @@
  * full-page screenshot, the normalised body HTML, the final URL, the HTTP
  * status and the document title, at phone and desktop width.
  *
- * Usage: node --import tsx tests/visual/capture.mts <baseURL[,baseURL...]> <outDir[,outDir...]> [filter]
+ * Usage: node --import tsx tests/visual/capture.mts <baseURL[,baseURL...]> <outDir[,outDir...]> [routeRegExp]
  * Env: VISUAL_NOW (ISO time the browser clock is pinned to; both servers'
  * captures must use the same value).
  *
@@ -85,9 +85,13 @@ async function main() {
       // server is captured offline alike.
       const origin = new URL(base).origin;
       await context.route(url => new URL(url).origin !== origin, route => route.abort());
+      // Next prefetches every visible <Link>'s route in the background; on
+      // long lists that never lets the network go idle. Prefetches render
+      // nothing, so they are dropped.
+      await context.route(url => new URL(url).origin === origin, route => route.request().headers()['next-router-prefetch'] ? route.abort() : route.fallback());
       return context;
     }));
-    for (const route of routes().filter(r => !filter || r.includes(filter))) {
+    for (const route of routes().filter(r => !filter || new RegExp(filter).test(r))) {
       for (const [i, context] of contexts.entries()) {
         const base = bases[i]!;
         const out = outs[i]!;

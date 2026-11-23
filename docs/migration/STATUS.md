@@ -189,6 +189,17 @@ State:
   heads identical); `internal/spa` served with `SPA_DIST=web/dist`.
 - Running a full body comparison and fixing what differs, route by route.
 - Known: Next sent an HTML body with its 307s; browsers never show it.
+- Fonts: Next shipped a next/font family's @font-face rules only with the
+  routes that call it (admin and share pages render in the fallback font);
+  the shim injects a family's rules on its first call.
+- Next prefetched the routes of visible links (RSC requests); the SPA loads
+  a route's chunk when it is navigated to. Nothing renders differently.
+- notFound() inside a dashboard page: Next's bare 404 kept a
+  `color-scheme: light` style that next-themes had set on <html> before the
+  404 replaced the layout. The SPA's 404 has no style there; the 404 page
+  sets its own colours, so nothing renders differently.
+- Remaining screenshot differences are antialiasing at card edges (at most
+  4 colour levels in a few dozen pixels, identical HTML).
 - Page auth: Next ran clerkMiddleware on /dashboard, /quick/attack, /admin
   and the sign-in pages; guarded layouts sent signed-out visitors to the
   localized sign-in (307). The Go server does the same when Clerk's

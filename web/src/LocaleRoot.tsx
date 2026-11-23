@@ -14,12 +14,13 @@ import { CookieBanner } from '@/features/consent';
 import { setDocument } from './metadata';
 import { currentLocale } from './shims/locale-state';
 
-const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
-
 export function LocaleRoot({ locale }: { locale: string }) {
+  // Called here, not at module level: the font's rules belong to the locale
+  // routes only (see the next/font shim).
+  const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
   useLayoutEffect(() => {
     setDocument({ lang: locale, htmlClass: inter.variable, bodyClass: 'bg-background font-sans text-foreground antialiased' });
-  }, [locale]);
+  }, [locale, inter.variable]);
   return (
     <>
       <GoogleTagManager gtmId="G-0QRPP8GE79" />

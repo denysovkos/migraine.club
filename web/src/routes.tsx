@@ -212,7 +212,7 @@ function localeRoutes(locale: string): RouteObject {
   if (root.page) {
     children.push({ index: true, ...moduleRoute(root.page, 'page', locale) });
   }
-  children.push(...build(root, locale), { path: '*', Component: NotFoundPage });
+  children.push(...build(root, locale));
   return {
     path: locale === DEFAULT_LOCALE ? '/' : `/${locale}`,
     loader: async () => {
@@ -250,6 +250,8 @@ export function routes(): RouteObject[] {
     plainRoutes('admin'),
     plainRoutes('share'),
     localeRoutes(DEFAULT_LOCALE),
+    // A URL no page matches got Next's global 404, outside every layout.
+    { path: '*', Component: NotFoundPage },
   ];
 }
 

@@ -3,7 +3,7 @@ import { use } from 'react';
 import { createMemoryRouter, RouterProvider, useLocation } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ErrorBoundary, settled } from './routes';
+import { ErrorBoundary, routes, settled } from './routes';
 import { notFound, redirect } from './shims/next-navigation';
 
 vi.mock('./NotFoundPage', () => ({ NotFoundPage: () => <h1>404</h1> }));
@@ -65,5 +65,15 @@ describe('ErrorBoundary', () => {
     render(<RouterProvider router={router} />);
 
     expect(await screen.findByText('outer')).toBeInTheDocument();
+  });
+});
+
+describe('routes', () => {
+  it('answers a URL no page matches with the bare 404, outside the locale layout', async () => {
+    const router = createMemoryRouter(routes(), { initialEntries: ['/uk/no-such-page'] });
+    render(<RouterProvider router={router} />);
+
+    expect(await screen.findByRole('heading', { name: '404' })).toBeInTheDocument();
+    expect(router.state.matches.map(m => m.route.path)).toEqual(['*']);
   });
 });

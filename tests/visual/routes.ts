@@ -86,6 +86,8 @@ const localized = [
   '/sign-in',
   '/sign-up',
   '/terms',
+  // notFound() thrown by the page (the id is not a number).
+  '/dashboard/episodes/not-a-number',
 ];
 
 /** Routes outside the locale tree. */

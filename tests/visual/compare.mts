@@ -85,7 +85,13 @@ function main() {
             }
           }
           if (n > 0) {
-            problems.push(`${n} pixels differ`);
+            // The largest channel difference tells antialiasing (1-4 levels
+            // at an edge) from a real change.
+            let max = 0;
+            for (let i = 0; i < pb.data.length; i++) {
+              max = Math.max(max, Math.abs(pa.data[i]! - pb.data[i]!));
+            }
+            problems.push(`${n} pixels differ (max channel difference ${max})`);
             writeFileSync(path.join(diffDir, `${name}.png`), PNG.sync.write(diff));
           }
         }
