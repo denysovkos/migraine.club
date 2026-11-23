@@ -36,11 +36,13 @@ export function localeOfPath(pathname: string): string {
 
 // ---------- next-intl middleware, client side ----------
 //
-// In Next every navigation went through the server, where next-intl's
-// middleware prefixed unprefixed paths with the cookie's locale, dropped the
-// default locale's prefix and kept the NEXT_LOCALE cookie in step. Client
-// navigations here apply the same rules (internal/spa/locale.go is the
-// server half).
+// In Next every client navigation fetched the new route from the server,
+// where next-intl's middleware ran: it prefixed unprefixed paths with the
+// cookie's locale and dropped the default locale's prefix, and the fetch
+// followed those redirects. Those fetches are not documents
+// (Sec-Fetch-Dest: empty), so the middleware never wrote the cookie for
+// them. Client navigations here follow the same redirects without touching
+// the cookie (internal/spa/locale.go is the server half, for documents).
 
 const COOKIE = 'NEXT_LOCALE';
 const SKIPS = /^\/(?:.+\.\w+$|_next|monitoring|share|\.well-known|sw\.js|manifest\.webmanifest|api|trpc|admin)/;
@@ -61,26 +63,47 @@ function acceptLanguageLocale(): string | undefined {
   return navigator.languages?.length ? DEFAULT_LOCALE : undefined;
 }
 
-function syncCookie(locale: string) {
-  const cookie = readCookie();
-  if (cookie ? cookie !== locale : acceptLanguageLocale() !== locale) {
-    document.cookie = `${COOKIE}=${locale}; path=/; samesite=lax`;
+/** next-intl's syncLocaleCookie: what its router does when switching locale. */
+export function setLocaleCookie(current: string, next: string) {
+  if (next !== current) {
+    document.cookie = `${COOKIE}=${next};sameSite=lax;path=/;`;
   }
 }
 
-/** Where next-intl's middleware sent a navigation to `href`. */
+function prefixed(locale: string, pathname: string): string {
+  return pathname === '/' ? `/${locale}` : `/${locale}${pathname}`;
+}
+
+/** One pass of the middleware over a pathname: where it redirected, if anywhere. */
+function redirectOf(pathname: string): string | undefined {
+  const path = pathname.replace(/\/+/g, '/');
+  const first = path.split('/')[1] ?? '';
+  const matched = (LOCALES as readonly string[]).find(l => l === first.toLowerCase());
+  const rest = matched ? path.slice(first.length + 1) || '/' : path;
+  const unprefixed = rest !== '/' ? rest.replace(/\/$/, '') : rest;
+  const locale = matched ?? readCookie() ?? acceptLanguageLocale() ?? DEFAULT_LOCALE;
+  if (matched) {
+    if (first !== matched) {
+      return prefixed(matched, unprefixed);
+    }
+    return matched === DEFAULT_LOCALE ? unprefixed : undefined;
+  }
+  return locale === DEFAULT_LOCALE ? undefined : prefixed(locale, unprefixed);
+}
+
+/** Where a client navigation to `href` ended up after next-intl's redirects. */
 export function middlewareHref(href: string): string {
   const url = new URL(href, window.location.href);
   if (url.origin !== window.location.origin || SKIPS.test(url.pathname)) {
     return href;
   }
-  const path = url.pathname.replace(/\/+/g, '/');
-  const first = path.split('/')[1] ?? '';
-  const matched = (LOCALES as readonly string[]).find(l => l === first.toLowerCase());
-  const rest = matched ? path.slice(first.length + 1) || '/' : path;
-  const normalized = rest !== '/' ? rest.replace(/\/$/, '') : rest;
-  const locale = matched ?? readCookie() ?? acceptLanguageLocale() ?? DEFAULT_LOCALE;
-  syncCookie(locale);
-  const prefixed = locale === DEFAULT_LOCALE ? normalized : `/${locale}${normalized === '/' ? '' : normalized}`;
-  return `${prefixed}${url.search}${url.hash}`;
+  let pathname = url.pathname;
+  for (let hops = 0; hops < 10; hops++) {
+    const next = redirectOf(pathname);
+    if (next === undefined || next === pathname) {
+      break;
+    }
+    pathname = next;
+  }
+  return `${pathname}${url.search}${url.hash}`;
 }

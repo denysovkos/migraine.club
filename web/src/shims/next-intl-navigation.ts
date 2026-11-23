@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
-import { middlewareHref } from './locale-state';
+import { middlewareHref, setLocaleCookie } from './locale-state';
 
 type Config = { locales: readonly string[]; defaultLocale: string };
 
@@ -16,8 +16,9 @@ export function createNavigation({ locales, defaultLocale }: Config) {
     }
     return pathname;
   };
-  // next-intl forces the prefix when the locale changes, so the middleware
-  // updates the cookie (and then drops the default locale's prefix again).
+  // next-intl prefixes the path whenever a locale is passed (and writes the
+  // cookie when it changes); the middleware then drops the default
+  // locale's prefix again.
   const prefix = (href: string, locale: string, force = false) => {
     if (locale === defaultLocale && !force) {
       return href;
@@ -33,8 +34,14 @@ export function createNavigation({ locales, defaultLocale }: Config) {
     const first = pathname.split('/')[1] ?? '';
     const current = locales.includes(first) ? first : defaultLocale;
     return useMemo(() => ({
-      push: (href: string, opts?: { locale?: string }) => void navigate(middlewareHref(prefix(href, opts?.locale ?? current, opts?.locale !== undefined && opts.locale !== current))),
-      replace: (href: string, opts?: { locale?: string }) => void navigate(middlewareHref(prefix(href, opts?.locale ?? current, opts?.locale !== undefined && opts.locale !== current)), { replace: true }),
+      push: (href: string, opts?: { locale?: string }) => {
+        setLocaleCookie(current, opts?.locale ?? current);
+        void navigate(middlewareHref(prefix(href, opts?.locale ?? current, opts?.locale !== undefined)));
+      },
+      replace: (href: string, opts?: { locale?: string }) => {
+        setLocaleCookie(current, opts?.locale ?? current);
+        void navigate(middlewareHref(prefix(href, opts?.locale ?? current, opts?.locale !== undefined)), { replace: true });
+      },
       back: () => window.history.back(),
       forward: () => window.history.forward(),
       refresh: () => {},

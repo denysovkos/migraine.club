@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { localeOfPath, middlewareHref } from './locale-state';
+import { localeOfPath, middlewareHref, setLocaleCookie } from './locale-state';
 
 function clearCookies() {
   for (const c of document.cookie.split('; ').filter(Boolean)) {
@@ -56,30 +56,28 @@ describe('middlewareHref', () => {
     languages(['uk-UA', 'en']);
 
     expect(middlewareHref('/dashboard')).toBe('/uk/dashboard');
-    // next-intl only writes the cookie when it disagrees with the header.
-    expect(document.cookie).not.toContain('NEXT_LOCALE');
   });
 
-  it('stores the default locale when the browser sends no languages', () => {
-    languages([]);
+  it('follows the redirect chain with the cookie unchanged, as a fetch did', () => {
+    // /en/x -> /x (default prefix dropped) -> /uk/x (cookie locale).
+    document.cookie = 'NEXT_LOCALE=uk; path=/';
 
-    expect(middlewareHref('/dashboard')).toBe('/dashboard');
-    expect(document.cookie).toContain('NEXT_LOCALE=en');
+    expect(middlewareHref('/en/dashboard/diary')).toBe('/uk/dashboard/diary');
+    expect(document.cookie).toBe('NEXT_LOCALE=uk');
   });
 
-  it('drops the default locale prefix and stores the locale', () => {
-    document.cookie = 'NEXT_LOCALE=fr; path=/';
+  it('drops the default prefix when the cookie agrees', () => {
+    document.cookie = 'NEXT_LOCALE=en; path=/';
 
-    expect(middlewareHref('/en/dashboard')).toBe('/dashboard');
-    expect(document.cookie).toContain('NEXT_LOCALE=en');
+    expect(middlewareHref('/en/dashboard?a=1')).toBe('/dashboard?a=1');
   });
 
-  it('keeps an explicit prefix and switches the cookie to it', () => {
+  it('keeps an explicit prefix and leaves the cookie alone', () => {
     expect(middlewareHref('/fr/dashboard')).toBe('/fr/dashboard');
-    expect(document.cookie).toContain('NEXT_LOCALE=fr');
+    expect(document.cookie).toBe('');
   });
 
-  it('matches the prefix case-insensitively and normalises slashes', () => {
+  it('fixes the prefix case and keeps the rest of the path', () => {
     expect(middlewareHref('/FR//dashboard/')).toBe('/fr/dashboard');
   });
 
@@ -95,5 +93,19 @@ describe('middlewareHref', () => {
     document.cookie = 'NEXT_LOCALE=de; path=/';
 
     expect(middlewareHref('/dashboard')).toBe('/dashboard');
+  });
+});
+
+describe('setLocaleCookie', () => {
+  afterEach(clearCookies);
+
+  it('writes the cookie only when the locale changes', () => {
+    setLocaleCookie('en', 'en');
+
+    expect(document.cookie).toBe('');
+
+    setLocaleCookie('en', 'uk');
+
+    expect(document.cookie).toBe('NEXT_LOCALE=uk');
   });
 });
