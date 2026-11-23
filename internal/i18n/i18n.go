@@ -57,7 +57,7 @@ func New(locale, namespace string) (Translator, error) {
 	}
 	return func(key string, values ...any) string {
 		full := namespace + "." + key
-		var cur any = msgs
+		cur := msgs
 		for _, p := range strings.Split(full, ".") {
 			m, ok := cur.(map[string]any)
 			if !ok {

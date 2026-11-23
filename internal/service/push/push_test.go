@@ -50,7 +50,7 @@ func TestConfigured(t *testing.T) {
 	ok, err := s.Configured()
 	require.False(t, ok)
 	require.NoError(t, err)
-	for _, bad := range []push.Service{
+	for _, bad := range []*push.Service{
 		{PublicKey: pub, PrivateKey: priv, Subject: "nope"},
 		{PublicKey: pub, PrivateKey: priv, Subject: "http://example.com"},
 		{PublicKey: "abc", PrivateKey: priv, Subject: "mailto:a@b.c"},
