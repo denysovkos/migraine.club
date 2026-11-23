@@ -7,6 +7,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/api/community"
 	"github.com/denysovkos/migraine.club/internal/api/cycle"
 	"github.com/denysovkos/migraine.club/internal/api/diary"
+	"github.com/denysovkos/migraine.club/internal/api/doctors"
 	"github.com/denysovkos/migraine.club/internal/api/episodes"
 	"github.com/denysovkos/migraine.club/internal/api/factors"
 	"github.com/denysovkos/migraine.club/internal/api/insights"
@@ -42,4 +43,5 @@ func mountAPI(r chi.Router, d *app.Deps) {
 	alerts.Mount(r, d)
 	share.Mount(r, d)
 	community.Mount(r, d)
+	doctors.Mount(r, d)
 }

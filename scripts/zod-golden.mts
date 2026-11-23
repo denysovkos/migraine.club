@@ -59,6 +59,11 @@ const cases: Array<{ name: string; schema: z.ZodTypeAny; inputs: unknown[] }> = 
   { name: 'array_cap', schema: z.object({ tags: z.array(z.string().min(1).max(32)).max(3).optional() }), inputs: [{ tags: ['', 1, 'x'.repeat(33), 'a'] }, { tags: ['', 1] }, { tags: ['a', 'b', 'c'] }] },
   { name: 'array_cap_union', schema: z.union([z.array(z.number()).max(1), z.string()]), inputs: [[1, 2], ['x', 'y'], ['x']] },
   { name: 'vote_literals', schema: z.object({ value: z.union([z.literal(-1), z.literal(0), z.literal(1)]) }), inputs: [{ value: 2 }, { value: '1' }, { value: -1 }, {}] },
+  { name: 'refine_after_soft', schema: z.object({ e: z.string().email().optional(), ok: z.boolean() }).superRefine((v, ctx) => {
+    if (v.ok !== true) {
+      ctx.addIssue({ code: 'custom', path: ['ok'], message: 'must be ok' });
+    }
+  }), inputs: [{ e: 'nope', ok: false }, { e: 'nope', ok: true }, { e: 1, ok: false }] },
   { name: 'union_two_soft', schema: z.object({ u: z.union([z.string().min(5), z.string().max(1)]) }), inputs: [{ u: 'abc' }, { u: 'a' }] },
   { name: 'super_refine', schema: z.object({ a: z.object({ x: z.number() }).superRefine((v, ctx) => {
     if (v.x > 1) {

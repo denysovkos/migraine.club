@@ -73,7 +73,12 @@ var goldenSchemas = map[string]Schema{
 	"array_cap":       Object(F("tags", Optional(Array(String().Min(1).Max(32)).Max(3)))),
 	"array_cap_union": Union(Array(Number()).Max(1), String()),
 	"vote_literals":   Object(F("value", Union(Literal(-1.0), Literal(0.0), Literal(1.0)))),
-	"union_two_soft":  Object(F("u", Union(String().Min(5), String().Max(1)))),
+	"refine_after_soft": SuperRefine(Object(F("e", Optional(String().Email())), F("ok", Boolean())), func(v any, ctx *Ctx) {
+		if v.(map[string]any)["ok"] != true {
+			ctx.Issue("code", "custom", "path", []any{"ok"}, "message", "must be ok")
+		}
+	}),
+	"union_two_soft": Object(F("u", Union(String().Min(5), String().Max(1)))),
 	"super_refine": Object(F("a", SuperRefine(Object(F("x", Number())), func(v any, ctx *Ctx) {
 		if v.(map[string]any)["x"].(float64) > 1 {
 			ctx.Issue("code", "custom", "message", "too big")

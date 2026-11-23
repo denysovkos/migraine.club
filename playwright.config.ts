@@ -1,7 +1,12 @@
+import os from 'node:os';
+import path from 'node:path';
+
 import { defineConfig, devices } from '@playwright/test';
 
 // Use process.env.PORT by default and fallback to port 3000
 const PORT = process.env.PORT || 3000;
+
+export const E2E_FILES_STORAGE_PATH = process.env.FILES_STORAGE_PATH || path.join(os.tmpdir(), 'migraine-club-e2e-files');
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
 const baseURL = `http://localhost:${PORT}`;
@@ -44,6 +49,8 @@ export default defineConfig({
       // These must be set on the dev server process, not just the test runner.
       E2E_MOCK_AUTH: 'true',
       NEXT_PUBLIC_E2E_MOCK_AUTH: 'true',
+      // Doctor verification uploads are stored on disk.
+      FILES_STORAGE_PATH: E2E_FILES_STORAGE_PATH,
     },
   },
 

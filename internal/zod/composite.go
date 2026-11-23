@@ -433,17 +433,50 @@ func Refine(s Schema, ok func(any) bool, message string, path ...any) Schema {
 // SuperRefine is .superRefine(fn).
 func SuperRefine(s Schema, fn func(any, *Ctx)) Schema { return refineSchema{inner: s, fn: fn} }
 
+// run follows Zod 4's runChecks: a refinement is skipped only when an
+// earlier issue aborted; after continuing issues (failed length or format
+// checks) it still runs, on the value as parsed so far, and adds its issues.
 func (r refineSchema) run(v any, path []any) (any, []Issue) {
 	out, iss := r.inner.run(v, path)
 	if len(iss) > 0 {
-		return nil, iss
+		if aborted(iss) {
+			return nil, iss
+		}
+		out = partialValue(r.inner, v, path)
 	}
 	ctx := &Ctx{path: path}
 	r.fn(out, ctx)
-	if len(ctx.issues) > 0 {
-		return nil, ctx.issues
+	iss = append(iss, ctx.issues...)
+	if len(iss) > 0 {
+		return nil, iss
 	}
 	return out, nil
+}
+
+// partialValue is the payload value Zod carries past continuing issues: for
+// an object, each field's parsed value, or its input where only checks
+// failed (checks never change the value).
+func partialValue(s Schema, v any, path []any) any {
+	o, ok := s.(*ObjectSchema)
+	obj, isObj := v.(map[string]any)
+	if !ok || !isObj {
+		return v
+	}
+	out := map[string]any{}
+	for _, f := range o.fields {
+		val, present := obj[f.Key]
+		if !present {
+			val = Undefined
+		}
+		parsed, iss := f.Schema.run(val, pathWith(path, f.Key))
+		if len(iss) > 0 {
+			parsed = val
+		}
+		if _, undef := parsed.(undefinedT); !undef {
+			out[f.Key] = parsed
+		}
+	}
+	return out
 }
 
 type transformSchema struct {

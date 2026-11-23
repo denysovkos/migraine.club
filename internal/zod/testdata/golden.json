@@ -3322,6 +3322,103 @@
     ]
   },
   {
+    "name": "refine_after_soft",
+    "results": [
+      {
+        "input": {
+          "e": "nope",
+          "ok": false
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "email",
+            "pattern": "/^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid email address"
+          },
+          {
+            "code": "custom",
+            "path": [
+              "ok"
+            ],
+            "message": "must be ok"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"email\",\n    \"pattern\": \"/^(?:[A-Za-z0-9_'+\\\\-]+\\\\.)*[A-Za-z0-9_'+\\\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\\\-]*\\\\.)+[A-Za-z]{2,}$/\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid email address\"\n  },\n  {\n    \"code\": \"custom\",\n    \"path\": [\n      \"ok\"\n    ],\n    \"message\": \"must be ok\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid email address"
+            ],
+            "ok": [
+              "must be ok"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "e": "nope",
+          "ok": true
+        },
+        "success": false,
+        "issues": [
+          {
+            "origin": "string",
+            "code": "invalid_format",
+            "format": "email",
+            "pattern": "/^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$/",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid email address"
+          }
+        ],
+        "message": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"email\",\n    \"pattern\": \"/^(?:[A-Za-z0-9_'+\\\\-]+\\\\.)*[A-Za-z0-9_'+\\\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\\\-]*\\\\.)+[A-Za-z]{2,}$/\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid email address\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid email address"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "e": 1,
+          "ok": false
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid input: expected string, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid input: expected string, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid input: expected string, received number"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "union_two_soft",
     "results": [
       {

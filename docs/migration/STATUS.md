@@ -93,6 +93,15 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   int64 stay large numbers, not NaN). Episode paging computes LIMIT/OFFSET in
   float64 like JS and sends them as bigint, so page 10000000000 is an empty
   page instead of an int32 overflow (fidelity.mts probes these).
+- `httpx.ReadFormData` is `request.formData()` from Node 26's bundled undici
+  (MIME parsing, multipart quirks, filename*, File type lowercasing);
+  `jsx.UTF8Decode` / `jsx.DecodeURIComponent` follow WHATWG/ECMAScript
+  (golden `scripts/text-decode-golden.mts`).
+- zod: refinements run after continuing issues (failed checks) and add
+  their issues, as Zod 4's runChecks does (golden `refine_after_soft`).
+- Downloads with a filename above U+00FF were a 500 in Next (Headers take a
+  ByteString); other names go out as UTF-8 bytes. E2E sets
+  FILES_STORAGE_PATH for both servers (playwright.config.ts).
 - Mock auth ignores a client-sent `x-e2e-mock-user` header, as the Next
   proxy did by overwriting it.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
@@ -131,12 +140,12 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [ ] `/.well-known/oauth-protected-resource/mcp` GET
 - [x] `/api/acute-doses` POST
 - [x] `/api/acute-meds-report` GET
-- [ ] `/api/admin/doctor-verification/applications` GET
-- [ ] `/api/admin/doctor-verification/applications/[id]` GET
-- [ ] `/api/admin/doctor-verification/applications/[id]/approve` POST
-- [ ] `/api/admin/doctor-verification/applications/[id]/reject` POST
-- [ ] `/api/admin/doctor-verification/files/[fileId]` GET
-- [ ] `/api/admin/feature-requests` GET PATCH
+- [x] `/api/admin/doctor-verification/applications` GET
+- [x] `/api/admin/doctor-verification/applications/[id]` GET
+- [x] `/api/admin/doctor-verification/applications/[id]/approve` POST
+- [x] `/api/admin/doctor-verification/applications/[id]/reject` POST
+- [x] `/api/admin/doctor-verification/files/[fileId]` GET
+- [x] `/api/admin/feature-requests` GET PATCH
 - [x] `/api/appointment-preps` GET POST
 - [x] `/api/appointment-preps/[id]` DELETE GET PATCH
 - [x] `/api/community/comments` POST
@@ -162,9 +171,9 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/diary/overlap` GET
 - [x] `/api/diary/range` GET
 - [x] `/api/diary/today` GET
-- [ ] `/api/doctor-verification/application` GET POST PUT
-- [ ] `/api/doctor-verification/files/[fileId]` GET
-- [ ] `/api/doctor-verification/upload` POST
+- [x] `/api/doctor-verification/application` GET POST PUT
+- [x] `/api/doctor-verification/files/[fileId]` GET
+- [x] `/api/doctor-verification/upload` POST
 - [x] `/api/dose-outcomes` POST
 - [x] `/api/episodes` GET POST
 - [x] `/api/episodes/[id]` DELETE GET PATCH
@@ -173,7 +182,7 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/episodes/recent` GET
 - [x] `/api/factors/log` POST
 - [x] `/api/factors/options` GET
-- [ ] `/api/feature-requests` GET POST
+- [x] `/api/feature-requests` GET POST
 - [x] `/api/insights` GET
 - [x] `/api/insights/recompute` POST
 - [x] `/api/insights/test-plans` GET POST
