@@ -5,6 +5,7 @@ import (
 
 	"github.com/denysovkos/migraine.club/internal/api/alerts"
 	"github.com/denysovkos/migraine.club/internal/api/community"
+	"github.com/denysovkos/migraine.club/internal/api/cron"
 	"github.com/denysovkos/migraine.club/internal/api/cycle"
 	"github.com/denysovkos/migraine.club/internal/api/diary"
 	"github.com/denysovkos/migraine.club/internal/api/doctors"
@@ -46,4 +47,5 @@ func mountAPI(r chi.Router, d *app.Deps) {
 	community.Mount(r, d)
 	doctors.Mount(r, d)
 	pushapi.Mount(r, d)
+	cron.Mount(r, d)
 }

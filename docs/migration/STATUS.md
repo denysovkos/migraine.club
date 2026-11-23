@@ -110,6 +110,13 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   NODE_EXTRA_CA_CERTS / SSL_CERT_FILE trusting its certificate.
 - `src/locales` has an embed.go so the Go translator (`internal/i18n`)
   reads the same messages.
+- Cron: `internal/api/cron` is createCronRoute (secret, lease in
+  cron_run_lock, deadline, health check); jobs live in `internal/service/jobs`.
+  The cron parity scenario needs CRON_SECRET, ENABLE_STALE_EPISODE_REMINDER
+  and ENABLE_F39_INSIGHTS on both servers plus the push setup above; it picks
+  a timezone where it is 10:00–18:59 so the delivery windows are open.
+  Luxon's `MMM` follows the server locale; Go prints English month names
+  (en-US, what the Node server used).
 - Mock auth ignores a client-sent `x-e2e-mock-user` header, as the Next
   proxy did by overwriting it.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
@@ -167,12 +174,12 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/community/posts/[id]/vote` POST
 - [x] `/api/community/report` POST
 - [x] `/api/community/stats` GET
-- [ ] `/api/cron/daily-risk` GET POST
-- [ ] `/api/cron/insights` GET POST
-- [ ] `/api/cron/medication-reminders` GET POST
-- [ ] `/api/cron/programs-reminders` GET POST
-- [ ] `/api/cron/solar-activity` GET POST
-- [ ] `/api/cron/stale-episode-reminder` GET POST
+- [x] `/api/cron/daily-risk` GET POST
+- [x] `/api/cron/insights` GET POST
+- [x] `/api/cron/medication-reminders` GET POST
+- [x] `/api/cron/programs-reminders` GET POST
+- [x] `/api/cron/solar-activity` GET POST
+- [x] `/api/cron/stale-episode-reminder` GET POST
 - [x] `/api/cycle/bleeding` DELETE PATCH POST PUT
 - [x] `/api/cycle/calendar` GET
 - [x] `/api/cycle/context` GET

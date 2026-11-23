@@ -143,8 +143,7 @@ func (s *Service) ForecastPoints(ctx context.Context, lat, lon float64, now time
 
 // Outlook is getOutlookForSettings.
 func (s *Service) Outlook(ctx context.Context, st *q.UserWeatherSetting) (*httpx.Object, error) {
-	now := s.Now()
-	points, err := s.ForecastPoints(ctx, st.Lat, st.Lon, now)
+	days, err := s.OutlookDays(ctx, st.Lat, st.Lon, st.Timezone, st.PressureDropThresholdHpa, s.Now())
 	if err != nil {
 		return nil, err
 	}
@@ -154,6 +153,45 @@ func (s *Service) Outlook(ctx context.Context, st *q.UserWeatherSetting) (*httpx
 		highlight = *st.PressureDropThresholdHpa
 		alert = num(highlight)
 	}
-	return httpx.O("timezone", st.Timezone, "alertThresholdHpa", alert, "highlightThresholdHpa", num(highlight),
-		"days", BuildOutlook(points, st.Timezone, highlight, localdate.String(now, st.Timezone), OutlookDays)), nil
+	return httpx.O("timezone", st.Timezone, "alertThresholdHpa", alert, "highlightThresholdHpa", num(highlight), "days", days), nil
+}
+
+// OutlookDays is the days of getOutlookForSettings.
+func (s *Service) OutlookDays(ctx context.Context, lat, lon float64, zone string, threshold *float64, now time.Time) ([]Day, error) {
+	points, err := s.ForecastPoints(ctx, lat, lon, now)
+	if err != nil {
+		return nil, err
+	}
+	highlight := float64(DefaultHighlightHpa)
+	if threshold != nil {
+		highlight = *threshold
+	}
+	return BuildOutlook(points, zone, highlight, localdate.String(now, zone), OutlookDays), nil
+}
+
+// AlertHorizonDays is ALERT_HORIZON_DAYS.
+const AlertHorizonDays = 2
+
+// FindUpcomingDrop is findUpcomingDrop: the first day after today, within
+// the horizon, whose fall meets the threshold.
+func FindUpcomingDrop(days []Day, today string, horizon int) *Day {
+	t, err := time.Parse(localdate.Layout, today)
+	if err != nil {
+		return nil
+	}
+	last := t.AddDate(0, 0, horizon).Format(localdate.Layout)
+	for i := range days {
+		if days[i].Date > today && days[i].Date <= last && days[i].DropAtOrAboveThreshold {
+			return &days[i]
+		}
+	}
+	return nil
+}
+
+// Change is the day's change in hPa; ok is false when there is none.
+func (d Day) Change() (float64, bool) {
+	if d.ChangeHpa == nil {
+		return 0, false
+	}
+	return float64(*d.ChangeHpa), true
 }
