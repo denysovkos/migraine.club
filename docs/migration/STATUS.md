@@ -181,6 +181,19 @@ that delivers it changes.
 4. The clinician PDF renders in the browser from the report model.
 5. The e2e suite runs against Go + SPA on Chromium and Firefox.
 
+State:
+- Done: harness (`tests/visual`: capture, compare with several baselines
+  for Chromium raster noise, heads, compare-heads, prepare); `web/` with
+  the route tree, shims, admin overrides and root layouts; prerendered
+  heads/robots/sitemap/redirects (`web/scripts/prerender.mts`, 157/157
+  heads identical); `internal/spa` served with `SPA_DIST=web/dist`.
+- Running a full body comparison and fixing what differs, route by route.
+- Known: Next sent an HTML body with its 307s; browsers never show it.
+- Visual run: `node --import tsx tests/visual/prepare.mts`, then
+  `capture.mts <base> <dir>` twice for Next and once for the SPA (same
+  VISUAL_NOW), then `compare.mts next1,next2 spa`. VISUAL_CHROMIUM points
+  at a preinstalled Chromium when Playwright's own is missing.
+
 ## Progress
 
 - [x] Baseline: lint, types, 861 unit tests, 50 e2e (Chromium) green on main
@@ -289,7 +302,7 @@ that delivers it changes.
 - [x] `/api/quick-add/medication-intake/[id]` DELETE PATCH
 - [x] `/api/quick-add/suggestions` GET
 - [x] `/api/relief-sessions` GET POST
-- [ ] `/api/reports/clinician/pdf` POST (moves to the SPA: the browser renders the same @react-pdf document from the report model; proxied to Next until then)
+- [x] `/api/reports/clinician/pdf` POST: replaced by `POST /api/reports/clinician/model` (Next and Go) and `requestClinicianReportPdf`, which renders the same @react-pdf document in the browser (UTC, en-US, as the server did). The Next route goes at cutover.
 - [x] `/api/reports/clinician/preview` GET
 - [x] `/api/share` DELETE GET POST
 - [x] `/api/share/[token]` GET
