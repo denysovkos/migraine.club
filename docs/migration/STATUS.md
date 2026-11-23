@@ -158,6 +158,29 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   now deletes only the caller's row (push.service.test.ts,
   PushSubscriptions.e2e.ts).
 
+## Frontend plan (Vite SPA)
+
+Goal: the browser gets the same DOM, styles and behaviour; only the server
+that delivers it changes.
+
+1. Visual baseline: `tests/visual` captures every route (en/fr/uk, phone
+   and desktop width, signed in and out) from a base URL: a full-page
+   screenshot plus the normalised body HTML. A compare step diffs Next
+   against the SPA pixel by pixel and DOM by DOM. No route ships until it
+   matches.
+2. `web/`: a Vite app over the existing `src/` components. Aliases shim
+   `next/link`, `next/navigation`, `next/script`, `next/font/google` and
+   `next-intl` (on use-intl, same API) onto react-router; `@clerk/nextjs`
+   maps to Clerk's React SDK (MockClerk under E2E mock auth). Route
+   components replace the async server pages; the thin pages keep their
+   client components untouched.
+3. Server-only behaviour moves to Go: locale prefix routing and auth
+   redirects of `src/proxy.ts`, per-route `<head>` (titles, descriptions,
+   Open Graph from generateMetadata, from the same locale messages), the
+   manifest, service worker and static files. Go embeds `web/dist`.
+4. The clinician PDF renders in the browser from the report model.
+5. The e2e suite runs against Go + SPA on Chromium and Firefox.
+
 ## Progress
 
 - [x] Baseline: lint, types, 861 unit tests, 50 e2e (Chromium) green on main
