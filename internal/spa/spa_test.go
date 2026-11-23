@@ -30,9 +30,9 @@ func newHandler(t *testing.T) *Handler {
 			"/admin/feature-requests": {"en": "<title>Admin</title>"}
 		}`)},
 		"routes.json": {Data: []byte(`[{"pattern":"/","localized":true},{"pattern":"/dashboard/episodes/:id","localized":true},
-			{"pattern":"/dashboard/episodes/new","localized":true},{"pattern":"/sign-in/*?","localized":true,"signedInRedirect":"/dashboard"},
+			{"pattern":"/dashboard/episodes/new","localized":true,"requiresUser":true},{"pattern":"/sign-in/*?","localized":true,"signedInRedirect":"/dashboard"},
 			{"pattern":"/reports","localized":true,"redirect":"/dashboard/reports"},
-			{"pattern":"/share/:token","localized":false},{"pattern":"/admin/feature-requests","localized":false}]`)},
+			{"pattern":"/share/:token","localized":false},{"pattern":"/admin/feature-requests","localized":false,"requiresUser":true}]`)},
 	}
 	h, err := New(dist, Config{EnableInsights: true})
 	require.NoError(t, err)
@@ -113,6 +113,33 @@ func TestPages(t *testing.T) {
 	require.Contains(t, nf.Body.String(), "<title>404: This page could not be found.</title>")
 	require.Equal(t, 404, get(h, "/admin/nope").Code)
 	require.Equal(t, 404, get(h, "/missing.png").Code)
+}
+
+func TestSignedOutVisitorsGoToSignIn(t *testing.T) {
+	h := newHandler(t)
+	serve := func(target string, signedOut bool) *httptest.ResponseRecorder {
+		r := httptest.NewRequest(http.MethodGet, target, nil)
+		if signedOut {
+			r = r.WithContext(auth.WithSignedOut(r.Context()))
+		}
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		return w
+	}
+	for target, want := range map[string]string{
+		"/dashboard/episodes/new":    "/sign-in",
+		"/uk/dashboard/episodes/new": "/uk/sign-in",
+		"/fr/dashboard/episodes/new": "/fr/sign-in",
+		"/admin/feature-requests":    "/sign-in",
+	} {
+		w := serve(target, true)
+		require.Equal(t, 307, w.Code, target)
+		require.Equal(t, want, w.Header().Get("Location"), target)
+	}
+	// Possibly signed in (clerk-js decides in the browser), or a page
+	// without the guard: the page itself.
+	require.Equal(t, 200, serve("/uk/dashboard/episodes/new", false).Code)
+	require.Equal(t, 200, serve("/fr/dashboard/episodes/12", true).Code)
 }
 
 func TestStaticFiles(t *testing.T) {

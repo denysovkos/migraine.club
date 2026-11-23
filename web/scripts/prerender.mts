@@ -1,4 +1,4 @@
-import { readdirSync, statSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 /**
  * Build-time output the Next server rendered and the Go server now serves:
  *
@@ -68,7 +68,7 @@ async function main() {
   const localeState = await load(path.join(repo, 'web/src/shims/locale-state.ts'));
 
   const heads: Record<string, Record<string, string>> = {};
-  const routes: { pattern: string; localized: boolean; redirect?: string; signedInRedirect?: string }[] = [];
+  const routes: { pattern: string; localized: boolean; redirect?: string; signedInRedirect?: string; requiresUser?: boolean }[] = [];
   for (const { file, dirs } of pages(appDir)) {
     const localized = dirs.some(d => path.basename(d) === '[locale]');
     const route = pattern(dirs);
@@ -79,6 +79,9 @@ async function main() {
       // src/app/[locale]/(auth)/(center)/layout.tsx sends signed-in visitors
       // to the dashboard before anything renders.
       ...(dirs.some(d => d.endsWith(`${path.sep}(center)`)) ? { signedInRedirect: '/dashboard' } : {}),
+      // Layouts and pages that call requireUserOrRedirect (src/libs/AuthGuard.ts)
+      // sent signed-out visitors to the sign-in page with a 307.
+      ...(requiresUser(file, dirs) ? { requiresUser: true } : {}),
     });
     heads[route] = {};
     for (const locale of localized ? LOCALES : [DEFAULT_LOCALE]) {
@@ -140,6 +143,11 @@ async function staticRedirect(load: (f: string) => Promise<any>, file: string, d
     }
   }
   return {};
+}
+
+function requiresUser(file: string, dirs: string[]): boolean {
+  return [...dirs.map(d => path.join(d, 'layout.tsx')), file]
+    .some(f => statSafe(f) && readFileSync(f, 'utf8').includes('requireUserOrRedirect('));
 }
 
 function statSafe(file: string): boolean {

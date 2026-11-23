@@ -22,6 +22,9 @@ type Route struct {
 	Redirect string `json:"redirect"`
 	// SignedInRedirect is where a signed-in visitor went instead.
 	SignedInRedirect string `json:"signedInRedirect"`
+	// RequiresUser marks pages whose layout or page called
+	// requireUserOrRedirect: signed-out visitors went to the sign-in page.
+	RequiresUser bool `json:"requiresUser"`
 }
 
 // Config is what the shell passes to the client (window.__APP_CONFIG__).
@@ -167,12 +170,23 @@ func (h *Handler) serveRoute(w http.ResponseWriter, r *http.Request, rt Route, l
 	if target == "" && rt.SignedInRedirect != "" && auth.UserID(r.Context()) != "" {
 		target = rt.SignedInRedirect
 	}
+	if target == "" && rt.RequiresUser && auth.SignedOut(r.Context()) {
+		target = signInPath(locale)
+	}
 	if target != "" {
 		w.Header().Set("Location", target)
 		w.WriteHeader(http.StatusTemporaryRedirect)
 		return
 	}
 	h.page(w, http.StatusOK, h.heads[rt.Pattern][locale])
+}
+
+// signInPath is getSignInPath (src/libs/AuthGuard.ts).
+func signInPath(locale string) string {
+	if locale == DefaultLocale {
+		return "/sign-in"
+	}
+	return "/" + locale + "/sign-in"
 }
 
 func (h *Handler) page(w http.ResponseWriter, status int, head string) {

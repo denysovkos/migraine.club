@@ -419,3 +419,22 @@ func (c *Clerk) DeleteUser(ctx context.Context, userID string) error {
 	}
 	return nil
 }
+
+// DocumentSignedOut reports whether @clerk/backend's authenticateRequest
+// settles a page request as signed out without a handshake redirect: a
+// production instance, no bearer token, no handshake in progress, and
+// neither a session cookie nor an active client (__client_uat).
+// Every other unauthenticated page request went through Clerk's handshake
+// first; the SPA leaves those to clerk-js in the browser.
+func (c *Clerk) DocumentSignedOut(r *http.Request) bool {
+	if !strings.HasPrefix(c.PublishableKey, "pk_live_") || r.Header.Get("Authorization") != "" {
+		return false
+	}
+	for _, name := range []string{"__clerk_handshake", "__clerk_handshake_nonce"} {
+		if r.URL.Query().Get(name) != "" || cookie(r, name) != "" {
+			return false
+		}
+	}
+	session, clientUat := c.sessionCookies(r)
+	return session == "" && clientUat == 0
+}

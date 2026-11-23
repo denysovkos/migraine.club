@@ -189,6 +189,17 @@ State:
   heads identical); `internal/spa` served with `SPA_DIST=web/dist`.
 - Running a full body comparison and fixing what differs, route by route.
 - Known: Next sent an HTML body with its 307s; browsers never show it.
+- Page auth: Next ran clerkMiddleware on /dashboard, /quick/attack, /admin
+  and the sign-in pages; guarded layouts sent signed-out visitors to the
+  localized sign-in (307). The Go server does the same when Clerk's
+  authenticateRequest settles the request as signed out without a
+  handshake (production instance, no session cookie, no __client_uat).
+  Requests that needed Clerk's handshake (expired or missing session token
+  with an active client, dev instances) are not redirected through Clerk's
+  Frontend API: they get the page, and clerk-js refreshes the session in
+  the browser, after which the same layouts redirect on the client if the
+  visitor is signed out. One redirect round trip fewer; the visitor ends
+  on the same page.
 - Visual run: `node --import tsx tests/visual/prepare.mts`, then
   `capture.mts http://localhost:3001,http://localhost:3001,http://localhost:3003 next1,next2,spa`
   (each route on all three in a row, so server-side now() agrees), then

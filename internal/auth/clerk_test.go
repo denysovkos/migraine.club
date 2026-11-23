@@ -249,3 +249,33 @@ func TestMockResolverAndMiddleware(t *testing.T) {
 	h.ServeHTTP(httptest.NewRecorder(), r)
 	require.Equal(t, "e2e_user_test_001", seen)
 }
+
+func TestDocumentSignedOut(t *testing.T) {
+	live := NewClerk("sk_live_x", "pk_live_ZXhhbXBsZS5jbGVyay5hY2NvdW50cy5kZXYk")
+	// authenticateRequest's SessionTokenAndUATMissing: no cookies at all.
+	require.True(t, live.DocumentSignedOut(req(nil, "")))
+	require.True(t, live.DocumentSignedOut(req(map[string]string{"__client_uat": "0"}, "")))
+
+	// Everything else needed a handshake (or a bearer token) first.
+	require.False(t, live.DocumentSignedOut(req(map[string]string{"__client_uat": "1700000000"}, "")))
+	require.False(t, live.DocumentSignedOut(req(map[string]string{"__session": "x"}, "")))
+	require.False(t, live.DocumentSignedOut(req(nil, "Bearer x")))
+	require.False(t, live.DocumentSignedOut(req(map[string]string{"__clerk_handshake": "x"}, "")))
+	nonce := req(nil, "")
+	nonce.URL.RawQuery = "__clerk_handshake_nonce=abc"
+	require.False(t, live.DocumentSignedOut(nonce))
+
+	// Development instances handshake for the dev browser before anything.
+	require.False(t, NewClerk("sk_test_x", testPK).DocumentSignedOut(req(nil, "")))
+}
+
+func TestMiddlewareMarksSignedOutDocuments(t *testing.T) {
+	var out bool
+	probe := http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) { out = SignedOut(r.Context()) })
+
+	Middleware(Mock{})(probe).ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET", "/", nil))
+	require.True(t, out)
+
+	Middleware(Mock{UserID: "u"})(probe).ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET", "/", nil))
+	require.False(t, out)
+}
