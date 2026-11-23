@@ -64,6 +64,19 @@ export const test = base.extend<SeedFixtures>({
         page.on('pageerror', err => events.push(`${stamp()} pageerror: ${err.message}`));
         page.on('requestfailed', req =>
           events.push(`${stamp()} requestfailed: ${req.method()} ${new URL(req.url()).pathname} (${req.failure()?.errorText})`));
+        // Every API call and its status, so a failure shows what the page
+        // asked the server and in which order.
+        page.on('response', (res) => {
+          const url = new URL(res.url());
+          if (url.pathname.startsWith('/api/') || res.status() >= 400) {
+            events.push(`${stamp()} ${res.request().method()} ${url.pathname} -> ${res.status()}`);
+          }
+        });
+        page.on('framenavigated', (frame) => {
+          if (frame === page.mainFrame()) {
+            events.push(`${stamp()} navigated: ${new URL(frame.url()).pathname}`);
+          }
+        });
       };
       context.pages().forEach(watch);
       context.on('page', watch);
@@ -83,6 +96,9 @@ export const test = base.extend<SeedFixtures>({
             syncUi: Array.from(document.querySelectorAll('button'))
               .map(b => b.textContent?.trim() ?? '')
               .filter(t => /sync/i.test(t)),
+            alerts: Array.from(document.querySelectorAll('[role=status],[role=alert]'))
+              .map(n => n.textContent?.trim() ?? '')
+              .filter(Boolean),
           }));
           state.push(JSON.stringify(info));
         } catch (err) {
@@ -92,7 +108,7 @@ export const test = base.extend<SeedFixtures>({
       console.warn([
         `[e2e diagnostics] ${testInfo.titlePath.join(' > ')} (${testInfo.project.name})`,
         ...state.map(s => `  page: ${s}`),
-        ...events.slice(-60).map(e => `  ${e}`),
+        ...events.slice(-120).map(e => `  ${e}`),
       ].join('\n'));
     },
     { auto: true },

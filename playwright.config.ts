@@ -46,6 +46,8 @@ export default defineConfig({
     url: baseURL,
     timeout: 2 * 60 * 1000,
     reuseExistingServer: !process.env.CI,
+    // In CI the server's log goes into the job log next to the failures.
+    stdout: process.env.CI ? 'pipe' : 'ignore',
     env: {
       PORT: String(PORT),
       // Mock auth on the server: every request is the e2e user.
