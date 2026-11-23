@@ -1,3 +1,9 @@
+# [1.6.0](https://github.com/denysovkos/migraine.club/compare/v1.5.0...v1.6.0) (2026-11-23)
+
+### Features
+
+* **go:** add drizzle-compatible migrator and JS-compatible time types ([#12](https://github.com/denysovkos/migraine.club/issues/12)) ([e5942e5](https://github.com/denysovkos/migraine.club/commit/e5942e5bf49d977ad81aa346f78618cb055cff14))
+
 # [1.5.0](https://github.com/denysovkos/migraine.club/compare/v1.4.0...v1.5.0) (2026-11-18)
 
 ### Features
