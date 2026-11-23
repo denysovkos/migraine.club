@@ -57,6 +57,7 @@ type handlers struct {
 func Mount(r chi.Router, d *app.Deps) {
 	h := handlers{d: d, rep: &reports.Service{Q: d.Q, Now: d.Clock}, preps: &appointmentprep.Service{Q: d.Q, Now: d.Clock}}
 	r.Get("/api/reports/clinician/preview", h.preview)
+	r.Post("/api/reports/clinician/model", h.model)
 	r.Get("/api/moh-status", h.moh)
 	r.Get("/api/acute-meds-report", h.acuteReport)
 	r.Get("/api/appointment-preps", h.listDrafts)
@@ -106,6 +107,41 @@ func (h handlers) preview(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write([]byte(reports.RenderHTML(model)))
+}
+
+// model is POST /api/reports/clinician/model: the report model the browser
+// renders the PDF from, with the old PDF route's errors.
+func (h handlers) model(w http.ResponseWriter, r *http.Request) {
+	uid := auth.UserID(r.Context())
+	if uid == "" {
+		jsonError(w, http.StatusUnauthorized, httpx.O("error", "Unauthorized"))
+		return
+	}
+	body, err := httpx.ReadJSON(r)
+	if err != nil {
+		jsonError(w, http.StatusBadRequest, httpx.O("error", "Invalid JSON body"))
+		return
+	}
+	if body == nil {
+		body = map[string]any{}
+	}
+	cfg, err := reports.ParseConfig(body)
+	var zerr *zod.Error
+	if errors.As(err, &zerr) {
+		jsonError(w, http.StatusBadRequest, httpx.O("error", "Invalid config", "details", zerr.Issues))
+		return
+	}
+	var model *reports.Model
+	if err == nil {
+		model, err = h.rep.Build(r.Context(), uid, cfg)
+	}
+	if err != nil {
+		h.d.Log.Error("clinician report model failed", "error", err)
+		jsonError(w, http.StatusInternalServerError, httpx.O("error", "PDF_GENERATION_FAILED"))
+		return
+	}
+	w.Header().Set("Cache-Control", "no-store")
+	httpx.JSON(w, http.StatusOK, model)
 }
 
 // gate is auth plus health-data consent.

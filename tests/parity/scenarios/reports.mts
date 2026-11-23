@@ -61,6 +61,18 @@ const scenarios: Scenario[] = [
       { name: 'preview-invalid', path: cfg({ template: 'nope', rangePreset: 'custom' }) },
       { name: 'preview-reversed', path: cfg({ rangePreset: 'custom', from: '2020-02-01', to: '2020-01-01' }) },
       { name: 'preview-rollover', path: cfg({ rangePreset: 'custom', from: '2020-02-30', to: '2020-03-01' }) },
+      // The PDF is rendered in the browser from this model.
+      ...[
+        ['model-default', {}],
+        ['model-full', { template: 'full' }],
+        ['model-custom', { template: 'custom', rangePreset: 'last30', sections: { cover: false, diary: true, medications: true } }],
+        ['model-range', { template: 'full', rangePreset: 'custom', from: '2020-01-01', to: '2020-01-20' }],
+        ['model-prep', { template: 'quick', rangePreset: 'last90', appointmentPrepId: PREP }],
+        ['model-invalid', { template: 'nope', rangePreset: 'custom' }],
+        ['model-reversed', { rangePreset: 'custom', from: '2020-02-01', to: '2020-01-01' }],
+      ].map(([name, body]) => ({ name: name as string, method: 'POST', path: '/api/reports/clinician/model', body, volatile: ['generatedAtIso'] })),
+      { name: 'model-bad-json', method: 'POST', path: '/api/reports/clinician/model', rawBody: '{bad' },
+      { name: 'model-null', method: 'POST', path: '/api/reports/clinician/model', rawBody: 'null', volatile: ['generatedAtIso'] },
       { name: 'moh', path: '/api/moh-status', volatile: ['asOf'] },
       { name: 'enable-cycle-export', method: 'PUT', path: '/api/cycle/settings', body: { enabled: true, includeInExports: true, hormoneProfile: 'hrt' }, volatile: ['updatedAt'] },
       { name: 'bleed-today', method: 'PUT', path: '/api/cycle/bleeding', body: { localDate: '2026-01-31', bleeding: true } },

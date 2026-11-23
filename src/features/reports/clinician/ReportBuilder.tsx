@@ -3,10 +3,11 @@
 import type { ClinicianReportConfig } from '@/services/reports/clinician/config';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
-
 import { useEffect, useMemo, useRef, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { requestClinicianReportPdf } from '@/features/reports/clinician/clinicianPdf';
 import {
   clinicianReportConfigSchema,
 } from '@/services/reports/clinician/config';
@@ -80,11 +81,7 @@ export function ReportBuilder() {
     setError(null);
     setGenerationFailed(false);
     try {
-      const res = await fetch('/api/reports/clinician/pdf', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(config),
-      });
+      const res = await requestClinicianReportPdf(config);
       if (!res.ok) {
         const payload = await res.json().catch(() => ({}));
         throw new Error(payload?.error ?? 'PDF_GENERATION_FAILED');

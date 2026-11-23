@@ -135,3 +135,30 @@ func TestPreview(t *testing.T) {
 	require.Equal(t, `{"error":"Failed to generate preview"}`, string(preview(e, `{"rangePreset":"custom","from":"2026-02-30","to":"2026-03-01"}`).Body))
 	require.Equal(t, 401, e.Do(apitest.Request{Path: "/api/reports/clinician/preview"}).Status)
 }
+
+func TestModel(t *testing.T) {
+	e := newEnv(t)
+	e.Exec(`INSERT INTO episode (user_id, attack_type, start_time, end_time, intensity, pain_location, pain_type)
+		VALUES ('u', 'migraine', '2026-03-10T08:00:00Z', '2026-03-10T09:15:00Z', 4, 'LEFT', 'PRESSURE'),
+		       ('other', 'migraine', '2026-03-11T08:00:00Z', '2026-03-11T09:00:00Z', 2, 'LEFT', 'PRESSURE')`)
+	post := func(user, body string) apitest.Response {
+		return e.Do(apitest.Request{Method: "POST", Path: "/api/reports/clinician/model", User: user, Raw: body,
+			Headers: map[string]string{"Content-Type": "application/json"}})
+	}
+	res := post("u", `{"template":"full","rangePreset":"custom","from":"2026-03-01","to":"2026-03-31"}`)
+	require.Equal(t, 200, res.Status)
+	require.Equal(t, "no-store", res.Header.Get("Cache-Control"))
+	m := res.Map(t)
+	require.Equal(t, "2026-03-01", m["range"].(map[string]any)["from"])
+	pages := m["attacks"].(map[string]any)["pages"].([]any)
+	require.Len(t, pages, 1)
+	require.Len(t, pages[0], 1, "only the caller's attack is listed")
+
+	require.Equal(t, `{"error":"Invalid JSON body"}`, string(post("u", "{bad").Body))
+	invalid := post("u", `{"template":"nope"}`)
+	require.Equal(t, 400, invalid.Status)
+	require.Equal(t, "Invalid config", invalid.Map(t)["error"])
+	require.Equal(t, 200, post("u", "null").Status, "null is the default config")
+	require.Equal(t, `{"error":"PDF_GENERATION_FAILED"}`, string(post("u", `{"rangePreset":"custom","from":"2026-02-30","to":"2026-03-01"}`).Body))
+	require.Equal(t, `{"error":"Unauthorized"}`, string(post("", "{}").Body))
+}
