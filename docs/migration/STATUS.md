@@ -102,6 +102,14 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - Downloads with a filename above U+00FF were a 500 in Next (Headers take a
   ByteString); other names go out as UTF-8 bytes. E2E sets
   FILES_STORAGE_PATH for both servers (playwright.config.ts).
+- Push: web-push always opened TLS (https.request) whatever the endpoint
+  scheme, and the Go sender does the same. Error texts for transport
+  failures (no status code) come from Go, not Node. The push parity
+  scenario needs VAPID keys on both servers (Next rebuilt with them, since
+  NEXT_PUBLIC_* is inlined), the HTTPS fake push service on :3099, and
+  NODE_EXTRA_CA_CERTS / SSL_CERT_FILE trusting its certificate.
+- `src/locales` has an embed.go so the Go translator (`internal/i18n`)
+  reads the same messages.
 - Mock auth ignores a client-sent `x-e2e-mock-user` header, as the Next
   proxy did by overwriting it.
 - Sweep done: `tests/parity/scenarios/fidelity.mts` probes edge inputs on
@@ -123,6 +131,11 @@ and visually identical; the existing Playwright suite is the acceptance gate.
   so rows leaked between e2e tests. The list now lives in
   `scripts/e2eResetTables.ts`, checked against the schema and EXPORT_TABLES
   by `src/models/e2eResetTables.test.ts`.
+
+- `POST /api/push/unsubscribe` deleted the endpoint's subscription even
+  when it belonged to another user (it only left it out of the count). It
+  now deletes only the caller's row (push.service.test.ts,
+  PushSubscriptions.e2e.ts).
 
 ## Progress
 
@@ -223,9 +236,9 @@ and visually identical; the existing Playwright suite is the acceptance gate.
 - [x] `/api/programs/settings` GET PATCH
 - [x] `/api/programs/sleep-regularity/log` POST
 - [x] `/api/programs/sleep-regularity/today-status` GET
-- [ ] `/api/push/subscribe` POST
-- [ ] `/api/push/test` POST
-- [ ] `/api/push/unsubscribe` POST
+- [x] `/api/push/subscribe` POST
+- [x] `/api/push/test` POST
+- [x] `/api/push/unsubscribe` POST
 - [x] `/api/questionnaires` GET POST
 - [x] `/api/quick-add/episode` POST
 - [x] `/api/quick-add/medication-intake` POST

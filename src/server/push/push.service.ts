@@ -1,5 +1,5 @@
 import type { PushSubscription, SendResult } from 'web-push';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { sendNotification, setVapidDetails } from 'web-push';
 
 import { db } from '@/libs/DB';
@@ -169,13 +169,13 @@ export class PushService {
       'Unsubscribing user from push notifications',
     );
 
+    // Only the caller's own subscription for this endpoint is removed.
     const result = await db
       .delete(pushSubscriptionSchema)
-      .where(eq(pushSubscriptionSchema.endpoint, endpoint))
+      .where(and(eq(pushSubscriptionSchema.endpoint, endpoint), eq(pushSubscriptionSchema.userId, userId)))
       .returning();
 
-    // Verify the deleted subscription belonged to this user for security
-    const deletedCount = result.filter(r => r.userId === userId).length;
+    const deletedCount = result.length;
 
     logger.info(
       { userId, deletedCount },
