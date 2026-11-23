@@ -273,7 +273,12 @@ func (s *Service) send(ctx context.Context, sub q.PushSubscription, body []byte)
 		}
 		endpoint = u.String()
 	}
-	resp, err := webpush.SendNotificationWithContext(ctx, body, &webpush.Subscription{
+	// webpush-go pads the message in place (bytes.NewBuffer(message) then
+	// Write), which appends into spare capacity: every send gets its own
+	// copy with none, or concurrent sends overwrite each other's padding.
+	msg := make([]byte, len(body))
+	copy(msg, body)
+	resp, err := webpush.SendNotificationWithContext(ctx, msg, &webpush.Subscription{
 		Endpoint: endpoint, Keys: webpush.Keys{P256dh: sub.P256dh, Auth: sub.Auth},
 	}, &webpush.Options{
 		HTTPClient: &timed, Subscriber: strings.TrimPrefix(s.Subject, "mailto:"), VAPIDPublicKey: s.PublicKey,

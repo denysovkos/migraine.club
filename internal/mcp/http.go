@@ -568,8 +568,10 @@ func (s *sseWriter) keepAlive(every time.Duration) func() {
 		return func() {}
 	}
 	stop := make(chan struct{})
+	done := make(chan struct{})
 	t := time.NewTicker(every)
 	go func() {
+		defer close(done)
 		defer t.Stop()
 		for {
 			select {
@@ -581,5 +583,10 @@ func (s *sseWriter) keepAlive(every time.Duration) func() {
 		}
 	}()
 	var once sync.Once
-	return func() { once.Do(func() { close(stop) }) }
+	// Waits for the writer goroutine: the ResponseWriter must not be touched
+	// once the handler has returned.
+	return func() {
+		once.Do(func() { close(stop) })
+		<-done
+	}
 }
