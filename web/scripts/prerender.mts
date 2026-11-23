@@ -68,11 +68,18 @@ async function main() {
   const localeState = await load(path.join(repo, 'web/src/shims/locale-state.ts'));
 
   const heads: Record<string, Record<string, string>> = {};
-  const routes: string[] = [];
+  const routes: { pattern: string; localized: boolean; redirect?: string; signedInRedirect?: string }[] = [];
   for (const { file, dirs } of pages(appDir)) {
     const localized = dirs.some(d => path.basename(d) === '[locale]');
     const route = pattern(dirs);
-    routes.push(localized ? route : route);
+    routes.push({
+      pattern: route,
+      localized,
+      ...await staticRedirect(load, file, dirs),
+      // src/app/[locale]/(auth)/(center)/layout.tsx sends signed-in visitors
+      // to the dashboard before anything renders.
+      ...(dirs.some(d => d.endsWith(`${path.sep}(center)`)) ? { signedInRedirect: '/dashboard' } : {}),
+    });
     heads[route] = {};
     for (const locale of localized ? LOCALES : [DEFAULT_LOCALE]) {
       await localeState.loadLocale(locale);
@@ -105,6 +112,34 @@ async function main() {
   writeFileSync(path.join(dist, 'robots.txt'), routeData.resolveRobots(robots));
   writeFileSync(path.join(dist, 'sitemap.xml'), routeData.resolveSitemap(sitemap));
   await vite.close();
+}
+
+/**
+ * A page that always redirects answered with a 307 in Next, unless a
+ * server layout below the root had already started streaming the response
+ * (then the redirect happened in the browser, as the SPA does it).
+ */
+async function staticRedirect(load: (f: string) => Promise<any>, file: string, dirs: string[]): Promise<{ redirect?: string }> {
+  for (const dir of dirs.slice(2)) {
+    const layout = path.join(dir, 'layout.tsx');
+    if (statSafe(layout) && (await load(layout)).default.constructor.name === 'AsyncFunction') {
+      return {};
+    }
+  }
+  // Only plain functions without props: the redirect-only pages. Server
+  // pages that load data are never called here.
+  const page = await load(file);
+  if (page.default.length > 0 || page.default.constructor.name === 'AsyncFunction') {
+    return {};
+  }
+  try {
+    await page.default();
+  } catch (error) {
+    if (error instanceof Response && error.status >= 300 && error.status < 400) {
+      return { redirect: error.headers.get('Location') ?? undefined };
+    }
+  }
+  return {};
 }
 
 function statSafe(file: string): boolean {

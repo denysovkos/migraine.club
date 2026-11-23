@@ -22,6 +22,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/db/q"
 	"github.com/denysovkos/migraine.club/internal/logx"
 	"github.com/denysovkos/migraine.club/internal/server"
+	"github.com/denysovkos/migraine.club/internal/spa"
 	"github.com/denysovkos/migraine.club/migrations"
 )
 
@@ -80,8 +81,14 @@ func run() error {
 	}
 
 	opts := server.Options{}
-	if upstream := os.Getenv("LEGACY_NEXT_UPSTREAM"); upstream != "" {
-		if opts.Fallback, err = server.ProxyTo(upstream); err != nil {
+	switch {
+	case os.Getenv("SPA_DIST") != "":
+		// The Vite build of web/ serves every page.
+		if opts.Fallback, err = spa.New(os.DirFS(os.Getenv("SPA_DIST")), spa.Config{EnableInsights: cfg.EnableInsights}); err != nil {
+			return err
+		}
+	case os.Getenv("LEGACY_NEXT_UPSTREAM") != "":
+		if opts.Fallback, err = server.ProxyTo(os.Getenv("LEGACY_NEXT_UPSTREAM")); err != nil {
 			return err
 		}
 	}
