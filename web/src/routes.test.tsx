@@ -3,10 +3,15 @@ import { use } from 'react';
 import { createMemoryRouter, RouterProvider, useLocation } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ErrorBoundary, routes, settled } from './routes';
+import { errorBoundary, routes, settled } from './routes';
 import { notFound, redirect } from './shims/next-navigation';
 
 vi.mock('./NotFoundPage', () => ({ NotFoundPage: () => <h1>404</h1> }));
+
+const captureException = vi.hoisted(() => vi.fn());
+vi.mock('@sentry/react', () => ({ captureException }));
+
+const ErrorBoundary = errorBoundary('fr');
 
 function Where() {
   return <output>{useLocation().pathname}</output>;
@@ -53,18 +58,16 @@ describe('ErrorBoundary', () => {
     expect(await screen.findByRole('heading', { name: '404' })).toBeInTheDocument();
   });
 
-  it('rethrows anything else', async () => {
-    const Boom = () => {
-      throw new Error('boom');
-    };
-    const router = createMemoryRouter([{
-      path: '/',
-      ErrorBoundary: () => <p>outer</p>,
-      children: [{ index: true, Component: Boom, ErrorBoundary }],
-    }]);
-    render(<RouterProvider router={router} />);
+  it('reports anything else to Sentry and shows the global error page', async () => {
+    const boom = new Error('boom');
+    setup(() => {
+      throw boom;
+    });
 
-    expect(await screen.findByText('outer')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 2 })).toHaveTextContent('Application error: a client-side exception has occurred (see the browser console for more information).');
+    expect(captureException).toHaveBeenCalledWith(boom);
+    expect(document.documentElement).toHaveAttribute('lang', 'fr');
+    expect(document.title).toBe('');
   });
 });
 

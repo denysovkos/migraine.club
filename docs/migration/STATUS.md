@@ -200,6 +200,15 @@ State:
   sets its own colours, so nothing renders differently.
 - Remaining screenshot differences are antialiasing at card edges (at most
   4 colour levels in a few dozen pixels, identical HTML).
+- Next's own URL handling is in internal/server/nextcompat.go: repeated
+  slashes and backslashes, the trailing-slash 308, the /help/ai-connector
+  redirects, the /umami/script.js rewrite and @sentry/nextjs's /monitoring
+  tunnel. Browser Sentry (instrumentation-client.ts) and global-error.tsx
+  are web/src/sentry.ts and web/src/GlobalError.tsx.
+- Bug not carried over: /monitoring without the tunnel's o and p
+  parameters rendered the landing page with lang="monitoring" (the path
+  skipped the locale middleware and [locale] took any segment). It is a
+  404 now.
 - Page auth: Next ran clerkMiddleware on /dashboard, /quick/attack, /admin
   and the sign-in pages; guarded layouts sent signed-out visitors to the
   localized sign-in (307). The Go server does the same when Clerk's

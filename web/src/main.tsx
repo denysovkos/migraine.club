@@ -5,7 +5,10 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { applyMetadata } from './metadata';
 import { routes } from './routes';
+import { initSentry } from './sentry';
 import '@/styles/global.css';
+
+initSentry();
 
 const router = createBrowserRouter(routes());
 

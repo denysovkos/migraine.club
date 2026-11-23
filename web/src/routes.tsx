@@ -19,6 +19,7 @@ import type { LoaderFunctionArgs, RouteObject } from 'react-router';
 import type { Metadata } from './metadata';
 
 import { Navigate, Outlet, useLoaderData, useRouteError } from 'react-router';
+import { GlobalError } from './GlobalError';
 import { LocaleRoot } from './LocaleRoot';
 import { applyMetadata } from './metadata';
 import { NotFoundPage } from './NotFoundPage';
@@ -192,16 +193,22 @@ function build(node: Node, locale: string | undefined, skipLayoutAt?: string): R
   return out;
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError();
-  if (error instanceof NotFoundError || (error as { status?: number })?.status === 404) {
-    return <NotFoundPage />;
-  }
-  // redirect() thrown while a client component rendered.
-  if (error instanceof Response && error.status >= 300 && error.status < 400 && error.headers.get('Location')) {
-    return <Navigate to={error.headers.get('Location')!} replace />;
-  }
-  throw error;
+/**
+ * The error element of a route tree: the 404 page, a redirect thrown while
+ * a client page rendered, or the global error page (src/app/global-error.tsx)
+ * with the locale the tree renders in.
+ */
+export function errorBoundary(locale?: string) {
+  return function ErrorBoundary() {
+    const error = useRouteError();
+    if (error instanceof NotFoundError || (error as { status?: number })?.status === 404) {
+      return <NotFoundPage />;
+    }
+    if (error instanceof Response && error.status >= 300 && error.status < 400 && error.headers.get('Location')) {
+      return <Navigate to={error.headers.get('Location')!} replace />;
+    }
+    return <GlobalError error={error} locale={locale} />;
+  };
 }
 
 /** The locale tree under one prefix ('' for the default locale). */
@@ -220,7 +227,7 @@ function localeRoutes(locale: string): RouteObject {
       return null;
     },
     element: <LocaleRoot locale={locale} />,
-    ErrorBoundary,
+    ErrorBoundary: errorBoundary(locale),
     children,
   };
 }
@@ -238,7 +245,7 @@ function plainRoutes(dir: string): RouteObject {
       await loadLocale(DEFAULT_LOCALE);
       return null;
     },
-    ErrorBoundary,
+    ErrorBoundary: errorBoundary(),
     ...(layout ? moduleRoute(layout, 'layout', undefined) : { element: <Outlet /> }),
     children,
   };

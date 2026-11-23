@@ -26,6 +26,7 @@ type Options struct {
 func New(d *app.Deps, opts Options) http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
+	r.Use(nextNormalize)
 	r.Use(forwardedHeaders(d.Cfg.Port))
 
 	var resolver auth.Resolver = d.Clerk
@@ -40,6 +41,13 @@ func New(d *app.Deps, opts Options) http.Handler {
 	})
 
 	mountAPI(r, d)
+
+	fallback := opts.Fallback
+	if fallback == nil {
+		fallback = http.NotFoundHandler()
+	}
+	r.Handle("/monitoring", sentryTunnel(fallback))
+	r.Handle("/umami/script.js", umamiScript())
 
 	if opts.Fallback != nil {
 		r.NotFound(opts.Fallback.ServeHTTP)
