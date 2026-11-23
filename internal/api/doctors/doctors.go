@@ -457,9 +457,13 @@ func (h handlers) review(w http.ResponseWriter, r *http.Request, uid string, app
 	}
 }
 
-func (h handlers) approve(w http.ResponseWriter, r *http.Request, uid string) { h.review(w, r, uid, true) }
+func (h handlers) approve(w http.ResponseWriter, r *http.Request, uid string) {
+	h.review(w, r, uid, true)
+}
 
-func (h handlers) reject(w http.ResponseWriter, r *http.Request, uid string) { h.review(w, r, uid, false) }
+func (h handlers) reject(w http.ResponseWriter, r *http.Request, uid string) {
+	h.review(w, r, uid, false)
+}
 
 // trimJS is String.prototype.trim().
 func trimJS(s string) []uint16 { return jsx.CharCodes(jsx.Trim(s)) }

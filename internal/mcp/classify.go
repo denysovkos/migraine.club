@@ -20,11 +20,10 @@ type route struct {
 	revision     string // the claimed revision, "" when none
 
 	// reject
-	status  int
-	code    int
-	text    string
-	data    any
-	rungKey string
+	status int
+	code   int
+	text   string
+	data   any
 }
 
 type stdHeaders struct {

@@ -14,7 +14,7 @@ const TOKEN = 'Bearer e2e-mcp|e2e_user_test_001|migraine:read,migraine:write|par
 const READ_ONLY = 'Bearer e2e-mcp|e2e_user_test_001|migraine:read|parity-client';
 const BASE = { 'x-forwarded-host': 'mcp.test', 'content-type': 'application/json', 'accept': 'application/json, text/event-stream' };
 // MOH status and the clinician report print local times; insights time themselves.
-const MASKS = [/runtimeMs[^0-9]*\d+/, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?[+-]\d{2}:\d{2}/, /Generated on \d{4}-\d{2}-\d{2} \d{2}:\d{2}/];
+const MASKS = [/runtimeMs\D*\d+/, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?[+-]\d{2}:\d{2}/, /Generated on \d{4}-\d{2}-\d{2} \d{2}:\d{2}/];
 
 const ENV = {
   'io.modelcontextprotocol/protocolVersion': '2026-07-28',
@@ -67,7 +67,21 @@ const setup = [
 
 const INIT = { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'parity', version: '1' } };
 
+const CORS = ['access-control-allow-origin', 'access-control-allow-methods', 'access-control-allow-headers', 'access-control-max-age', 'cache-control'];
+const meta = (name: string, path: string, extra: Partial<Step> = {}): Step => ({ name, path, compareHeaders: CORS, exact: 'text', ...extra });
+
 const scenarios: Scenario[] = [
+  {
+    name: 'mcp oauth metadata',
+    steps: [
+      meta('resource-forwarded', '/.well-known/oauth-protected-resource/mcp', { headers: { 'x-forwarded-host': 'mcp.test' } }),
+      meta('resource-forwarded-proto', '/.well-known/oauth-protected-resource/mcp', { headers: { 'x-forwarded-host': 'mcp.test', 'x-forwarded-proto': 'http' } }),
+      meta('resource-options', '/.well-known/oauth-protected-resource/mcp', { method: 'OPTIONS' }),
+      // Clerk's Frontend API is unreachable here, so both fail alike.
+      meta('auth-server', '/.well-known/oauth-authorization-server'),
+      meta('auth-server-options', '/.well-known/oauth-authorization-server', { method: 'OPTIONS' }),
+    ],
+  },
   {
     name: 'mcp transport and auth',
     steps: [

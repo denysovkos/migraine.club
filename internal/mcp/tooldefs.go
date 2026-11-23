@@ -493,7 +493,7 @@ func indexFold(s, sub string) int {
 	return -1
 }
 
-// stripScriptStyle is .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/gi, '').
+// stripScriptStyle is .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/gi, ”).
 func stripScriptStyle(s string) string {
 	var b strings.Builder
 	i := 0

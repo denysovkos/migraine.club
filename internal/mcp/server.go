@@ -33,17 +33,6 @@ func (s *Server) serverInfo() *jsx.JSONObject {
 	return jsx.NewJSONObject().Set("name", s.catalog.ServerName).Set("version", s.catalog.ServerVersion)
 }
 
-// legacyMethods are the 2025 registry's request methods; modernMethods the
-// 2026-07-28 registry's.
-var (
-	legacyMethods = []string{"ping", "initialize", "completion/complete", "logging/setLevel", "prompts/get", "prompts/list",
-		"resources/list", "resources/templates/list", "resources/read", "resources/subscribe", "resources/unsubscribe",
-		"tools/call", "tools/list", "tasks/get", "tasks/result", "tasks/list", "tasks/cancel", "sampling/createMessage",
-		"elicitation/create", "roots/list"}
-	modernMethods = []string{"tools/call", "tools/list", "prompts/get", "prompts/list", "resources/list",
-		"resources/templates/list", "resources/read", "completion/complete", "server/discover", "subscriptions/listen"}
-)
-
 func methodNotFound(id any) outcome {
 	return outcome{errorMessage(id, codeMethodNotFound, "Method not found", nil), true}
 }

@@ -71,6 +71,14 @@ const cases: Array<{ name: string; schema: z.ZodTypeAny; inputs: unknown[] }> = 
       ctx.addIssue({ code: 'custom', message: 'with path', path: ['x'] });
     }
   }) }), inputs: [{ a: { x: 1 } }, { a: { x: 2 } }] },
+  { name: 'loose_object', schema: z.looseObject({ a: z.string() }), inputs: [{ a: 'x', b: 1 }, { b: 1 }] },
+  { name: 'intersection', schema: z.intersection(z.object({ a: z.boolean().optional() }), z.record(z.string(), z.unknown())), inputs: [{ a: true, b: 1 }, { a: 1 }, 5, []] },
+  { name: 'elicitation_like', schema: z.object({ e: z.preprocess((v) => {
+    if (v && typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0) {
+      return { form: {} };
+    }
+    return v;
+  }, z.intersection(z.object({ form: z.record(z.string(), z.unknown()).optional() }), z.record(z.string(), z.unknown()).optional())).optional() }), inputs: [{ e: {} }, { e: 5 }, { e: { form: 1 } }, {}] },
   { name: 'native_enum_like', schema: z.nativeEnum({ A: 'a', B: 'b' } as const), inputs: ['a', 'z'] },
 ];
 

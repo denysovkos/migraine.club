@@ -78,6 +78,14 @@ var goldenSchemas = map[string]Schema{
 			ctx.Issue("code", "custom", "path", []any{"ok"}, "message", "must be ok")
 		}
 	}),
+	"loose_object": Object(F("a", String())).Loose(),
+	"intersection": Intersection(Object(F("a", Optional(Boolean()))), Record(String(), Unknown())),
+	"elicitation_like": Object(F("e", Optional(Preprocess(func(v any) any {
+		if m, ok := v.(map[string]any); ok && len(m) == 0 {
+			return map[string]any{"form": map[string]any{}}
+		}
+		return v
+	}, Intersection(Object(F("form", Optional(Record(String(), Unknown())))), Optional(Record(String(), Unknown()))))))),
 	"union_two_soft": Object(F("u", Union(String().Min(5), String().Max(1)))),
 	"super_refine": Object(F("a", SuperRefine(Object(F("x", Number())), func(v any, ctx *Ctx) {
 		if v.(map[string]any)["x"].(float64) > 1 {

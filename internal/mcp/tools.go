@@ -1,8 +1,8 @@
 package mcp
 
 import (
-	_ "embed"
 	"context"
+	_ "embed"
 	"errors"
 	"fmt"
 	"log/slog"

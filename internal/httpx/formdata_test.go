@@ -12,7 +12,6 @@ import (
 
 const boundary = "testboundary0123456789abcdefghij"
 
-
 func parse(t *testing.T, ct, body string) ([]httpx.FormEntry, error) {
 	r := httptest.NewRequest("POST", "/", strings.NewReader(body))
 	if ct != "" {

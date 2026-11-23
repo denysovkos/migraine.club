@@ -29,7 +29,7 @@ func Services(d *app.Deps) mcp.Services {
 	}
 }
 
-// Mount registers /api/mcp for the methods the Next route exported (GET and
+// Mount registers /api/mcp and its OAuth metadata routes; /api/mcp for the methods the Next route exported (GET and
 // POST; HEAD runs GET). Next answered every other method itself.
 func Mount(r chi.Router, d *app.Deps) {
 	srv, err := mcp.NewServer(Services(d), d.Q, d.Log, d.Clock)
@@ -44,4 +44,13 @@ func Mount(r chi.Router, d *app.Deps) {
 	r.Get("/api/mcp", h.ServeHTTP)
 	r.Head("/api/mcp", h.ServeHTTP)
 	r.Post("/api/mcp", h.ServeHTTP)
+
+	pr := mcp.ProtectedResource(d.Cfg.ClerkPublishableKey, d.Cfg.AppURL)
+	r.Get("/.well-known/oauth-protected-resource/mcp", pr)
+	r.Head("/.well-known/oauth-protected-resource/mcp", pr)
+	r.Options("/.well-known/oauth-protected-resource/mcp", mcp.MetadataOptions)
+	as := mcp.AuthorizationServer(d.Cfg.ClerkPublishableKey, d.HTTP)
+	r.Get("/.well-known/oauth-authorization-server", as)
+	r.Head("/.well-known/oauth-authorization-server", as)
+	r.Options("/.well-known/oauth-authorization-server", mcp.MetadataOptions)
 }

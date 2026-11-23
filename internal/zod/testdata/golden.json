@@ -3532,6 +3532,223 @@
     ]
   },
   {
+    "name": "loose_object",
+    "results": [
+      {
+        "input": {
+          "a": "x",
+          "b": 1
+        },
+        "success": true,
+        "data": {
+          "a": "x",
+          "b": 1
+        }
+      },
+      {
+        "input": {
+          "b": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected string, received undefined"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected string, received undefined"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "intersection",
+    "results": [
+      {
+        "input": {
+          "a": true,
+          "b": 1
+        },
+        "success": true,
+        "data": {
+          "a": true,
+          "b": 1
+        }
+      },
+      {
+        "input": {
+          "a": 1
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "boolean",
+            "code": "invalid_type",
+            "path": [
+              "a"
+            ],
+            "message": "Invalid input: expected boolean, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"boolean\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"a\"\n    ],\n    \"message\": \"Invalid input: expected boolean, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "a": [
+              "Invalid input: expected boolean, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": 5,
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected object, received number"
+          },
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected record, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received number\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected record, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected object, received number",
+            "Invalid input: expected record, received number"
+          ],
+          "fieldErrors": {}
+        }
+      },
+      {
+        "input": [],
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected object, received array"
+          },
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [],
+            "message": "Invalid input: expected record, received array"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected object, received array\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [],\n    \"message\": \"Invalid input: expected record, received array\"\n  }\n]",
+        "flatten": {
+          "formErrors": [
+            "Invalid input: expected object, received array",
+            "Invalid input: expected record, received array"
+          ],
+          "fieldErrors": {}
+        }
+      }
+    ]
+  },
+  {
+    "name": "elicitation_like",
+    "results": [
+      {
+        "input": {
+          "e": {}
+        },
+        "success": true,
+        "data": {
+          "e": {
+            "form": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "e": 5
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "object",
+            "code": "invalid_type",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid input: expected object, received number"
+          },
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [
+              "e"
+            ],
+            "message": "Invalid input: expected record, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid input: expected object, received number\"\n  },\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\"\n    ],\n    \"message\": \"Invalid input: expected record, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid input: expected object, received number",
+              "Invalid input: expected record, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": {
+          "e": {
+            "form": 1
+          }
+        },
+        "success": false,
+        "issues": [
+          {
+            "expected": "record",
+            "code": "invalid_type",
+            "path": [
+              "e",
+              "form"
+            ],
+            "message": "Invalid input: expected record, received number"
+          }
+        ],
+        "message": "[\n  {\n    \"expected\": \"record\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"e\",\n      \"form\"\n    ],\n    \"message\": \"Invalid input: expected record, received number\"\n  }\n]",
+        "flatten": {
+          "formErrors": [],
+          "fieldErrors": {
+            "e": [
+              "Invalid input: expected record, received number"
+            ]
+          }
+        }
+      },
+      {
+        "input": {},
+        "success": true,
+        "data": {}
+      }
+    ]
+  },
+  {
     "name": "native_enum_like",
     "results": [
       {
