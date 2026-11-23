@@ -18,7 +18,7 @@ import type { ComponentType, ReactNode } from 'react';
 import type { LoaderFunctionArgs, RouteObject } from 'react-router';
 import type { Metadata } from './metadata';
 
-import { Outlet, useLoaderData, useRouteError } from 'react-router';
+import { Navigate, Outlet, useLoaderData, useRouteError } from 'react-router';
 import { LocaleRoot } from './LocaleRoot';
 import { applyMetadata } from './metadata';
 import { NotFoundPage } from './NotFoundPage';
@@ -190,10 +190,14 @@ function build(node: Node, locale: string | undefined, skipLayoutAt?: string): R
   return out;
 }
 
-function ErrorBoundary() {
+export function ErrorBoundary() {
   const error = useRouteError();
   if (error instanceof NotFoundError || (error as { status?: number })?.status === 404) {
     return <NotFoundPage />;
+  }
+  // redirect() thrown while a client component rendered.
+  if (error instanceof Response && error.status >= 300 && error.status < 400 && error.headers.get('Location')) {
+    return <Navigate to={error.headers.get('Location')!} replace />;
   }
   throw error;
 }

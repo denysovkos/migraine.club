@@ -23,7 +23,7 @@ export const FIXTURES = [
   `INSERT INTO preventive_plan (id, user_id, name, kind, dose_text, schedule_type, schedule_payload, start_date, reminder_times, reminders_enabled)
     VALUES ('${IDS.plan}', ${U}, 'Topiramate', 'oral', '25 mg', 'daily', '{}', CURRENT_DATE - 45, '["08:00"]', true) ON CONFLICT (id) DO NOTHING`,
   `INSERT INTO appointment_prep (id, user_id, appointment_date, visit_label, top_concerns, doctor_questions, compare_window_days, generated_snapshot)
-    VALUES ('${IDS.prep}', ${U}, CURRENT_DATE + 7, 'Neurology follow-up', '["Frequency"]', '["Should I switch?"]', 90, '{}') ON CONFLICT (id) DO NOTHING`,
+    VALUES ('${IDS.prep}', ${U}, CURRENT_DATE + 7, 'Neurology follow-up', '["Frequency"]', '["Should I switch?"]', 90, '{"compareWindowDays":90,"coverage":{"totalDays":90,"recordedDays":30,"missingDays":60},"attackStats":{"totalAttacks":1,"avgIntensity":4},"currentSnapshot":{"headacheBurden":{"migraineDays":1,"headacheDays":1},"acuteMedicationDays":0,"preventiveNames":["Topiramate"],"questionnaireScores":{"hit6":null,"midas":null}},"whatChangedKeys":[],"questionPromptKeys":[]}') ON CONFLICT (id) DO UPDATE SET generated_snapshot = EXCLUDED.generated_snapshot`,
   `INSERT INTO doctor_verification_application (id, user_id, status, full_name, country, specialty, verification_method, submitted_at)
     VALUES ('${IDS.application}', 'e2e_visual_doctor', 'pending', 'Dr Visual', 'DE', 'neurologist', 'license_number', now() - interval '1 day')
     ON CONFLICT (id) DO NOTHING`,

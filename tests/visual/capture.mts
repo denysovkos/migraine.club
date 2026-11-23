@@ -3,9 +3,13 @@
  * full-page screenshot, the normalised body HTML, the final URL, the HTTP
  * status and the document title, at phone and desktop width.
  *
- * Usage: node --import tsx tests/visual/capture.mts <baseURL> <outDir> [filter]
+ * Usage: node --import tsx tests/visual/capture.mts <baseURL[,baseURL...]> <outDir[,outDir...]> [filter]
  * Env: VISUAL_NOW (ISO time the browser clock is pinned to; both servers'
  * captures must use the same value).
+ *
+ * With several servers each route is captured on all of them one after the
+ * other, so times computed from now() on the server side (seed rows, "3 days
+ * ago") agree between the captures.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -55,53 +59,62 @@ const NORMALISE = `(() => {
 })()`;
 
 async function main() {
-  const [base, out, filter] = process.argv.slice(2);
-  if (!base || !out) {
-    throw new Error('usage: capture.mts <baseURL> <outDir> [filter]');
+  const [baseArg, outArg, filter] = process.argv.slice(2);
+  const bases = (baseArg ?? '').split(',').filter(Boolean);
+  const outs = (outArg ?? '').split(',').filter(Boolean);
+  if (!bases.length || bases.length !== outs.length) {
+    throw new Error('usage: capture.mts <baseURL[,baseURL...]> <outDir[,outDir...]> [filter]');
   }
   const now = new Date(process.env.VISUAL_NOW ?? new Date().toISOString());
-  mkdirSync(out, { recursive: true });
+  outs.forEach(out => mkdirSync(out, { recursive: true }));
   // VISUAL_CHROMIUM points at a preinstalled browser when Playwright's own is missing.
   const browser = await chromium.launch(process.env.VISUAL_CHROMIUM ? { executablePath: process.env.VISUAL_CHROMIUM } : {});
-  const index: Record<string, unknown> = {};
-  const origin = new URL(base).origin;
+  const indexes: Record<string, unknown>[] = outs.map(() => ({}));
   await Promise.all(VIEWPORTS.map(async (vp) => {
-    const context = await browser.newContext({
-      viewport: { width: vp.width, height: vp.height },
-      deviceScaleFactor: 1,
-      reducedMotion: 'reduce',
-      colorScheme: 'light',
-      timezoneId: 'Europe/Berlin',
-      locale: 'en-US',
-      baseURL: base,
-    });
-    // Third-party scripts (tag manager, analytics) never load: both servers
-    // are captured offline alike.
-    await context.route(url => new URL(url).origin !== origin, route => route.abort());
+    const contexts = await Promise.all(bases.map(async (base) => {
+      const context = await browser.newContext({
+        viewport: { width: vp.width, height: vp.height },
+        deviceScaleFactor: 1,
+        reducedMotion: 'reduce',
+        colorScheme: 'light',
+        timezoneId: 'Europe/Berlin',
+        locale: 'en-US',
+        baseURL: base,
+      });
+      // Third-party scripts (tag manager, analytics) never load: every
+      // server is captured offline alike.
+      const origin = new URL(base).origin;
+      await context.route(url => new URL(url).origin !== origin, route => route.abort());
+      return context;
+    }));
     for (const route of routes().filter(r => !filter || r.includes(filter))) {
-      const page = await context.newPage();
-      await page.clock.install({ time: now });
-      const errors: string[] = [];
-      page.on('pageerror', e => errors.push(String(e)));
-      const res = await page.goto(route, { waitUntil: 'networkidle' }).catch(() => null);
-      await page.addStyleTag({ content: FREEZE }).then(h => h.evaluate(n => (n as Element).setAttribute('data-visual-freeze', ''))).catch(() => {});
-      await page.waitForTimeout(400);
-      const name = `${slug(route)}__${vp.name}`;
-      await page.screenshot({ path: path.join(out, `${name}.png`), fullPage: true, animations: 'disabled' });
-      writeFileSync(path.join(out, `${name}.html`), await page.evaluate(NORMALISE));
-      index[name] = {
-        route,
-        status: res?.status() ?? null,
-        url: page.url().replace(base, ''),
-        title: await page.title(),
-        lang: await page.evaluate(() => document.documentElement.lang),
-        errors,
-      };
-      await page.close();
+      for (const [i, context] of contexts.entries()) {
+        const base = bases[i]!;
+        const out = outs[i]!;
+        const page = await context.newPage();
+        await page.clock.install({ time: now });
+        const errors: string[] = [];
+        page.on('pageerror', e => errors.push(String(e)));
+        const res = await page.goto(route, { waitUntil: 'networkidle' }).catch(() => null);
+        await page.addStyleTag({ content: FREEZE }).then(h => h.evaluate(n => (n as Element).setAttribute('data-visual-freeze', ''))).catch(() => {});
+        await page.waitForTimeout(400);
+        const name = `${slug(route)}__${vp.name}`;
+        await page.screenshot({ path: path.join(out, `${name}.png`), fullPage: true, animations: 'disabled' });
+        writeFileSync(path.join(out, `${name}.html`), await page.evaluate(NORMALISE));
+        indexes[i]![name] = {
+          route,
+          status: res?.status() ?? null,
+          url: page.url().replace(base, ''),
+          title: await page.title(),
+          lang: await page.evaluate(() => document.documentElement.lang),
+          errors,
+        };
+        await page.close();
+      }
     }
-    await context.close();
+    await Promise.all(contexts.map(c => c.close()));
   }));
-  writeFileSync(path.join(out, 'index.json'), `${JSON.stringify(index, null, 2)}\n`);
+  outs.forEach((out, i) => writeFileSync(path.join(out, 'index.json'), `${JSON.stringify(indexes[i], null, 2)}\n`));
   await browser.close();
 }
 

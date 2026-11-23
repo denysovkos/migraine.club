@@ -190,8 +190,9 @@ State:
 - Running a full body comparison and fixing what differs, route by route.
 - Known: Next sent an HTML body with its 307s; browsers never show it.
 - Visual run: `node --import tsx tests/visual/prepare.mts`, then
-  `capture.mts <base> <dir>` twice for Next and once for the SPA (same
-  VISUAL_NOW), then `compare.mts next1,next2 spa`. VISUAL_CHROMIUM points
+  `capture.mts http://localhost:3001,http://localhost:3001,http://localhost:3003 next1,next2,spa`
+  (each route on all three in a row, so server-side now() agrees), then
+  `compare.mts next1,next2 spa`. VISUAL_CHROMIUM points
   at a preinstalled Chromium when Playwright's own is missing.
 
 ## Progress

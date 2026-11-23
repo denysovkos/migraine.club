@@ -1,7 +1,9 @@
-// next/link on react-router: the same <a href> in the DOM, client-side
-// navigation for internal links.
-import type { AnchorHTMLAttributes, ReactNode, Ref } from 'react';
-import { Link as RRLink } from 'react-router';
+// next/link on react-router: the same <a href> in the DOM; internal clicks
+// navigate on the client through the locale rules of next-intl's middleware.
+import type { AnchorHTMLAttributes, MouseEvent, ReactNode, Ref } from 'react';
+import { useNavigate } from 'react-router';
+
+import { middlewareHref } from './locale-state';
 
 type UrlObject = { pathname?: string | null; query?: Record<string, string | number | boolean | string[] | undefined> | string | null; hash?: string | null };
 
@@ -44,10 +46,23 @@ function isExternal(href: string): boolean {
   return /^[a-z][a-z\d+.-]*:/i.test(href) || href.startsWith('//');
 }
 
-export default function Link({ href, replace, scroll: _scroll, prefetch: _prefetch, shallow: _shallow, passHref: _passHref, legacyBehavior: _legacy, locale: _locale, onNavigate: _onNavigate, ref, children, ...rest }: LinkProps) {
+export default function Link({ href, replace, scroll: _scroll, prefetch: _prefetch, shallow: _shallow, passHref: _passHref, legacyBehavior: _legacy, locale: _locale, onNavigate, ref, children, onClick, ...rest }: LinkProps) {
+  const navigate = useNavigate();
   const to = formatHref(href);
-  if (isExternal(to) || rest.target === '_blank' || rest.download !== undefined) {
-    return <a ref={ref} {...rest} href={to}>{children}</a>;
-  }
-  return <RRLink ref={ref} to={to} replace={replace} discover="none" {...rest}>{children}</RRLink>;
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    onClick?.(e);
+    if (e.defaultPrevented || isExternal(to) || e.button !== 0 || e.metaKey || e.altKey || e.ctrlKey || e.shiftKey
+      || (rest.target && rest.target !== '_self') || rest.download !== undefined) {
+      return;
+    }
+    let prevented = false;
+    onNavigate?.({ preventDefault: () => {
+      prevented = true;
+    } });
+    e.preventDefault();
+    if (!prevented) {
+      void navigate(middlewareHref(to), { replace });
+    }
+  };
+  return <a ref={ref} {...rest} href={to} onClick={handleClick}>{children}</a>;
 }

@@ -1,18 +1,20 @@
 // next/navigation on react-router. Server-only helpers (redirect, notFound)
 // throw what the route loaders turn into a navigation or the 404 page.
 import { useMemo } from 'react';
+
 import { redirect as rrRedirect, useLocation, useNavigate, useRevalidator, useParams as useRRParams, useSearchParams as useRRSearchParams } from 'react-router';
+import { middlewareHref } from './locale-state';
 
 export class NotFoundError extends Error {
   digest = 'NEXT_NOT_FOUND';
 }
 
 export function redirect(url: string): never {
-  throw rrRedirect(url);
+  throw rrRedirect(middlewareHref(url));
 }
 
 export function permanentRedirect(url: string): never {
-  throw rrRedirect(url, 308);
+  throw rrRedirect(middlewareHref(url), 308);
 }
 
 export function notFound(): never {
@@ -44,8 +46,8 @@ export function useRouter() {
   const navigate = useNavigate();
   const revalidator = useRevalidator();
   return useMemo(() => ({
-    push: (href: string, _options?: NavigateOptions) => void navigate(href),
-    replace: (href: string, _options?: NavigateOptions) => void navigate(href, { replace: true }),
+    push: (href: string, _options?: NavigateOptions) => void navigate(middlewareHref(href)),
+    replace: (href: string, _options?: NavigateOptions) => void navigate(middlewareHref(href), { replace: true }),
     back: () => window.history.back(),
     forward: () => window.history.forward(),
     refresh: () => void revalidator.revalidate(),

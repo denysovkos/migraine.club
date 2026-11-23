@@ -28,6 +28,14 @@ function firstDifference(a: string, b: string): string {
   return `at ${i}:\n      expected: ${a.slice(from, i + 300)}\n      actual:   ${b.slice(from, i + 300)}`;
 }
 
+/** Attribute order inside each tag never affects rendering; sort it. */
+export function sortAttributes(html: string): string {
+  return html.replace(/<([a-z][\w-]*)((?:\s+[^\s=>/]+(?:="[^"]*")?)+)(\s*\/?)>/gi, (_m, tag: string, attrs: string, end: string) => {
+    const list = attrs.match(/[^\s=>/]+(?:="[^"]*")?/g) ?? [];
+    return `<${tag} ${list.sort().join(' ')}${end}>`;
+  });
+}
+
 function main() {
   const [expectedArg, actualDir, diffDir = path.join(actualDir ?? '.', 'diff')] = process.argv.slice(2);
   const [expectedDir, ...extraDirs] = (expectedArg ?? '').split(',');
@@ -52,8 +60,8 @@ function main() {
       }
       const ha = readFileSync(path.join(expectedDir, `${name}.html`), 'utf8');
       const hb = readFileSync(path.join(actualDir, `${name}.html`), 'utf8');
-      if (ha !== hb) {
-        problems.push(`html ${firstDifference(ha, hb)}`);
+      if (sortAttributes(ha) !== sortAttributes(hb)) {
+        problems.push(`html ${firstDifference(sortAttributes(ha), sortAttributes(hb))}`);
       }
       const pa = PNG.sync.read(readFileSync(path.join(expectedDir, `${name}.png`)));
       const pbPath = path.join(actualDir, `${name}.png`);
