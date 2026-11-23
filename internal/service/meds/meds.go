@@ -249,6 +249,20 @@ type Created struct {
 	UserMedicationID string
 }
 
+// EnsureCustomMed is ensureUserMedicationForCustom: the user's medication
+// with this custom name (case-insensitive), created when missing.
+func (s *Service) EnsureCustomMed(ctx context.Context, userID, customName string) (string, error) {
+	name := NormalizeName(customName)
+	id, err := optional(s.Q.UserMedForCustomName(ctx, userID, name))
+	if err != nil {
+		return "", err
+	}
+	if id != nil {
+		return *id, nil
+	}
+	return s.Q.InsertCustomUserMed(ctx, userID, &name)
+}
+
 // CreateIntake is createMedicationIntake. Errors with a plain message are
 // what the route reports with status 500.
 func (s *Service) CreateIntake(ctx context.Context, userID string, in IntakeInput) (Created, error) {
@@ -277,19 +291,11 @@ func (s *Service) CreateIntake(ctx context.Context, userID string, in IntakeInpu
 		medID = *id
 	}
 	if medID == "" && in.CustomName != nil && *in.CustomName != "" {
-		name := NormalizeName(*in.CustomName)
-		id, err := optional(s.Q.UserMedForCustomName(ctx, userID, name))
+		id, err := s.EnsureCustomMed(ctx, userID, *in.CustomName)
 		if err != nil {
 			return Created{}, err
 		}
-		if id == nil {
-			created, err := s.Q.InsertCustomUserMed(ctx, userID, &name)
-			if err != nil {
-				return Created{}, err
-			}
-			id = &created
-		}
-		medID = *id
+		medID = id
 	}
 	if medID == "" {
 		return Created{}, errors.New("userMedicationId not resolved")

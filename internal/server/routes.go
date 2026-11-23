@@ -13,6 +13,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/api/factors"
 	"github.com/denysovkos/migraine.club/internal/api/insights"
 	"github.com/denysovkos/migraine.club/internal/api/intake"
+	"github.com/denysovkos/migraine.club/internal/api/mcpapi"
 	"github.com/denysovkos/migraine.club/internal/api/meds"
 	"github.com/denysovkos/migraine.club/internal/api/outcomes"
 	"github.com/denysovkos/migraine.club/internal/api/preventives"
@@ -48,4 +49,5 @@ func mountAPI(r chi.Router, d *app.Deps) {
 	doctors.Mount(r, d)
 	pushapi.Mount(r, d)
 	cron.Mount(r, d)
+	mcpapi.Mount(r, d)
 }

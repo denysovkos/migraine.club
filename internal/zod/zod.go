@@ -49,6 +49,12 @@ func newIssue(pairs ...any) Issue {
 	return is
 }
 
+// CustomIssue is a hand-built issue {code: "custom", path, message}, as code
+// that threw new ZodError([...]) wrote it.
+func CustomIssue(path []any, message string) Issue {
+	return newIssue("code", "custom").finish(path, message)
+}
+
 // Get returns a field of the issue.
 func (is Issue) Get(key string) any {
 	for _, f := range is.fields {

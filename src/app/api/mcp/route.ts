@@ -2,6 +2,8 @@ import { verifyClerkToken } from '@clerk/mcp-tools/next';
 import { auth } from '@clerk/nextjs/server';
 import { createMcpHandler, withMcpAuth } from 'mcp-handler';
 
+import { isE2EMockAuth } from '@/libs/E2EAuth';
+import { verifyE2EMcpToken } from '@/server/mcp/e2eToken';
 import { MCP_INSTRUCTIONS, MCP_SERVER_INFO, registerAllTools } from '@/server/mcp/registry';
 
 const handler = createMcpHandler(
@@ -26,6 +28,9 @@ const handler = createMcpHandler(
 const authHandler = withMcpAuth(
   handler,
   async (_req, token) => {
+    if (isE2EMockAuth()) {
+      return verifyE2EMcpToken(token);
+    }
     const clerkAuth = await auth({ acceptsToken: 'oauth_token' });
     return verifyClerkToken(clerkAuth, token);
   },

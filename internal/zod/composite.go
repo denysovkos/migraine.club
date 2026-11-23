@@ -85,6 +85,7 @@ func F(key string, s Schema) Field { return Field{key, s} }
 type ObjectSchema struct {
 	fields []Field
 	strict bool
+	loose  bool
 }
 
 // Object is z.object({...}). Unknown keys are stripped.
@@ -92,6 +93,9 @@ func Object(fields ...Field) *ObjectSchema { return &ObjectSchema{fields: fields
 
 // Strict is .strict(): unknown keys are an error.
 func (o *ObjectSchema) Strict() *ObjectSchema { return &ObjectSchema{fields: o.fields, strict: true} }
+
+// Loose is .loose() (z.looseObject): unknown keys pass through.
+func (o *ObjectSchema) Loose() *ObjectSchema { return &ObjectSchema{fields: o.fields, loose: true} }
 
 // Extend is .extend({...}).
 func (o *ObjectSchema) Extend(fields ...Field) *ObjectSchema {
@@ -108,12 +112,12 @@ func (o *ObjectSchema) Extend(fields ...Field) *ObjectSchema {
 			merged = append(merged, f)
 		}
 	}
-	return &ObjectSchema{fields: merged, strict: o.strict}
+	return &ObjectSchema{fields: merged, strict: o.strict, loose: o.loose}
 }
 
 // Partial is .partial(): every field optional.
 func (o *ObjectSchema) Partial() *ObjectSchema {
-	out := &ObjectSchema{strict: o.strict}
+	out := &ObjectSchema{strict: o.strict, loose: o.loose}
 	for _, f := range o.fields {
 		out.fields = append(out.fields, Field{f.Key, Optional(f.Schema)})
 	}
@@ -143,6 +147,13 @@ func (o *ObjectSchema) run(v any, path []any) (any, []Issue) {
 			continue
 		}
 		out[f.Key] = parsed
+	}
+	if o.loose {
+		for k, val := range obj {
+			if !known[k] {
+				out[k] = val
+			}
+		}
 	}
 	if o.strict {
 		var extra []any
@@ -494,3 +505,42 @@ func (t transformSchema) run(v any, path []any) (any, []Issue) {
 	}
 	return t.fn(out), nil
 }
+
+// ---------- intersection / preprocess ----------
+
+type intersectionSchema struct{ left, right Schema }
+
+// Intersection is z.intersection(left, right): both sides run and their
+// issues are reported together; plain objects are merged.
+func Intersection(left, right Schema) Schema { return intersectionSchema{left, right} }
+
+func (s intersectionSchema) run(v any, path []any) (any, []Issue) {
+	l, li := s.left.run(v, path)
+	r, ri := s.right.run(v, path)
+	if issues := append(li, ri...); len(issues) > 0 {
+		return nil, issues
+	}
+	lm, lok := l.(map[string]any)
+	rm, rok := r.(map[string]any)
+	if lok && rok {
+		out := map[string]any{}
+		for k, val := range lm {
+			out[k] = val
+		}
+		for k, val := range rm {
+			out[k] = val
+		}
+		return out, nil
+	}
+	return l, nil
+}
+
+type preprocessSchema struct {
+	fn    func(any) any
+	inner Schema
+}
+
+// Preprocess is z.preprocess(fn, schema).
+func Preprocess(fn func(any) any, inner Schema) Schema { return preprocessSchema{fn, inner} }
+
+func (s preprocessSchema) run(v any, path []any) (any, []Issue) { return s.inner.run(s.fn(v), path) }

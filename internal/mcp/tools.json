@@ -1,0 +1,674 @@
+{
+  "serverInfo": {
+    "name": "migraine-club",
+    "version": "1.0.0"
+  },
+  "instructions": "This server exposes one migraine.club user's own health records. Call get_user_context first: it gives the timezone needed to resolve relative times like \"this morning\", tells you whether an attack is already ongoing, and reports whether the user has granted health-data consent (writes fail without it). When logging, record only what the user actually said. Do not infer pain location, triggers or severity they did not state — omitted fields can be filled in later in the app. Nothing here can delete a record. Corrections are made with update_attack or update_diary_day. For clinical questions about medication overuse or trigger patterns, use get_moh_status and get_insights rather than deriving conclusions from raw records yourself.",
+  "tools": [
+    {
+      "name": "get_user_context",
+      "description": "Get the current state needed before reading or writing anything else: the user's timezone, whether an attack is currently ongoing, and whether they have granted health-data consent. Call this first in a conversation so relative times like \"this morning\" resolve correctly and so you know whether writes will be permitted.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "list_attacks",
+      "description": "List the user's migraine and headache attacks in a date range, newest first. Use this to answer questions about frequency, severity trends, or what happened on a given day.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "from": {
+            "description": "Start of range, ISO 8601. Defaults to unbounded.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "to": {
+            "description": "End of range, ISO 8601. Defaults to unbounded.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "limit": {
+            "description": "Max attacks to return (default 50, max 200).",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "log_attack",
+      "description": "Log a new migraine or headache attack for the user. Only intensity is required; omit anything the user did not actually say rather than guessing. If an attack is already ongoing this fails with ONGOING_EXISTS, except that starting a migraine while a headache is ongoing ends the headache automatically. Call get_user_context first so startTime is interpreted in the user's timezone.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "intensity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "Pain intensity on a 1-5 scale."
+          },
+          "attackType": {
+            "description": "Defaults to migraine.",
+            "type": "string",
+            "enum": [
+              "migraine",
+              "headache"
+            ]
+          },
+          "startTime": {
+            "description": "When it started, ISO 8601. Defaults to now.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "onsetAt": {
+            "description": "First symptom onset, ISO 8601. Defaults to startTime.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "isOngoing": {
+            "description": "Whether the attack is still happening. Defaults to true.",
+            "type": "boolean"
+          },
+          "painLocation": {
+            "type": "string",
+            "enum": [
+              "LEFT",
+              "RIGHT",
+              "FRONTAL",
+              "OCCIPITAL",
+              "WHOLE_HEAD",
+              "OTHER"
+            ]
+          },
+          "painType": {
+            "type": "string",
+            "enum": [
+              "THROBBING",
+              "STABBING",
+              "PRESSURE",
+              "BURNING",
+              "OTHER"
+            ]
+          },
+          "symptoms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "NAUSEA",
+                "VOMITING",
+                "PHOTOPHOBIA",
+                "PHONOPHOBIA",
+                "AURA",
+                "DIZZINESS",
+                "NECK_PAIN",
+                "OTHER"
+              ]
+            }
+          },
+          "triggers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "STRESS",
+                "SLEEP_ISSUE",
+                "FOOD",
+                "SKIPPED_MEAL",
+                "DEHYDRATION",
+                "CAFFEINE",
+                "ALCOHOL",
+                "HORMONES",
+                "SCREEN_TIME",
+                "WEATHER",
+                "EXERCISE",
+                "OTHER"
+              ]
+            }
+          },
+          "protectors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GOOD_SLEEP",
+                "HYDRATION",
+                "REGULAR_MEALS",
+                "REST",
+                "EXERCISE",
+                "SCREEN_BREAKS",
+                "ACUTE_MED_EARLY",
+                "PREVENTIVE_TAKEN",
+                "CALM_LOW_STRESS",
+                "OTHER"
+              ]
+            }
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "intensity"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "update_attack",
+      "description": "Update an existing attack, or end an ongoing one by passing endNow. Timeline and type edits are only allowed within the last 30 days; descriptive fields can be edited any time. Ending an ongoing attack \"now\" is always allowed. This never deletes anything.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "attackId": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "The attack to update."
+          },
+          "endNow": {
+            "description": "End the ongoing attack as of now. Takes precedence over endTime.",
+            "type": "boolean"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "onsetAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "isOngoing": {
+            "type": "boolean"
+          },
+          "intensity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "attackType": {
+            "type": "string",
+            "enum": [
+              "migraine",
+              "headache"
+            ]
+          },
+          "painLocation": {
+            "type": "string",
+            "enum": [
+              "LEFT",
+              "RIGHT",
+              "FRONTAL",
+              "OCCIPITAL",
+              "WHOLE_HEAD",
+              "OTHER"
+            ]
+          },
+          "painType": {
+            "type": "string",
+            "enum": [
+              "THROBBING",
+              "STABBING",
+              "PRESSURE",
+              "BURNING",
+              "OTHER"
+            ]
+          },
+          "symptoms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "NAUSEA",
+                "VOMITING",
+                "PHOTOPHOBIA",
+                "PHONOPHOBIA",
+                "AURA",
+                "DIZZINESS",
+                "NECK_PAIN",
+                "OTHER"
+              ]
+            }
+          },
+          "triggers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "STRESS",
+                "SLEEP_ISSUE",
+                "FOOD",
+                "SKIPPED_MEAL",
+                "DEHYDRATION",
+                "CAFFEINE",
+                "ALCOHOL",
+                "HORMONES",
+                "SCREEN_TIME",
+                "WEATHER",
+                "EXERCISE",
+                "OTHER"
+              ]
+            }
+          },
+          "protectors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GOOD_SLEEP",
+                "HYDRATION",
+                "REGULAR_MEALS",
+                "REST",
+                "EXERCISE",
+                "SCREEN_BREAKS",
+                "ACUTE_MED_EARLY",
+                "PREVENTIVE_TAKEN",
+                "CALM_LOW_STRESS",
+                "OTHER"
+              ]
+            }
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "attackId"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "list_medication_doses",
+      "description": "List acute medication doses the user has taken in a date range, newest first. Use alongside get_moh_status when discussing how often they are medicating.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "limit": {
+            "description": "Max doses to return (default 100, max 200).",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "log_medication_dose",
+      "description": "Record that the user took a medication. Pass the medication name as the user said it; it is matched against their existing medications and created if new. Acute medications are recorded as acute doses so they count toward medication-overuse tracking, and are linked to the given attack when one is supplied.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "medicationName": {
+            "description": "Free-text name, e.g. \"sumatriptan\".",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "userMedicationId": {
+            "description": "Use instead of medicationName when the exact medication id is known.",
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$"
+          },
+          "dose": {
+            "description": "Amount, e.g. \"50\".",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "unit": {
+            "description": "Unit, e.g. \"mg\".",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "takenAt": {
+            "description": "When it was taken, ISO 8601. Defaults to now.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "attackId": {
+            "description": "Link the dose to this attack.",
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "get_diary",
+      "description": "Read the user's daily diary across a range of local dates: whether each day was headache-free, a headache day or a migraine day, plus impact, sleep times and notes. Dates are the user's local dates, not UTC.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "from": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "First local date, YYYY-MM-DD."
+          },
+          "to": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Last local date, inclusive, YYYY-MM-DD."
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "update_diary_day",
+      "description": "Set or update the diary entry for one local date — day type, impact, sleep times, notes. Only days within the last 30 days can be edited; older days fail with NOT_EDITABLE. Pass only the fields the user actually mentioned.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "localDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "The local date to update, YYYY-MM-DD."
+          },
+          "dayType": {
+            "type": "string",
+            "enum": [
+              "headache_free",
+              "headache_day",
+              "migraine_day"
+            ]
+          },
+          "impact": {
+            "description": "How much the day was affected, 0-4.",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bedTimeLocal": {
+            "description": "HH:MM local.",
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "wakeTimeLocal": {
+            "description": "HH:MM local.",
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "localDate"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "log_factor",
+      "description": "Log a trigger, protector or symptom the user experienced — for example \"red wine\" as a trigger or \"dark room\" as a protector. Reuses an existing factor with the same name and type when the user already has one.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "What the factor is, as the user described it."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "trigger",
+              "protector",
+              "symptom"
+            ]
+          },
+          "occurredAt": {
+            "description": "When it happened, ISO 8601. Defaults to now.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          }
+        },
+        "required": [
+          "displayName",
+          "type"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "get_insights",
+      "description": "Get the computed insights for the user: statistically tested associations between candidate triggers and their attacks over a rolling window. Use this to answer \"why am I getting more attacks?\" rather than inferring patterns yourself from raw records.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "windowDays": {
+            "description": "Analysis window in days. Defaults to 90.",
+            "anyOf": [
+              {
+                "type": "number",
+                "const": 30
+              },
+              {
+                "type": "number",
+                "const": 60
+              },
+              {
+                "type": "number",
+                "const": 90
+              },
+              {
+                "type": "number",
+                "const": 180
+              }
+            ]
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "get_moh_status",
+      "description": "Get the user's medication-overuse headache risk status: how many days in the rolling window they have used each class of acute medication, against the clinical threshold. Report what this returns; do not compute overuse risk yourself.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "windowDays": {
+            "description": "Rolling window in days. Defaults to 30.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "get_clinician_report",
+      "description": "Generate the clinician-facing summary report for a date range, as plain text. This is the same report the user can export for a doctor's appointment: attack frequency, medication use, diary summary and insights.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "from": {
+            "description": "Start local date, YYYY-MM-DD. Omit to use the preset range.",
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "to": {
+            "description": "End local date, YYYY-MM-DD. Omit to use the preset range.",
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "rangePreset": {
+            "description": "Used when from/to are omitted. Defaults to last90.",
+            "type": "string",
+            "enum": [
+              "last30",
+              "last90",
+              "last180"
+            ]
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "list_appointment_preps",
+      "description": "List the user's appointment preparation drafts — the notes and questions they are assembling for an upcoming doctor visit.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "limit": {
+            "description": "Max drafts to return (default 20).",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    },
+    {
+      "name": "get_appointment_prep",
+      "description": "Get one appointment preparation draft in full, by id.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$",
+            "description": "The draft id, from list_appointment_preps."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      }
+    }
+  ]
+}
