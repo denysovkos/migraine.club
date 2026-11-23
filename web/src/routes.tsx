@@ -97,10 +97,10 @@ function pathOf(segment: string): string | undefined {
   if (segment.startsWith('(')) {
     return undefined;
   }
-  if (/^\[\[\.\.\.\w+\]\]$/.test(segment)) {
-    return '*?';
+  if (/^\[\[\.\.\.[\w-]+\]\]$/.test(segment)) {
+    return '*';
   }
-  if (/^\[\.\.\.\w+\]$/.test(segment)) {
+  if (/^\[\.\.\.[\w-]+\]$/.test(segment)) {
     return '*';
   }
   const param = /^\[(\w+)\]$/.exec(segment);
@@ -125,7 +125,7 @@ function nextParams(params: Record<string, string | undefined>, locale: string, 
 }
 
 function catchAllOf(file: string): string | undefined {
-  return /\[\[?\.\.\.(\w+)\]\]?/.exec(file)?.[1];
+  return /\[\[?\.\.\.([\w-]+)\]\]?/.exec(file)?.[1];
 }
 
 function searchParamsOf(url: URL): Record<string, string | string[]> {

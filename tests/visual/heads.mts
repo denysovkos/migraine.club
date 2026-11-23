@@ -8,13 +8,8 @@
 import { writeFileSync } from 'node:fs';
 import process from 'node:process';
 
+import { headTags } from './headTags';
 import { routes } from './routes';
-
-export function headTags(html: string): string[] {
-  const head = /<head>([\s\S]*?)<\/head>/.exec(html)?.[1] ?? '';
-  return (head.match(/<(?:meta|link)\b[^>]*>|<title\b[^>]*>[\s\S]*?<\/title>/g) ?? [])
-    .filter(tag => !/rel="(?:stylesheet|preload|modulepreload|expect)"|\/_next\/|\/assets\/|name="next-size-adjust"/.test(tag));
-}
 
 async function main() {
   const [base, out] = process.argv.slice(2);
