@@ -29,6 +29,9 @@ RUN go mod download
 COPY cmd ./cmd
 COPY internal ./internal
 COPY migrations ./migrations
+# Packages that embed the program texts and the locale messages.
+COPY content/programs ./content/programs
+COPY src/locales ./src/locales
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/server ./cmd/server
 
 FROM gcr.io/distroless/static-debian12:nonroot
