@@ -34,7 +34,10 @@ COPY content/programs ./content/programs
 COPY src/locales ./src/locales
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/server ./cmd/server
 
-FROM gcr.io/distroless/static-debian12:nonroot
+# Runs as root, like the Node service did: Render's persistent disk
+# (FILES_STORAGE_PATH, doctor verification uploads) is owned by root, and so
+# are the files already on it.
+FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 COPY --from=server /out/server /app/server
 COPY --from=web /src/web/dist /app/web

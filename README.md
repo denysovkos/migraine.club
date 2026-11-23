@@ -272,7 +272,7 @@ All UI copy lives in `src/locales`. `en.json` is the source of truth; `fr.json` 
 
 ## Deployment
 
-The app ships as one Docker image ([`Dockerfile`](Dockerfile)): the Go binary and the frontend build. Pass the `NEXT_PUBLIC_*` variables as build arguments (they are inlined into the frontend) and everything else as runtime environment, point `DATABASE_URL` at hosted Postgres, and set `NEXT_PUBLIC_APP_URL` to the public URL so metadata and the sitemap are correct. Migrations run once per server process on boot under an advisory lock, so a rolling deploy is safe.
+The app ships as one Docker image ([`Dockerfile`](Dockerfile)): the Go binary and the frontend build. Pass the `NEXT_PUBLIC_*` variables as build arguments (they are inlined into the frontend) and everything else as runtime environment, point `DATABASE_URL` at hosted Postgres, and set `NEXT_PUBLIC_APP_URL` to the public URL so metadata and the sitemap are correct. Migrations run once per server process on boot under an advisory lock, so a rolling deploy is safe. The image runs as root so it can write to a persistent disk mounted for `FILES_STORAGE_PATH`; the server listens on `PORT`.
 
 Scheduled work is exposed as HTTP endpoints under `/api/cron/*` (daily risk, insights, medication reminders, program reminders, solar activity, stale-attack reminders). Call them from your scheduler with `CRON_SECRET`.
 

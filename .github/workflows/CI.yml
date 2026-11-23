@@ -167,6 +167,11 @@ jobs:
           --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder
           -t migraine-club:ci .
 
+      # Render's persistent disk (FILES_STORAGE_PATH) is owned by root; a
+      # non-root user could not write uploads there.
+      - name: The image runs as root
+        run: test "$(docker inspect -f '{{.Config.User}}' migraine-club:ci)" = "0" || test -z "$(docker inspect -f '{{.Config.User}}' migraine-club:ci)"
+
   e2e:
     name: E2E (${{ matrix.browser }})
     runs-on: ubuntu-latest
