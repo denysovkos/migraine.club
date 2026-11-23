@@ -2,24 +2,24 @@
 #
 # Runs on every pull request and on pushes to main.
 #
+# The app is a Go server (cmd/server, internal/) that serves the API and the
+# Vite build of the frontend (web/, rendering the React pages in src/app).
+#
 # The verify job needs no secrets: vitest reads its env from `.vitest-env`
 # (see vitest.config.mts), not from `.env`, so the suite runs green on a clean
-# checkout.
+# checkout. The go job runs the Go tests against a throwaway Postgres.
 #
-# The build job does need the variables `src/libs/Env.ts` marks required, and
-# `Env.ts` has no skipValidation escape. The placeholders below exist purely to
-# get past that validation so compilation is checked.
+# The build and e2e jobs need the variables the server and the frontend
+# build read (internal/config, src/libs/Env.ts). The placeholders below exist
+# purely so they start: NEXT_PUBLIC_* values are inlined into the frontend
+# bundle at build time, so nothing built here is deployable or uploaded.
 #
-# The output of the build job is NOT deployable: Next inlines NEXT_PUBLIC_*
-# values into the client bundle at build time, so the bundle carries the
-# placeholder keys. Nothing here uploads or deploys it — the job only answers
-# "does it still compile".
-#
-# The e2e job runs the Playwright suite against a production build with Clerk
-# swapped for the mock in src/libs/MockClerk*.ts (E2E_MOCK_AUTH), backed by a
-# throwaway Postgres service. It uses the same placeholder keys as the build
-# job: no real Clerk or Stripe calls are made. A production build matters:
-# the service worker (offline sync specs) only registers outside dev mode.
+# The e2e job runs the Playwright suite against the production build (the Go
+# binary serving web/dist) with Clerk swapped for the mock in
+# src/libs/MockClerk.tsx (E2E_MOCK_AUTH, at build time and at runtime),
+# backed by a throwaway Postgres service. No real Clerk or Stripe calls are
+# made. A production build matters: the service worker (offline sync specs)
+# only registers outside dev mode.
 #
 # The workflow name is load-bearing: release.yml triggers on the completion of
 # the workflow called "CI".
@@ -145,9 +145,27 @@ jobs:
           node-version: 26
           cache: npm
 
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
       - run: npm ci
 
       - run: npm run build
+
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the production image
+        run: >-
+          docker build
+          --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_placeholder
+          --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder
+          -t migraine-club:ci .
 
   e2e:
     name: E2E (${{ matrix.browser }})
@@ -197,6 +215,10 @@ jobs:
           node-version: 26
           cache: npm
 
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
       - run: npm ci
 
       - name: Install Playwright browser
@@ -205,7 +227,7 @@ jobs:
       - name: Build (mock auth)
         run: npm run build
 
-      # The server applies migrations on boot (src/instrumentation.ts), and the
+      # The server applies migrations on boot (RUN_MIGRATIONS_ON_BOOT), and the
       # `seeded` fixture resets and seeds the e2e user before every test.
       - name: E2E tests
         run: npx playwright test --project=${{ matrix.browser }}

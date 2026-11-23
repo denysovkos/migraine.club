@@ -1,10 +1,10 @@
 /**
  * Playwright fixtures for mock-auth e2e tests.
  *
- * The dev server is launched with `E2E_MOCK_AUTH=true` (see playwright.config.ts),
- * which:
- *   - swaps `@clerk/nextjs` and `@clerk/nextjs/server` for mock modules via webpack alias
- *   - makes `src/middleware.ts` stamp `x-e2e-mock-user` and skip Clerk
+ * The server is launched with `E2E_MOCK_AUTH=true` (see playwright.config.ts),
+ * which signs every request in as the e2e user (internal/auth Mock), and the
+ * SPA is built with the same flag, which swaps Clerk for src/libs/MockClerk.tsx
+ * (web/aliases.ts).
  *
  * Each test gets a fresh DB state via the `seeded` fixture, which runs
  * `e2e:reset` then `e2e:seed` once per test. Disable by overriding the fixture.

@@ -1,4 +1,4 @@
-# Go server tasks. The frontend keeps using npm scripts.
+# Go server tasks. The frontend (web/) builds with npm scripts.
 GOTOOLCHAIN ?= go1.27.4
 export GOTOOLCHAIN
 SQLC_VERSION := v1.31.1
@@ -20,13 +20,11 @@ sqlc:
 	$(GOBIN)/sqlc generate
 	npx tsx scripts/gen-go-json-order.ts
 	gofmt -w internal/db/q/json_order_gen.go
-	python3 scripts/gen-report-html.py
-	gofmt -w internal/service/reports/html_pieces_gen.go
 
 ## check-gen: fail when generated files are out of date
 check-gen: gen
-	git add --intent-to-add internal/db/q internal/service/reports/html_pieces_gen.go
-	git diff --exit-code -- internal/db/schema.sql internal/db/q internal/service/reports/html_pieces_gen.go
+	git add --intent-to-add internal/db/q
+	git diff --exit-code -- internal/db/schema.sql internal/db/q
 
 ## test: Go tests (set TEST_DATABASE_URL for the database-backed ones)
 test:

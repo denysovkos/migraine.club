@@ -1,41 +1,30 @@
-import { eq } from 'drizzle-orm';
 import Link from 'next/link';
+
+import { adminGet } from '@/features/admin/adminApi';
 
 import { AdminDoctorVerificationActions } from '@/features/doctorVerification/AdminDoctorVerificationActions';
 import { requireUserOrRedirect } from '@/libs/AuthGuard';
-import { db } from '@/libs/DB';
-import { doctorVerificationApplicationSchema, doctorVerificationFileSchema } from '@/models/Schema';
-import { moderationService } from '@/services/ModerationService';
 import { AppConfig } from '@/utils/AppConfig';
+
+type Application = { id: string; fullName: string; country: string; specialty: string; verificationMethod: string; status: string; submittedAt: string | null; licenseNumber: string | null; clinicEmail: string | null; applicantStatementAccepted: boolean; file: { id: string; originalName: string } | null };
 
 export default async function AdminDoctorVerificationDetailPage(props: {
   params: Promise<{ id: string }>;
 }) {
   // Admin routes are not localized; signed-out visitors go to the default-locale sign-in.
-  const userId = await requireUserOrRedirect(AppConfig.defaultLocale);
+  await requireUserOrRedirect(AppConfig.defaultLocale);
 
-  const isAdmin = await moderationService.isAdmin(userId);
-  if (!isAdmin) {
+  const { id } = await props.params;
+  const res = await adminGet<{ application: Application }>(`/api/admin/doctor-verification/applications/${encodeURIComponent(id)}`);
+  if (res.status === 403) {
     return (
       <main className="mx-auto max-w-3xl p-6">
         <h1 className="text-lg font-semibold">Forbidden</h1>
       </main>
     );
   }
-
-  const { id } = await props.params;
-
-  const [application] = await db
-    .select()
-    .from(doctorVerificationApplicationSchema)
-    .where(eq(doctorVerificationApplicationSchema.id, id))
-    .limit(1);
-
-  const [file] = await db
-    .select()
-    .from(doctorVerificationFileSchema)
-    .where(eq(doctorVerificationFileSchema.applicationId, id))
-    .limit(1);
+  const application = res.data?.application;
+  const file = application?.file;
 
   if (!application) {
     return (
@@ -75,7 +64,7 @@ export default async function AdminDoctorVerificationDetailPage(props: {
         <div>
           <span className="text-muted-foreground">Submitted:</span>
           {' '}
-          {application.submittedAt ? application.submittedAt.toISOString() : '—'}
+          {application.submittedAt ?? '—'}
         </div>
         <div>
           <span className="text-muted-foreground">Method:</span>

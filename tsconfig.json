@@ -46,13 +46,7 @@
       "@/public/*": [
         "./public/*"
       ]
-    },
-    // Editor support
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    }
   },
   "exclude": [
     "./out/**/*",
@@ -61,11 +55,8 @@
     "**/*.e2e.ts"
   ],
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "**/*.mts",
-    ".next/dev/types/**/*.ts"
+    "**/*.mts"
   ]
 }

@@ -18,11 +18,11 @@
 
 <p align="center">
   <a href="https://github.com/denysovkos/migraine.club/actions/workflows/CI.yml"><img src="https://github.com/denysovkos/migraine.club/actions/workflows/CI.yml/badge.svg" alt="CI" /></a>
-  <img src="https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white" alt="Next.js 16" />
+  <img src="https://img.shields.io/badge/Go-1.27-00ADD8?logo=go&logoColor=white" alt="Go 1.27" />
   <img src="https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white" alt="React 19" />
   <img src="https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white" alt="TypeScript 6" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4" />
-  <img src="https://img.shields.io/badge/Postgres-Drizzle_ORM-4169E1?logo=postgresql&logoColor=white" alt="Postgres with Drizzle ORM" />
+  <img src="https://img.shields.io/badge/Postgres-sqlc-4169E1?logo=postgresql&logoColor=white" alt="Postgres with sqlc" />
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license" />
 </p>
 
@@ -63,17 +63,18 @@ It does not diagnose, recommend treatment or predict attacks. It summarises what
 
 | Layer | Choice |
 | --- | --- |
-| Framework | Next.js 16 (App Router), React 19, TypeScript 6 |
+| Server | Go 1.27 (chi, pgx, sqlc): the API, the MCP endpoint, scheduled jobs, push delivery, and the frontend's pages |
+| Frontend | React 19 and TypeScript 6, built with Vite into a single-page app; pages and layouts live in `src/app` |
 | Styling | Tailwind CSS 4, shadcn/ui components on Radix |
 | Auth | Clerk, which is also the OAuth 2.1 server for the MCP endpoint |
-| Database | Postgres through Drizzle ORM, 40+ migrations in [`migrations/`](migrations) |
+| Database | Postgres, queries through sqlc ([`internal/db/queries`](internal/db/queries)), 40+ migrations in [`migrations/`](migrations), schema authored in `src/models/Schema.ts` with drizzle-kit |
 | Billing | Stripe |
-| i18n | next-intl, routes under `src/app/[locale]` |
+| i18n | next-intl in the browser, locale routing in the Go server (`internal/spa`), routes under `src/app/[locale]` |
 | Charts and PDF | Recharts, `@react-pdf/renderer` |
-| Validation | Zod at every external boundary, env validated in `src/libs/Env.ts` |
-| Notifications | `web-push` with VAPID keys, service worker in `public/sw.js` |
-| Observability | Sentry, Pino, Logtail |
-| Testing | Vitest and React Testing Library, Playwright for end-to-end |
+| Validation | Zod in the frontend; the server ports the same schemas (`internal/zod`), env validated in `internal/config` |
+| Notifications | Web Push with VAPID keys (`internal/service/push`), service worker in `public/sw.js` |
+| Observability | Sentry in the browser (tunnelled through `/monitoring`), structured logs to Better Stack (Logtail) |
+| Testing | Go tests (with a throwaway Postgres), Vitest and React Testing Library, Playwright for end-to-end |
 
 ## Architecture
 
@@ -82,29 +83,29 @@ flowchart LR
     subgraph Clients
         PWA[Web app / PWA]
         AI[AI client<br/>Claude, ChatGPT]
-        Cron[Scheduled jobs]
+        Cron[Scheduler]
     end
 
-    subgraph Next["Next.js app"]
-        UI["src/app/[locale]<br/>pages and layouts"]
-        API["src/app/api<br/>REST handlers"]
-        MCP["src/server/mcp<br/>MCP tools"]
-        SVC["src/services<br/>domain logic"]
-        REPO["src/repositories<br/>external adapters"]
-        MODEL["src/models<br/>Drizzle schema"]
+    subgraph Go["Go server (cmd/server)"]
+        SPA["internal/spa<br/>pages, locale routing"]
+        API["internal/api<br/>REST handlers, cron endpoints"]
+        MCP["internal/mcp<br/>MCP tools"]
+        SVC["internal/service<br/>domain logic"]
+        DBQ["internal/db<br/>sqlc queries"]
     end
 
-    PWA --> UI
+    WEB["web/ + src/<br/>React pages (Vite build)"]
+
+    PWA --> SPA
+    SPA -.->|serves| WEB
     PWA --> API
     AI --> MCP
     Cron --> API
-    UI --> SVC
     API --> SVC
     MCP --> SVC
-    SVC --> REPO
-    SVC --> MODEL
-    MODEL --> DB[(Postgres)]
-    REPO --> EXT[OpenWeatherMap<br/>NOAA Kp index]
+    SVC --> DBQ
+    DBQ --> DB[(Postgres)]
+    SVC --> EXT[OpenWeatherMap<br/>NOAA Kp index]
     API -.->|auth| Clerk[Clerk]
     MCP -.->|"OAuth 2.1"| Clerk
 ```
@@ -114,19 +115,24 @@ The REST routes and the MCP tools are thin: they validate input and call the sam
 ### Repository layout
 
 ```
+cmd/server/       The server binary
+internal/
+  api/            REST handlers, cron endpoints
+  mcp/            MCP endpoint and tools
+  service/        Domain services shared by REST and MCP
+  spa/            Serves the frontend build: heads, locale routing, redirects
+  db/             Migrations runner, sqlc queries (queries/) and generated code (q/)
+  auth/           Clerk sessions, OAuth tokens, e2e mock auth
+  server/         Routing and Next-compatible URL handling
+web/              Vite app that renders the pages in src/app (router, shims)
 src/
-  app/            App Router pages, layouts and API routes
-    [locale]/     Localised UI: (unauth) marketing pages, (auth) dashboard
-    api/          REST handlers, cron endpoints, MCP endpoint
+  app/            Pages and layouts ([locale]/ for the localised UI)
   features/       Feature UI and client logic (episodes, diary, insights, ...)
-  services/       Domain services shared by REST and MCP
-  server/         MCP tools, push delivery, space-weather sync
-  repositories/   Adapters for external services
-  models/         Drizzle schema and types
-  locales/        en.json, fr.json, uk.json
-  libs/           Env, DB, logger, i18n setup
-migrations/       Drizzle SQL migrations
-tests/            Playwright e2e and integration tests
+  locales/        en.json, fr.json, uk.json (also embedded in the server)
+  models/         Schema (drizzle-kit) and shared types
+migrations/       SQL migrations, embedded in the server
+content/          Program texts, embedded in the server
+tests/            Playwright e2e, parity and visual comparison tools
 scripts/          Seeding and maintenance scripts
 docs/             Feature notes
 ```
@@ -175,7 +181,7 @@ npm install
 
 ### Environment
 
-Create `.env.local` in the project root. Variables are validated in [`src/libs/Env.ts`](src/libs/Env.ts) and the app will not start if a required one is missing.
+Create `.env.local` in the project root. The server validates its variables on start (`internal/config`) and will not start if a required one is missing. `NEXT_PUBLIC_*` values are also inlined into the frontend when it is built.
 
 ```bash
 # Required
@@ -204,23 +210,30 @@ LOGTAIL_SOURCE_TOKEN=
 
 ### Run
 
+Go 1.27 and Node 26 are needed.
+
 ```bash
-npm run dev
+npm run dev:server   # the Go server on :3000 (reads .env*)
+npm run dev          # the frontend with hot reload on :3002, API calls go to :3000
 ```
 
-Open http://localhost:3000. Pending migrations are applied when the server starts.
+Open http://localhost:3002. Pending migrations are applied when the server starts. To run the production build locally: `npm run build && npm start`, then open http://localhost:3000.
 
 ### Useful commands
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Start the dev server |
-| `npm run build` | Production build |
+| `npm run dev` | Frontend dev server (Vite) |
+| `npm run dev:server` | Go server |
+| `npm run build` | Production build: the frontend into `web/dist`, the server into `bin/server` |
+| `npm start` | Run the production build |
+| `make test` / `make lint` | Go tests (set `TEST_DATABASE_URL` for the database-backed ones) and golangci-lint |
+| `make gen` | Regenerate the schema snapshot and the sqlc query layer |
 | `npm run lint` | ESLint |
 | `npm run check-types` | TypeScript check |
 | `npm test` | Unit and component tests (Vitest) |
 | `npm run test:e2e` | Playwright end-to-end tests with mocked auth |
-| `npm run db:generate` | Generate a migration after a schema change |
+| `npm run db:generate` | Generate a migration after a schema change (then `make gen`) |
 | `npm run db:migrate` | Apply migrations |
 | `npm run db:seed` | Seed reference data, including the medication catalogue |
 | `npm run db:studio` | Open Drizzle Studio |
@@ -230,7 +243,7 @@ Open http://localhost:3000. Pending migrations are applied when the server start
 
 ## Testing
 
-Unit and component tests sit next to the code they cover as `*.test.ts(x)`. They do not read `.env`, so they need no secrets.
+Go tests sit next to the code as `*_test.go`; the database-backed ones create a throwaway database from `TEST_DATABASE_URL`. Frontend unit and component tests sit next to the code they cover as `*.test.ts(x)`. They do not read `.env`, so they need no secrets.
 
 End-to-end tests are in [`tests/e2e`](tests/e2e) and run against a mocked Clerk session (`E2E_MOCK_AUTH=true`). Seed and reset the e2e database with `npm run e2e:seed` and `npm run e2e:reset`.
 
@@ -251,7 +264,7 @@ There are no delete tools. Every call is audited without storing arguments or pa
 - Every personal-data endpoint requires authentication. Share links are tokenised, scoped to a date range and expire.
 - Health-data consent is recorded explicitly, and writes through the MCP server fail without it.
 - Weather context is optional and only computed once a location is set.
-- Account deletion and self-service data export are available from privacy settings. `GET /api/user/export?format=json` returns every user-owned record in one file; `format=csv` returns a ZIP with one CSV per table. Share-link tokens, push keys, payment-provider IDs and staff-only moderation fields are left out. When adding a user-scoped table, add it to `EXPORT_TABLES` in `src/services/dataExport/DataExportService.ts`.
+- Account deletion and self-service data export are available from privacy settings. `GET /api/user/export?format=json` returns every user-owned record in one file; `format=csv` returns a ZIP with one CSV per table. Share-link tokens, push keys, payment-provider IDs and staff-only moderation fields are left out. When adding a user-scoped table, add it to `Tables` in `internal/service/dataexport/dataexport.go`.
 
 ## Internationalisation
 
@@ -259,7 +272,7 @@ All UI copy lives in `src/locales`. `en.json` is the source of truth; `fr.json` 
 
 ## Deployment
 
-The app is a standard Next.js server. Set the required environment variables, point `DATABASE_URL` at hosted Postgres, and set `NEXT_PUBLIC_APP_URL` to the public URL so metadata and the sitemap are correct. Migrations run once per server process on boot under an advisory lock, so a rolling deploy is safe.
+The app ships as one Docker image ([`Dockerfile`](Dockerfile)): the Go binary and the frontend build. Pass the `NEXT_PUBLIC_*` variables as build arguments (they are inlined into the frontend) and everything else as runtime environment, point `DATABASE_URL` at hosted Postgres, and set `NEXT_PUBLIC_APP_URL` to the public URL so metadata and the sitemap are correct. Migrations run once per server process on boot under an advisory lock, so a rolling deploy is safe.
 
 Scheduled work is exposed as HTTP endpoints under `/api/cron/*` (daily risk, insights, medication reminders, program reminders, solar activity, stale-attack reminders). Call them from your scheduler with `CRON_SECRET`.
 

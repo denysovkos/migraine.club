@@ -32,9 +32,7 @@ type Module = {
   generateMetadata?: (props: any) => Promise<Metadata> | Metadata;
 };
 
-// The admin pages query the database on the server; their SPA versions are
-// in ./overrides/admin, so the originals stay out of the bundle.
-const nextModules = import.meta.glob<Module>(['../../src/app/**/page.tsx', '../../src/app/**/layout.tsx', '!../../src/app/admin/**/page.tsx']);
+const nextModules = import.meta.glob<Module>(['../../src/app/**/page.tsx', '../../src/app/**/layout.tsx']);
 
 const withMetadata = (load: () => Promise<Module>, component: () => Promise<Module['default']>) => async (): Promise<Module> => {
   const [mod, Component] = await Promise.all([load(), component()]);
@@ -42,15 +40,11 @@ const withMetadata = (load: () => Promise<Module>, component: () => Promise<Modu
 };
 
 /**
- * Modules that cannot run in the browser as they are: pages that query the
- * database on the server (their SPA versions read the same rows through the
- * API) and root layouts that render <html> and <body> (their metadata stays
- * the original module's). The admin pages define no metadata.
+ * Root layouts outside the locale tree render <html> and <body>; the SPA
+ * sets their attributes on the existing document instead and keeps the
+ * original module's metadata.
  */
 const overrides: Record<string, () => Promise<Module>> = {
-  '../../src/app/admin/doctor-verifications/page.tsx': () => import('./overrides/admin/doctor-verifications'),
-  '../../src/app/admin/doctor-verifications/[id]/page.tsx': () => import('./overrides/admin/doctor-verification'),
-  '../../src/app/admin/feature-requests/page.tsx': () => import('./overrides/admin/feature-requests'),
   '../../src/app/admin/doctor-verifications/layout.tsx': withMetadata(nextModules['../../src/app/admin/doctor-verifications/layout.tsx']!, async () => (await import('./overrides/layouts')).AdminLayout),
   '../../src/app/admin/feature-requests/layout.tsx': withMetadata(nextModules['../../src/app/admin/feature-requests/layout.tsx']!, async () => (await import('./overrides/layouts')).AdminLayout),
   '../../src/app/share/[token]/layout.tsx': withMetadata(nextModules['../../src/app/share/[token]/layout.tsx']!, async () => (await import('./overrides/layouts')).ShareLayout),

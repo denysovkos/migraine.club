@@ -10,6 +10,8 @@ import { envShim, spaAliases } from './aliases';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(here, '..');
 
+const goProxy = { '^/(api|\\.well-known|monitoring|umami)(/|$|\\?)': 'http://localhost:3000' };
+
 export default defineConfig(({ mode }) => {
   const env = { ...loadEnv(mode, repo, ''), ...process.env };
   const mockAuth = env.E2E_MOCK_AUTH === 'true';
@@ -30,9 +32,10 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: spaAliases(mockAuth),
     },
-    server: { fs: { allow: [repo] } },
-    // Until Go serves the SPA: API and metadata routes go to the Go server.
-    preview: { port: 3002, proxy: { '^/(api|\\.well-known|share/.*/pdf)': 'http://localhost:3000' } },
+    // `npm run dev` / `vite preview`: the SPA on :3002, everything the Go
+    // server answers itself (npm run dev:server, :3000) proxied to it.
+    server: { port: 3002, fs: { allow: [repo] }, proxy: goProxy },
+    preview: { port: 3002, proxy: goProxy },
     build: { outDir: path.resolve(repo, 'web/dist'), emptyOutDir: true },
   };
 });

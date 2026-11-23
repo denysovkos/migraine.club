@@ -1,13 +1,21 @@
 import type { PgTable } from 'drizzle-orm/pg-core';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { getTableColumns, getTableName, is } from 'drizzle-orm';
 import { PgTable as PgTableClass } from 'drizzle-orm/pg-core';
 import { describe, expect, it } from 'vitest';
 
 import { RESET_TABLES } from '../../scripts/e2eResetTables';
-import { EXPORT_TABLES } from '../services/dataExport/DataExportService';
 import * as schema from './Schema';
 
 const OWNER_COLUMNS = new Set(['user_id', 'author_id', 'reporter_id']);
+
+/** The data export's tables and owner columns (internal/service/dataexport, Tables). */
+function exportTables(): { table: string; owner: string }[] {
+  const source = readFileSync(path.join(__dirname, '../../internal/service/dataexport/dataexport.go'), 'utf8');
+  const block = /var Tables = \[\]Spec\{([\s\S]*?)\n\}/.exec(source)?.[1] ?? '';
+  return [...block.matchAll(/^\t\{"([^"]+)", "([^"]+)",/gm)].map(m => ({ table: m[1]!, owner: m[2]! }));
+}
 
 describe('scripts/e2eResetTables', () => {
   const reset = new Map(RESET_TABLES.map(r => [getTableName(r.table), r.owner.name]));
@@ -23,13 +31,16 @@ describe('scripts/e2eResetTables', () => {
   });
 
   it('wipes every exported table by the same owner column', () => {
-    for (const spec of EXPORT_TABLES) {
-      const name = getTableName(spec.table);
-      if (name === 'user') {
+    const tables = exportTables();
+
+    expect(tables.length).toBeGreaterThan(30);
+
+    for (const { table, owner } of tables) {
+      if (table === 'user') {
         continue;
       }
 
-      expect(reset.get(name), name).toBe(spec.ownerColumn.name);
+      expect(reset.get(table), table).toBe(owner);
     }
   });
 });

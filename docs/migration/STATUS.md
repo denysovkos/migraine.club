@@ -4,6 +4,21 @@ Working branch for the one-shot migration from Next.js to a single Go binary
 (chi + pgx + sqlc) that serves the React SPA. Everything must stay functionally
 and visually identical; the existing Playwright suite is the acceptance gate.
 
+## Cutover
+
+The Next server is gone: `src/app/api`, `src/app/.well-known`,
+`src/server`, `proxy.ts`, `instrumentation*.ts`, `global-error.tsx`,
+`next.config.mjs`, and every module and test reachable only from them.
+What stays in TypeScript is the frontend (`src/app` pages and layouts,
+`src/features`, `web/`), shared types, the e2e seed and reset scripts and
+the golden generators. `next` stays as a dev dependency: the prerender
+resolves page metadata with Next's own code, and `src/app` keeps its
+`next/*` imports (shimmed in `web/aliases.ts`).
+
+The parity tools (`tests/parity`, `tests/visual`) compare two running
+servers; to compare against Next again, build the commit before the
+cutover on another port.
+
 ## Decisions
 
 - Migrations stay in `migrations/` with drizzle's journal and bookkeeping table
@@ -248,8 +263,10 @@ State:
 - [x] Drizzle-compatible migrator + test database helper
 - [x] Server skeleton, auth, mock auth, forwarded headers, parity harness
 - [x] Crons, push, MCP
-- [ ] Frontend on Vite
-- [ ] Cutover, CI, docs
+- [x] Frontend on Vite: 315+/340 screenshots and DOM identical, the rest
+      antialiasing only; heads 157/157; HTTP level 576/576; e2e 88/88
+- [x] Cutover: Next server, its API routes and server-only TypeScript
+      removed; CI runs Go and builds the Docker image; docs updated
 
 ### Routes
 
