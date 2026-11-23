@@ -31,7 +31,9 @@ type Module = {
   generateMetadata?: (props: any) => Promise<Metadata> | Metadata;
 };
 
-const nextModules = import.meta.glob<Module>(['../../src/app/**/page.tsx', '../../src/app/**/layout.tsx']);
+// The admin pages query the database on the server; their SPA versions are
+// in ./overrides/admin, so the originals stay out of the bundle.
+const nextModules = import.meta.glob<Module>(['../../src/app/**/page.tsx', '../../src/app/**/layout.tsx', '!../../src/app/admin/**/page.tsx']);
 
 const withMetadata = (load: () => Promise<Module>, component: () => Promise<Module['default']>) => async (): Promise<Module> => {
   const [mod, Component] = await Promise.all([load(), component()]);

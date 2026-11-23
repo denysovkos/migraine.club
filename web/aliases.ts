@@ -24,3 +24,22 @@ export function spaAliases(mockAuth: boolean): { find: RegExp; replacement: stri
     { find: /^@\//, replacement: `${path.resolve(repo, 'src')}/` },
   ];
 }
+
+/**
+ * src/libs/Env.ts validates server secrets. Modules in src/libs import it
+ * as './Env', which the aliases above never see; this sends every import
+ * that resolves to it to the SPA's version.
+ */
+export function envShim() {
+  const real = path.resolve(repo, 'src/libs/Env');
+  return {
+    name: 'spa-env-shim',
+    enforce: 'pre' as const,
+    resolveId(source: string, importer: string | undefined) {
+      if (importer && source.startsWith('.') && path.resolve(path.dirname(importer), source).replace(/\.ts$/, '') === real) {
+        return shim('env.ts');
+      }
+      return null;
+    },
+  };
+}
