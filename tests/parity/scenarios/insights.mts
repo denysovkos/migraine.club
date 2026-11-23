@@ -40,7 +40,7 @@ const scenarios: Scenario[] = [
       { name: 'get-cached', path: '/api/insights?window=90', volatile: ['runtimeMs'] },
       { name: 'get-30', path: '/api/insights?windowDays=30', volatile: ['runtimeMs'] },
       { name: 'get-bad-window', path: '/api/insights?windowDays=45' },
-      { name: 'recompute-recent', method: 'POST', path: '/api/insights/recompute', body: { windowDays: 90 } },
+      { name: 'recompute-recent', method: 'POST', path: '/api/insights/recompute', body: { windowDays: 90 }, volatile: ['runtimeMs'] },
       { name: 'recompute-180', method: 'POST', path: '/api/insights/recompute', body: { windowDays: '180' }, volatile: ['runtimeMs'] },
       { name: 'recompute-bad', method: 'POST', path: '/api/insights/recompute', body: { windowDays: 7 } },
       { name: 'recompute-junk-body', method: 'POST', path: '/api/insights/recompute', rawBody: 'nope' },
@@ -66,7 +66,7 @@ const scenarios: Scenario[] = [
     ],
     steps: [
       { name: 'fresh-cache', path: '/api/insights?windowDays=60' },
-      { name: 'recompute-recent', method: 'POST', path: '/api/insights/recompute', body: { windowDays: 60 } },
+      { name: 'recompute-recent', method: 'POST', path: '/api/insights/recompute', body: { windowDays: 60 }, volatile: ['runtimeMs'] },
     ],
   },
 ];

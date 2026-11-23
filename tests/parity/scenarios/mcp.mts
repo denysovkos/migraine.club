@@ -54,6 +54,8 @@ const setup = [
     FROM generate_series(1, 12) n`,
   `INSERT INTO episode (id, user_id, start_time, end_time, intensity, pain_location, pain_type) VALUES
     (980100, ${OTHER}, now() - interval '1 day', now() - interval '20 hour', 4, 'RIGHT', 'STABBING')`,
+  // Explicit ids do not move the sequence; the next attack is always 980101.
+  `SELECT setval(pg_get_serial_sequence('episode', 'id'), 980100)`,
   `INSERT INTO acute_doses (user_id, medication_id, attack_id, taken_at, dose, unit)
     SELECT ${U}, '${MED}'::uuid, 980000 + n, now() - (n * interval '2 day') + interval '1 hour', '50', 'mg' FROM generate_series(1, 6) n`,
   `INSERT INTO acute_doses (user_id, medication_id, taken_at) VALUES (${OTHER}, '${OTHER_MED}', now() - interval '1 day')`,

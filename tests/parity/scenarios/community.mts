@@ -40,6 +40,9 @@ const setup = [
     ('${C(2)}', '${P(1)}', ${U}, 'my anon comment', true, 'PUBLIC', now() - interval '40 minute'),
     ('${C(3)}', '${P(1)}', '${DOC}', '${'b'.repeat(149)}😀 hidden', false, 'HIDDEN', now() - interval '30 minute'),
     ('${C(4)}', '${P(1)}', 'ghost_author', 'ghost comment', false, 'PUBLIC', now() - interval '20 minute')`,
+  // Distinct hide times: the hidden list sorts by them, and two inserts can
+  // land in the same millisecond.
+  `UPDATE community_post SET updated_at = now() - interval '2 minute' WHERE id = '${P(4)}'`,
   `INSERT INTO community_vote (post_id, user_id, value) VALUES ('${P(2)}', ${U}, 1), ('${P(1)}', '${DOC}', 1)`,
   `INSERT INTO community_report (id, post_id, comment_id, reporter_id, reason, details, created_at) VALUES
     ('${R(1)}', '${P(1)}', NULL, '${PEND}', 'spam', 'details', now() - interval '3 minute'),
