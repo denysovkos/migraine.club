@@ -24,6 +24,7 @@ func New(d *app.Deps, opts Options) http.Handler {
 	// Outermost, so it also sees the 500 of a recovered panic.
 	r.Use(requestLog(d.Log))
 	r.Use(middleware.Recoverer)
+	r.Use(reportPanics)
 	r.Use(knownMethods)
 	r.Use(nextNormalize)
 	r.Use(routeVary(r))
