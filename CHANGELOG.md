@@ -1,3 +1,9 @@
+## [1.7.1](https://github.com/denysovkos/migraine.club/compare/v1.7.0...v1.7.1) (2026-11-24)
+
+### Performance Improvements
+
+* **server:** fewer Clerk, gzip and database round trips; fix WPI recomputing on every read ([#17](https://github.com/denysovkos/migraine.club/issues/17)) ([2ee7557](https://github.com/denysovkos/migraine.club/commit/2ee7557300a5f42ab79aa8ac0ec6a21f53888a17))
+
 # [1.7.0](https://github.com/denysovkos/migraine.club/compare/v1.6.1...v1.7.0) (2026-11-24)
 
 ### Features
