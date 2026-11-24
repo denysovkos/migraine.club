@@ -45,10 +45,10 @@ type Handler struct {
 	// brotli holds the build's own Brotli copies (name.br, written by
 	// apps/client/scripts/compress.mts), keyed by the original name.
 	brotli map[string][]byte
-	shell   string
-	heads   map[string]map[string]string
-	routes  []Route
-	config  string
+	shell  string
+	heads  map[string]map[string]string
+	routes []Route
+	config string
 }
 
 // nextVary is the Vary header Next put on what it rendered.
