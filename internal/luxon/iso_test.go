@@ -21,7 +21,7 @@ type golden struct {
 }
 
 // TestFromISOGolden compares against real Luxon output
-// (scripts/luxon-golden.mts).
+// (recorded by scripts/luxon-golden.mts, now in git history).
 func TestFromISOGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/fromiso.json")
 	require.NoError(t, err)
@@ -42,7 +42,7 @@ func TestFromISOGolden(t *testing.T) {
 }
 
 // TestDiffDaysGolden compares DiffDays and PlusDays with Luxon
-// (scripts/luxon-diff-golden.mts).
+// (recorded by scripts/luxon-diff-golden.mts, now in git history).
 func TestDiffDaysGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/diffdays.json")
 	require.NoError(t, err)

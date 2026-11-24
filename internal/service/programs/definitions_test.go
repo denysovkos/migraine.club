@@ -11,7 +11,7 @@ import (
 )
 
 // TestDefinitionsGolden checks the embedded definitions against what the TS
-// loader parsed (scripts/programs-golden.mts): order, the Zod-ordered
+// loader parsed (recorded by scripts/programs-golden.mts, now in git history): order, the Zod-ordered
 // frontmatter fields the API returns, and localized bodies.
 func TestDefinitionsGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/definitions.json")

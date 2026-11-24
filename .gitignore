@@ -20,12 +20,12 @@ storybook-static
 /playwright-report/
 /playwright/.cache/
 
-# next.js
-/.next
-/out
-
 # cache
 .swc/
+
+# TypeScript incremental build info (tsconfig outDir)
+/out
+*.tsbuildinfo
 
 # production
 /build

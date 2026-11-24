@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestFormatGolden compares with V8 (scripts/jsformat-golden.mts).
+// TestFormatGolden compares with V8 (recorded by scripts/jsformat-golden.mts, now in git history).
 func TestFormatGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/format.json")
 	require.NoError(t, err)

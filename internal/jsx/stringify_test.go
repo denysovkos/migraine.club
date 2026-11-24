@@ -11,7 +11,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/jsx"
 )
 
-// Goldens from scripts/json-stringify-golden.mts (V8).
+// Goldens recorded from V8 by scripts/json-stringify-golden.mts (now in git history).
 func TestRestringifyGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/stringify.json")
 	require.NoError(t, err)

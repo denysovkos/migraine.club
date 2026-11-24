@@ -14,25 +14,6 @@
     "dashboard": "Dashboard",
     "mcp": "MCP"
   },
-  "Hero": {
-    "follow_twitter": "Follow Migrennity",
-    "title": "Migrennity – where migraine tracking meets caring community.",
-    "description": "Track your migraines, understand your triggers, and get support from people and doctors who truly understand. Not just another tracker – a migraine family.",
-    "primary_button": "Start using Migrennity",
-    "secondary_button": "See how it works",
-    "tagline": "Track, learn, connect, thrive – Migrennity is more than an app, it's a migraine family.",
-    "preview_title": "Today's pain & weather",
-    "preview_subtitle": "Quick log • Weather Pain Index • Triggers",
-    "preview_wpi_badge": "WPI {score} / 10",
-    "preview_last7_title": "Last 30 days",
-    "preview_last7_value": "4 attacks • most around storms",
-    "preview_top_triggers_label": "Top triggers",
-    "preview_top_triggers_value": "Weather • Stress • Sleep",
-    "community_checkin_title": "Community check-in",
-    "community_checkin_quote": "\"You're not alone. Here's how I plan on high-risk days...\"",
-    "community_doctor_reply": "Dr. Lee replied in 5 min"
-  },
-  "MarketingHome": {},
   "TrustBar": {
     "evidence_first": "Evidence-first",
     "privacy_first": "Privacy-first",
@@ -87,45 +68,6 @@
     "desktop_step3": "Confirm to create the desktop app.",
     "troubleshooting_title": "Troubleshooting",
     "troubleshooting_item2": "Missing notifications? Check browser notification permissions."
-  },
-  "Sponsors": {
-    "title": "Sponsored by"
-  },
-  "Features": {
-    "section_subtitle": "Features",
-    "section_title": "Unlock the Full Potential of the SaaS Template",
-    "section_description": "A free and open-source landing page template for your SaaS business, built with React, TypeScript, Shadcn UI, and Tailwind CSS.",
-    "feature1_title": "Node.js",
-    "feature2_title": "React",
-    "feature3_title": "Tailwind CSS",
-    "feature4_title": "TypeScript",
-    "feature5_title": "Shadcn UI",
-    "feature6_title": "ESLint",
-    "feature_description": "A free and open-source landing page template for your SaaS business, built with React, TypeScript, Shadcn UI, and Tailwind CSS."
-  },
-  "Pricing": {
-    "section_subtitle": "Features",
-    "section_title": "Unlock the Full Potential of the SaaS Template",
-    "section_description": "A free and open-source landing page template for your SaaS business, built with React, TypeScript, Shadcn UI, and Tailwind CSS.",
-    "button_text": "Get Started"
-  },
-  "PricingPlan": {
-    "feature_team_member": "{number} Team Members",
-    "feature_website": "{number} Websites",
-    "feature_storage": "{number} GB Storage",
-    "feature_transfer": "{number} TB Transfer",
-    "feature_email_support": "Email Support",
-    "plan_interval_month": "month",
-    "plan_interval_year": "year"
-  },
-  "FAQ": {
-    "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam enim dui, id consequat turpis ullamcorper ac. Mauris id quam dolor. Nullam eu egestas turpis. Proin risus elit, sollicitudin in mi a, accumsan euismod turpis. In euismod mi sed diam tristique hendrerit."
-  },
-  "CTA": {
-    "title": "Ready to start tracking with Migrennity?",
-    "description": "Log episodes quickly, understand your triggers, and bring clear reports to your doctor visits.",
-    "button_text": "Start using Migrennity"
   },
   "Footer": {
     "product": "Product",
@@ -721,13 +663,6 @@
     "msq_summary": "Latest MSQ (0–100): {score}",
     "msq_summary_empty": "Optional: take MSQ to track QoL over time."
   },
-  "DashboardIndex": {
-    "title_bar": "Dashboard",
-    "title_bar_description": "Welcome to your dashboard",
-    "log_episode_button": "Log Attack",
-    "recent_episodes_title": "Recent Attacks",
-    "recent_episodes_description": "View and manage your migraine attacks"
-  },
   "DashboardHome": {
     "today_title_generic": "How’s today going?",
     "today_title_named": "How’s today going, {name}?",
@@ -923,60 +858,8 @@
     "close_menu": "Close menu",
     "quick_log": "Quick log"
   },
-  "episodes": {
-    "quickLog": {
-      "title": "Quick log attack",
-      "description": "Log pain level now. You can add details later.",
-      "intensity_label": "Pain level (1–5)",
-      "start_now": "Start: Now",
-      "ongoing_toggle": "Ongoing",
-      "log_now": "Log now",
-      "logging": "Logging...",
-      "error_generic": "Something went wrong. Please try again."
-    },
-    "ongoingBanner": {
-      "in_progress_since": "Attack in progress since {time}",
-      "type_migraine": "Migraine",
-      "type_headache": "Headache",
-      "pain_level_label": "Pain level:",
-      "edit_details": "Edit details",
-      "end_now": "End attack",
-      "ending": "Ending...",
-      "error_generic": "Failed to end attack. Please try again."
-    }
-  },
-  "UserProfile": {
-    "title_bar": "User Profile",
-    "title_bar_description": "View and manage your user profile"
-  },
-  "Billing": {
-    "title_bar": "Billing",
-    "title_bar_description": "Manage your billing and subscription"
-  },
-  "BillingOptions": {},
-  "CheckoutConfirmation": {
-    "title_bar": "Payment Confirmation"
-  },
   "DataTable": {
     "no_results": "No results."
-  },
-  "Todos": {
-    "title_bar": "Todo List",
-    "title_bar_description": "View and manage your todo list"
-  },
-  "TodoTableColumns": {
-    "edit": "Edit",
-    "delete": "Delete"
-  },
-  "AddTodo": {
-    "title_bar": "Add Todo"
-  },
-  "EditTodo": {
-    "title_bar": "Edit todo"
-  },
-  "TodoForm": {
-    "title_label": "Title",
-    "submit_button": "Submit"
   },
   "Episodes": {
     "type_migraine": "Migraine",
@@ -1201,28 +1084,6 @@
     "uvi": "UVI",
     "education": "Weather Pain Index combines pressure, humidity and other factors into a single score. Higher scores mean weather conditions that are more likely to contribute to migraine attacks for some people."
   },
-  "WeatherSettings": {
-    "title": "Weather Settings",
-    "description": "Configure your location for weather-based migraine predictions",
-    "location_label": "Location Name",
-    "timezone_label": "Timezone",
-    "units_label": "Units",
-    "units_metric": "Metric",
-    "units_imperial": "Imperial",
-    "save_button": "Save Settings",
-    "saving": "Saving..."
-  },
-  "ForecastAlert": {
-    "title": "Solar Storm Alert",
-    "activity_title": "Solar Activity Warning",
-    "solar_storm_warning": "Geomagnetic storm expected",
-    "high_activity_warning": "Elevated solar activity detected",
-    "kp_forecast": "Kp forecast: {kp}",
-    "observed_time": "Observed: {time} UTC",
-    "migraine_risk": "Higher migraine risk possible",
-    "prepare_message": "Consider preparing your medications",
-    "dismiss": "Dismiss"
-  },
   "Community": {
     "nav_title": "Community",
     "feed_title": "Community Feed",
@@ -1299,12 +1160,6 @@
     "error_loading": "Failed to load. Please try again.",
     "empty_feed": "No posts yet. Be the first to share!",
     "empty_comments": "No comments yet. Start the conversation!"
-  },
-  "DashboardCommunity": {
-    "preview_title": "Community",
-    "preview_description": "See what others are sharing",
-    "see_all": "See all",
-    "join_conversation": "Join the conversation"
   },
   "Reports": {
     "title": "Reports",
@@ -1961,29 +1816,11 @@
     "bed_time": "Bed time",
     "wake_time": "Wake time"
   },
-  "AcuteMedTimingStatusCard": {
-    "header": "Acute Med Timing · target {minutes} min from onset",
-    "how_it_works": "Logs automatically when you record an attack and an acute dose. No daily action needed.",
-    "view_progress": "View progress"
-  },
-  "AttackTimingChip": {
-    "not_taken_yet": "Take acute med within {minutes} min of onset",
-    "within_target": "{minutes} min after onset · within {target}-min target",
-    "past_target": "{minutes} min after onset · past {target}-min target"
-  },
   "ProgramSuggestion": {
     "label": "Suggested program",
     "see_program": "See program",
     "not_now": "Not now",
     "dismiss": "Dismiss"
-  },
-  "ProgramDailyChip": {
-    "header": "Sleep regularity · target {bed}–{wake}",
-    "on_target": "On target",
-    "off_track": "Off track",
-    "skip": "Skip",
-    "saved": "Saved",
-    "save_failed": "Could not save"
   },
   "ProgramProgress": {
     "loading": "Loading...",
@@ -2245,16 +2082,6 @@
     "spread": "Spread: {spread}",
     "last_storm_peak": "Last storm peak: Kp {kp} at {time}"
   },
-  "WpiChart": {
-    "title": "WPI & Solar Activity",
-    "title_with_days": "WPI & Solar Activity (Last {days} Days)",
-    "no_data": "No WPI data available yet. Data will appear as you use the app.",
-    "wpi_label": "WPI:",
-    "kp_label": "Kp:",
-    "migraine_pain": "Migraine: Pain {intensity}",
-    "migraine_episode": "Migraine attack",
-    "kp_index_legend": "Kp Index"
-  },
   "WeatherSettingsForm": {
     "use_current_location": "Use Current Location",
     "auto_detect_description": "Automatically detect your location using your browser",
@@ -2282,25 +2109,6 @@
     "error_position_unavailable": "Location information is unavailable.",
     "error_timeout": "Location request timed out.",
     "error_generic": "An error occurred while getting your location."
-  },
-  "LatestEpisodesWithWpi": {
-    "title": "Recent Attacks",
-    "view_all": "View all",
-    "no_episodes": "No attacks recorded yet.",
-    "log_first_episode": "Log your first attack →",
-    "ongoing": "Ongoing",
-    "pain_label": "Pain:",
-    "wpi_label": "WPI:",
-    "kp_label": "Kp:",
-    "delta_pressure": "ΔP:",
-    "humidity": "Humidity:",
-    "temp_swing": "Temp swing:",
-    "level_low": "Low",
-    "level_moderate": "Moderate",
-    "level_high": "High",
-    "level_very_high": "Very High",
-    "error_fetch": "Failed to fetch attacks.",
-    "error_generic": "An error occurred."
   },
   "DoctorVerification": {
     "important_title": "Important",

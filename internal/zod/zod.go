@@ -4,7 +4,7 @@
 // The Node handlers answered invalid input with Zod's issues (and a few even
 // put ZodError.message into the response), so the port reproduces Zod's issue
 // objects, their key order and their English messages exactly. It is tested
-// against testdata/golden.json, which scripts/zod-golden.mts generates from the
+// against testdata/golden.json, which scripts/zod-golden.mts (now in git history) generated from the
 // real library.
 //
 // Input is a decoded JSON tree (see Decode). Parsing returns a cleaned tree:

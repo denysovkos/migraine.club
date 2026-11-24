@@ -14,25 +14,6 @@
     "dashboard": "Панель керування",
     "mcp": "MCP"
   },
-  "Hero": {
-    "follow_twitter": "Migrennity – більше, ніж трекер",
-    "title": "Migrennity – де трекінг мігрені поєднується з турботливою спільнотою.",
-    "description": "Відстежуйте мігрені, розумійте свої тригери та отримуйте підтримку від людей і лікарів, які справді розуміють. Не просто ще один трекер – мігрень-сімʼя.",
-    "primary_button": "Почати користуватися Migrennity",
-    "secondary_button": "Як це працює",
-    "tagline": "Записуйте, вчіться, спілкуйтеся, живіть повніше. Migrennity більше, ніж застосунок. Це мігрень-сімʼя.",
-    "preview_title": "Сьогоднішній біль і погода",
-    "preview_subtitle": "Швидкий запис • Індекс Погодного Болю • Тригери",
-    "preview_wpi_badge": "ІПБ {score} / 10",
-    "preview_last7_title": "Останні 7 днів",
-    "preview_last7_value": "4 напади • найчастіше під час бур",
-    "preview_top_triggers_label": "Топ тригери",
-    "preview_top_triggers_value": "Погода • Стрес • Сон",
-    "community_checkin_title": "Чек-ін спільноти",
-    "community_checkin_quote": "\"Ти не сам(а). Ось як я планую дні з підвищеним ризиком...\"",
-    "community_doctor_reply": "Dr. Lee відповів(ла) за 5 хв"
-  },
-  "MarketingHome": {},
   "TrustBar": {
     "evidence_first": "Доказовий підхід",
     "privacy_first": "Приватність перш за все",
@@ -87,45 +68,6 @@
     "desktop_step3": "Підтвердьте створення desktop-застосунку.",
     "troubleshooting_title": "Усунення проблем",
     "troubleshooting_item2": "Немає сповіщень? Перевірте дозволи браузера."
-  },
-  "Sponsors": {
-    "title": "Спонсори"
-  },
-  "Features": {
-    "section_subtitle": "Функції",
-    "section_title": "Розкрийте повний потенціал SaaS шаблону",
-    "section_description": "Безкоштовний шаблон лендінгу з відкритим кодом для вашого SaaS бізнесу.",
-    "feature1_title": "Node.js",
-    "feature2_title": "React",
-    "feature3_title": "Tailwind CSS",
-    "feature4_title": "TypeScript",
-    "feature5_title": "Shadcn UI",
-    "feature6_title": "ESLint",
-    "feature_description": "Безкоштовний шаблон лендінгу з відкритим кодом для вашого SaaS бізнесу."
-  },
-  "Pricing": {
-    "section_subtitle": "Функції",
-    "section_title": "Розкрийте повний потенціал SaaS шаблону",
-    "section_description": "Безкоштовний шаблон лендінгу з відкритим кодом для вашого SaaS бізнесу.",
-    "button_text": "Почати"
-  },
-  "PricingPlan": {
-    "feature_team_member": "{number} учасників команди",
-    "feature_website": "{number} веб-сайтів",
-    "feature_storage": "{number} ГБ сховища",
-    "feature_transfer": "{number} ТБ передачі",
-    "feature_email_support": "Підтримка електронною поштою",
-    "plan_interval_month": "місяць",
-    "plan_interval_year": "рік"
-  },
-  "FAQ": {
-    "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam enim dui, id consequat turpis ullamcorper ac."
-  },
-  "CTA": {
-    "title": "Готові розпочати з Migrennity?",
-    "description": "Записуйте епізоди швидко, розумійте свої тригери та приносьте зрозумілі звіти на прийом до лікаря.",
-    "button_text": "Почати користуватися Migrennity"
   },
   "Footer": {
     "product": "Продукт",
@@ -1083,29 +1025,11 @@
     "bed_time": "Час засинання",
     "wake_time": "Час пробудження"
   },
-  "AcuteMedTimingStatusCard": {
-    "header": "Час прийому ліків гострої дії · ціль {minutes} хв від початку",
-    "how_it_works": "Записується автоматично, коли ви фіксуєте напад і дозу гострої дії. Щоденні дії не потрібні.",
-    "view_progress": "Переглянути прогрес"
-  },
-  "AttackTimingChip": {
-    "not_taken_yet": "Прийміть ліки гострої дії протягом {minutes} хв від початку",
-    "within_target": "{minutes} хв після початку · у межах цілі {target} хв",
-    "past_target": "{minutes} хв після початку · поза ціллю {target} хв"
-  },
   "ProgramSuggestion": {
     "label": "Рекомендована програма",
     "see_program": "Переглянути",
     "not_now": "Не зараз",
     "dismiss": "Пропустити"
-  },
-  "ProgramDailyChip": {
-    "header": "Регулярність сну · ціль {bed}–{wake}",
-    "on_target": "У цілі",
-    "off_track": "Поза ціллю",
-    "skip": "Пропустити",
-    "saved": "Збережено",
-    "save_failed": "Не вдалося зберегти"
   },
   "ProgramProgress": {
     "loading": "Завантаження...",
@@ -1272,13 +1196,6 @@
     "msq_blueprint_ef": "Emotional (Q12–Q14): емоційний вплив (фрустрація, відчуття тягаря, страх підвести інших).",
     "msq_summary": "Останній MSQ (0–100): {score}",
     "msq_summary_empty": "Необовʼязково: пройдіть MSQ для відстеження QoL."
-  },
-  "DashboardIndex": {
-    "title_bar": "Панель керування",
-    "title_bar_description": "Ласкаво просимо до вашої панелі керування",
-    "log_episode_button": "Записати напад",
-    "recent_episodes_title": "Останні напади",
-    "recent_episodes_description": "Переглядайте та керуйте нападами мігрені"
   },
   "DashboardHome": {
     "today_title_generic": "Як сьогодні?",
@@ -1475,60 +1392,8 @@
     "close_menu": "Закрити меню",
     "quick_log": "Швидкий запис"
   },
-  "episodes": {
-    "quickLog": {
-      "title": "Швидкий запис нападу",
-      "description": "Запишіть рівень болю зараз. Деталі можна додати пізніше.",
-      "intensity_label": "Рівень болю (1–5)",
-      "start_now": "Початок: Зараз",
-      "ongoing_toggle": "Триває",
-      "log_now": "Записати",
-      "logging": "Записування...",
-      "error_generic": "Щось пішло не так. Спробуйте ще раз."
-    },
-    "ongoingBanner": {
-      "in_progress_since": "Напад триває з {time}",
-      "type_migraine": "Мігрень",
-      "type_headache": "Головний біль",
-      "pain_level_label": "Рівень болю:",
-      "edit_details": "Редагувати деталі",
-      "end_now": "Завершити напад",
-      "ending": "Завершення...",
-      "error_generic": "Не вдалося завершити напад. Спробуйте ще раз."
-    }
-  },
-  "UserProfile": {
-    "title_bar": "Профіль користувача",
-    "title_bar_description": "Перегляд та керування вашим профілем"
-  },
-  "Billing": {
-    "title_bar": "Оплата",
-    "title_bar_description": "Керування оплатою та підпискою"
-  },
-  "BillingOptions": {},
-  "CheckoutConfirmation": {
-    "title_bar": "Підтвердження оплати"
-  },
   "DataTable": {
     "no_results": "Немає результатів."
-  },
-  "Todos": {
-    "title_bar": "Список завдань",
-    "title_bar_description": "Перегляд та керування списком завдань"
-  },
-  "TodoTableColumns": {
-    "edit": "Редагувати",
-    "delete": "Видалити"
-  },
-  "AddTodo": {
-    "title_bar": "Додати завдання"
-  },
-  "EditTodo": {
-    "title_bar": "Редагувати завдання"
-  },
-  "TodoForm": {
-    "title_label": "Назва",
-    "submit_button": "Надіслати"
   },
   "Episodes": {
     "type_migraine": "Мігрень",
@@ -1753,28 +1618,6 @@
     "uvi": "УФ-індекс",
     "education": "Індекс Погодного Болю поєднує тиск, вологість та інші фактори в єдиний показник. Вищі значення можуть означати погодно-чутливі умови, що сприяють нападам мігрені у деяких людей."
   },
-  "WeatherSettings": {
-    "title": "Налаштування погоди",
-    "description": "Налаштуйте місцезнаходження для прогнозів мігрені на основі погоди",
-    "location_label": "Назва місця",
-    "timezone_label": "Часовий пояс",
-    "units_label": "Одиниці виміру",
-    "units_metric": "Метричні",
-    "units_imperial": "Імперські",
-    "save_button": "Зберегти налаштування",
-    "saving": "Збереження..."
-  },
-  "ForecastAlert": {
-    "title": "Попередження про сонячну бурю",
-    "activity_title": "Попередження про сонячну активність",
-    "solar_storm_warning": "Очікується геомагнітна буря",
-    "high_activity_warning": "Виявлено підвищену сонячну активність",
-    "kp_forecast": "Прогноз Kp: {kp}",
-    "observed_time": "Спостережено: {time} UTC",
-    "migraine_risk": "Можливий підвищений ризик мігрені",
-    "prepare_message": "Рекомендуємо підготувати ліки",
-    "dismiss": "Закрити"
-  },
   "Community": {
     "nav_title": "Спільнота",
     "feed_title": "Стрічка спільноти",
@@ -1851,12 +1694,6 @@
     "error_loading": "Не вдалося завантажити. Спробуйте ще раз.",
     "empty_feed": "Ще немає дописів. Будьте першим!",
     "empty_comments": "Ще немає коментарів. Почніть розмову!"
-  },
-  "DashboardCommunity": {
-    "preview_title": "Спільнота",
-    "preview_description": "Дивіться, чим діляться інші",
-    "see_all": "Переглянути все",
-    "join_conversation": "Приєднатися до розмови"
   },
   "Reports": {
     "title": "Звіти",
@@ -2448,16 +2285,6 @@
     "spread": "Розбіжність: {spread}",
     "last_storm_peak": "Останній пік бурі: Kp {kp} о {time}"
   },
-  "WpiChart": {
-    "title": "ІПБ та Сонячна активність",
-    "title_with_days": "ІПБ та Сонячна активність (останні {days} днів)",
-    "no_data": "Дані ІПБ ще недоступні. Зʼявляться при використанні.",
-    "wpi_label": "ІПБ:",
-    "kp_label": "Kp:",
-    "migraine_pain": "Мігрень: Біль {intensity}",
-    "migraine_episode": "Епізод мігрені",
-    "kp_index_legend": "Індекс Kp"
-  },
   "WeatherSettingsForm": {
     "use_current_location": "Використати поточне місцезнаходження",
     "auto_detect_description": "Автоматично визначити місцезнаходження через браузер",
@@ -2485,25 +2312,6 @@
     "error_position_unavailable": "Інформація про місцезнаходження недоступна.",
     "error_timeout": "Час запиту місцезнаходження вичерпано.",
     "error_generic": "Виникла помилка при визначенні місцезнаходження."
-  },
-  "LatestEpisodesWithWpi": {
-    "title": "Останні напади",
-    "view_all": "Переглянути всі",
-    "no_episodes": "Напади ще не записані.",
-    "log_first_episode": "Записати перший напад →",
-    "ongoing": "Триває",
-    "pain_label": "Біль:",
-    "wpi_label": "ІПБ:",
-    "kp_label": "Kp:",
-    "delta_pressure": "ΔP:",
-    "humidity": "Вологість:",
-    "temp_swing": "Коливання темп:",
-    "level_low": "Низький",
-    "level_moderate": "Помірний",
-    "level_high": "Високий",
-    "level_very_high": "Дуже високий",
-    "error_fetch": "Не вдалося отримати напади.",
-    "error_generic": "Сталася помилка."
   },
   "DoctorVerification": {
     "important_title": "Важливо",

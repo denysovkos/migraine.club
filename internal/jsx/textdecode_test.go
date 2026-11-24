@@ -11,7 +11,7 @@ import (
 	"github.com/denysovkos/migraine.club/internal/jsx"
 )
 
-// Goldens from scripts/text-decode-golden.mts (V8).
+// Goldens recorded from V8 by scripts/text-decode-golden.mts (now in git history).
 func TestTextDecodeGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/textdecode.json")
 	require.NoError(t, err)

@@ -31,7 +31,7 @@ func goldenNum(t *testing.T, v any) float64 {
 }
 
 // TestFdlibmGolden checks bit-exact agreement with V8
-// (scripts/fdlibm-golden.mts).
+// (recorded by scripts/fdlibm-golden.mts, now in git history).
 func TestFdlibmGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/fdlibm.json")
 	require.NoError(t, err)

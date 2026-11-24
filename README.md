@@ -132,7 +132,7 @@ src/
   models/         Schema (drizzle-kit) and shared types
 migrations/       SQL migrations, embedded in the server
 content/          Program texts, embedded in the server
-tests/            Playwright e2e, parity and visual comparison tools
+tests/            Playwright e2e specs and fixtures
 scripts/          Seeding and maintenance scripts
 docs/             Feature notes
 ```

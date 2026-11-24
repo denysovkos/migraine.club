@@ -18,9 +18,6 @@ export default defineConfig({
   testDir: './tests',
   // Look for files with the .spec.js or .e2e.js extension
   testMatch: '*.@(spec|e2e).?(c|m)[jt]s?(x)',
-  // Checkly tests (*.check.e2e.ts) target deployed environments and assume
-  // production-only content. Skip them in local + CI runs.
-  testIgnore: '**/*.check.e2e.ts',
   // Timeout per test
   timeout: 30 * 1000,
   // Fail the build on CI if you accidentally left test.only in the source code.
