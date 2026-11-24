@@ -1,3 +1,9 @@
+# [1.7.0](https://github.com/denysovkos/migraine.club/compare/v1.6.1...v1.7.0) (2026-11-24)
+
+### Features
+
+* **deploy:** Render Blueprint for the Docker image, and `server migrate` ([#16](https://github.com/denysovkos/migraine.club/issues/16)) ([abbe554](https://github.com/denysovkos/migraine.club/commit/abbe5544e8eff980ffaf39068c2868ca94ac70d7))
+
 ## [1.6.1](https://github.com/denysovkos/migraine.club/compare/v1.6.0...v1.6.1) (2026-11-23)
 
 ### Bug Fixes
