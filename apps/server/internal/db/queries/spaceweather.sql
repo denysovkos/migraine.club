@@ -15,6 +15,9 @@ CROSS JOIN LATERAL (
   LIMIT 1
 ) latest;
 
+-- name: SolarReadingBySourceAt :one
+SELECT id, kp_index FROM solar_activity_snapshot WHERE source = $1 AND timestamp_utc = $2 LIMIT 1;
+
 -- name: SolarSnapshotBySourceAt :one
 SELECT id FROM solar_activity_snapshot WHERE source = $1 AND timestamp_utc = $2 LIMIT 1;
 

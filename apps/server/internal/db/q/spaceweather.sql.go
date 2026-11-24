@@ -83,6 +83,22 @@ func (q *Queries) LatestSolarBySources(ctx context.Context, sources []string) ([
 	return items, nil
 }
 
+const solarReadingBySourceAt = `-- name: SolarReadingBySourceAt :one
+SELECT id, kp_index FROM solar_activity_snapshot WHERE source = $1 AND timestamp_utc = $2 LIMIT 1
+`
+
+type SolarReadingBySourceAtRow struct {
+	ID      string  `json:"id"`
+	KpIndex float64 `json:"kpIndex"`
+}
+
+func (q *Queries) SolarReadingBySourceAt(ctx context.Context, source string, timestampUtc jsontime.Time) (SolarReadingBySourceAtRow, error) {
+	row := q.db.QueryRow(ctx, solarReadingBySourceAt, source, timestampUtc)
+	var i SolarReadingBySourceAtRow
+	err := row.Scan(&i.ID, &i.KpIndex)
+	return i, err
+}
+
 const solarSnapshotByID = `-- name: SolarSnapshotByID :one
 SELECT id, timestamp_utc, kp_index, source, raw, created_at FROM solar_activity_snapshot WHERE id = $1 LIMIT 1
 `

@@ -174,12 +174,21 @@ func (s *Service) UpsertSettings(ctx context.Context, userID string, lat, lon fl
 	})
 }
 
+// aggregateSolarSnapshot returns the kp_aggregate row for the aggregate at
+// ts, writing it if needed. The aggregate's time is that of its newest
+// reading, so when a reading goes stale the aggregate changes while its time
+// does not: a row of that time with another Kp is then not this aggregate,
+// and the new one is recorded at the current time. (Reusing the old row left
+// the stored WPI pointing at a Kp the aggregate no longer had, so every
+// later read recomputed and stored the WPI again.)
 func (s *Service) aggregateSolarSnapshot(ctx context.Context, ts time.Time, kp float64) (*string, error) {
-	id, err := s.Q.SolarSnapshotBySourceAt(ctx, "kp_aggregate", jsontime.New(ts))
-	if err == nil {
-		return &id, nil
-	}
-	if !errors.Is(err, pgx.ErrNoRows) {
+	existing, err := s.Q.SolarReadingBySourceAt(ctx, "kp_aggregate", jsontime.New(ts))
+	switch {
+	case err == nil && !ShouldRecomputeForKp(&existing.KpIndex, &kp):
+		return &existing.ID, nil
+	case err == nil:
+		ts = s.now().UTC().Truncate(time.Millisecond)
+	case !errors.Is(err, pgx.ErrNoRows):
 		return nil, err
 	}
 	ids, err := s.Q.InsertSolarSnapshot(ctx, jsontime.New(ts), kp, "kp_aggregate", nil)
@@ -189,7 +198,7 @@ func (s *Service) aggregateSolarSnapshot(ctx context.Context, ts time.Time, kp f
 	if len(ids) > 0 {
 		return &ids[0], nil
 	}
-	id, err = s.Q.SolarSnapshotBySourceAt(ctx, "kp_aggregate", jsontime.New(ts))
+	id, err := s.Q.SolarSnapshotBySourceAt(ctx, "kp_aggregate", jsontime.New(ts))
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, nil
 	}
