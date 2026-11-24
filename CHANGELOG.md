@@ -1,3 +1,9 @@
+# [1.8.0](https://github.com/denysovkos/migraine.club/compare/v1.7.1...v1.8.0) (2026-11-24)
+
+### Features
+
+* **server:** security headers, request log, CSP reports; skip Render deploy on release commits ([#18](https://github.com/denysovkos/migraine.club/issues/18)) ([2cadd2a](https://github.com/denysovkos/migraine.club/commit/2cadd2ae92ff6cee67a74a0903dd76b582e49102))
+
 ## [1.7.1](https://github.com/denysovkos/migraine.club/compare/v1.7.0...v1.7.1) (2026-11-24)
 
 ### Performance Improvements
