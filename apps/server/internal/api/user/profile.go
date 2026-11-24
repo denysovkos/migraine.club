@@ -55,7 +55,6 @@ func (h profileHandlers) get(w http.ResponseWriter, r *http.Request) {
 		httpx.Unauthorized(w)
 		return
 	}
-	h.d.Log.Info("Profile GET: Fetching profile", "userId", userID)
 	fail := func(err error) {
 		h.d.Log.Error("Profile GET: Error fetching/creating user profile", "userId", userID, "error", err)
 		httpx.Error(w, http.StatusInternalServerError, "Failed to fetch profile")
@@ -81,7 +80,6 @@ func (h profileHandlers) get(w http.ResponseWriter, r *http.Request) {
 		fail(err)
 		return
 	}
-	h.d.Log.Info("Profile GET: Success", "userId", userID)
 	httpx.JSON(w, http.StatusOK, profileJSON(p))
 }
 

@@ -21,6 +21,8 @@ type Options struct {
 // New builds the root handler.
 func New(d *app.Deps, opts Options) http.Handler {
 	r := chi.NewRouter()
+	// Outermost, so it also sees the 500 of a recovered panic.
+	r.Use(requestLog(d.Log))
 	r.Use(middleware.Recoverer)
 	r.Use(knownMethods)
 	r.Use(nextNormalize)
@@ -28,6 +30,7 @@ func New(d *app.Deps, opts Options) http.Handler {
 	r.Use(compress)
 	r.Use(middleware.GetHead)
 	r.Use(forwardedHeaders(d.Cfg.Port))
+	r.Use(securityHeaders)
 
 	var resolver auth.Resolver = d.Clerk
 	if d.Cfg.E2EMockAuth {
@@ -41,6 +44,7 @@ func New(d *app.Deps, opts Options) http.Handler {
 	})
 
 	mountAPI(r, d)
+	r.Method(http.MethodPost, "/api/csp-report", newCSPReports(d.Log, d.Clock))
 
 	fallback := opts.Fallback
 	if fallback == nil {
