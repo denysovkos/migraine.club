@@ -1,10 +1,14 @@
 // Command server runs migraine.club: the API, the MCP endpoint, the cron
 // endpoints and the web app, in one process.
+//
+// `server migrate` only applies pending database migrations and exits; the
+// deploy runs it before the new version starts (render.yaml).
 package main
 
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log/slog"
 	"net"
 	"net/http"
@@ -27,10 +31,38 @@ import (
 )
 
 func main() {
-	if err := run(); err != nil {
+	var err error
+	switch {
+	case len(os.Args) < 2:
+		err = run()
+	case os.Args[1] == "migrate":
+		ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+		defer stop()
+		var n int
+		if n, err = migrate(ctx, os.Getenv("DATABASE_URL")); err == nil {
+			slog.Info("Database migrations applied", "applied", n)
+		}
+	default:
+		err = fmt.Errorf("unknown command %q (the only command is migrate)", os.Args[1])
+	}
+	if err != nil {
 		slog.Error("server stopped", "error", err)
 		os.Exit(1)
 	}
+}
+
+// migrate applies pending migrations to the database at url. It needs only
+// DATABASE_URL, not the rest of the server's configuration.
+func migrate(ctx context.Context, url string) (int, error) {
+	if url == "" {
+		return 0, config.ErrNoDatabase
+	}
+	pool, err := db.NewPool(ctx, db.Options{URL: url, MaxConn: 1})
+	if err != nil {
+		return 0, err
+	}
+	defer pool.Close()
+	return db.Migrate(ctx, pool, migrations.FS)
 }
 
 func run() error {
@@ -81,14 +113,9 @@ func run() error {
 	}
 
 	opts := server.Options{}
-	switch {
-	case os.Getenv("SPA_DIST") != "":
-		// The Vite build of web/ serves every page.
-		if opts.Fallback, err = spa.New(os.DirFS(os.Getenv("SPA_DIST")), spa.Config{EnableInsights: cfg.EnableInsights}); err != nil {
-			return err
-		}
-	case os.Getenv("LEGACY_NEXT_UPSTREAM") != "":
-		if opts.Fallback, err = server.ProxyTo(os.Getenv("LEGACY_NEXT_UPSTREAM")); err != nil {
+	if dist := os.Getenv("SPA_DIST"); dist != "" {
+		// The client build (apps/client/dist) serves every page.
+		if opts.Fallback, err = spa.New(os.DirFS(dist), spa.Config{EnableInsights: cfg.EnableInsights}); err != nil {
 			return err
 		}
 	}

@@ -27,7 +27,7 @@
     "db:studio": "npm run studio -w @migraine/db",
     "commit": "cz",
     "prepare": "husky",
-    "lint:root": "eslint --no-warn-ignored *.ts *.mjs *.js .github"
+    "lint:root": "eslint --no-warn-ignored *.ts *.mjs *.js turbo.json render.yaml .github"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^10.0.0",
