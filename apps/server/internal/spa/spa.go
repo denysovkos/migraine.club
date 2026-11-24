@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/denysovkos/migraine.club/internal/auth"
+	"github.com/denysovkos/migraine.club/internal/cspnonce"
 	"github.com/denysovkos/migraine.club/internal/httpx"
 )
 
@@ -261,7 +262,7 @@ func (h *Handler) serveRoute(w http.ResponseWriter, r *http.Request, rt Route, l
 		w.WriteHeader(http.StatusTemporaryRedirect)
 		return
 	}
-	h.page(w, http.StatusOK, h.heads[rt.Pattern][locale])
+	h.page(w, r, http.StatusOK, h.heads[rt.Pattern][locale])
 }
 
 // signInPath is getSignInPath (src/libs/AuthGuard.ts).
@@ -272,16 +273,29 @@ func signInPath(locale string) string {
 	return "/" + locale + "/sign-in"
 }
 
-func (h *Handler) page(w http.ResponseWriter, status int, head string) {
+func (h *Handler) page(w http.ResponseWriter, r *http.Request, status int, head string) {
 	w.Header().Set("Vary", nextVary)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "private, no-cache, no-store, max-age=0, must-revalidate")
 	w.WriteHeader(status)
 	html := strings.Replace(h.shell, "<!--app-head-->", head+`<script>window.__APP_CONFIG__=`+h.config+`</script>`, 1)
-	_, _ = w.Write([]byte(html))
+	_, _ = w.Write([]byte(withNonce(html, cspnonce.From(r.Context()))))
 }
 
-func (h *Handler) notFound(w http.ResponseWriter) { h.page(w, http.StatusNotFound, notFoundHead) }
+func (h *Handler) notFound(w http.ResponseWriter, r *http.Request) {
+	h.page(w, r, http.StatusNotFound, notFoundHead)
+}
+
+// withNonce stamps the Content-Security-Policy nonce on the page's scripts
+// and module preloads, the only ones the policy trusts directly.
+func withNonce(html, nonce string) string {
+	if nonce == "" {
+		return html
+	}
+	attr := ` nonce="` + nonce + `"`
+	html = strings.ReplaceAll(html, "<script", "<script"+attr)
+	return strings.ReplaceAll(html, `<link rel="modulepreload"`, `<link rel="modulepreload"`+attr)
+}
 
 // skipsMiddleware is where next-intl never ran: the Next proxy matcher's
 // exclusions (files with an extension, Next internals, monitoring, share
@@ -326,7 +340,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if skipsMiddleware.MatchString(p) || strings.HasPrefix(p, "/admin") {
 		rt, ok := h.match(p, false)
 		if !ok {
-			h.notFound(w)
+			h.notFound(w, r)
 			return
 		}
 		h.serveRoute(w, r, rt, DefaultLocale)
@@ -348,7 +362,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Link", res.links)
 	rt, ok := h.match(res.internal, true)
 	if !ok {
-		h.notFound(w)
+		h.notFound(w, r)
 		return
 	}
 	h.serveRoute(w, r, rt, res.locale)

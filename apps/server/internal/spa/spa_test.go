@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/denysovkos/migraine.club/internal/auth"
+	"github.com/denysovkos/migraine.club/internal/cspnonce"
 )
 
 func newHandler(t *testing.T) *Handler {
@@ -207,4 +208,24 @@ func TestAcceptLanguage(t *testing.T) {
 	require.Equal(t, "en", acceptLanguageLocale("de"))
 	require.Equal(t, "uk", acceptLanguageLocale("en;q=0, uk"))
 	require.Empty(t, acceptLanguageLocale(""), "no header: undefined, so the cookie gets set")
+}
+
+func TestPagesStampTheCSPNonce(t *testing.T) {
+	h := newHandler(t)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	req = req.WithContext(cspnonce.With(req.Context(), "abc123=="))
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, req)
+	body := w.Body.String()
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, 2, strings.Count(body, `<script nonce="abc123=="`), "the module and the config script")
+	require.Equal(t, strings.Count(body, "<script"), strings.Count(body, `<script nonce="abc123=="`))
+
+	// Without a nonce (no policy) the page is unchanged.
+	w = httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest(http.MethodGet, "/", nil))
+	require.NotContains(t, w.Body.String(), "nonce=")
+
+	require.Equal(t, `<script nonce="n" type="module"></script><link rel="modulepreload" nonce="n" href="/a.js">`,
+		withNonce(`<script type="module"></script><link rel="modulepreload" href="/a.js">`, "n"))
 }

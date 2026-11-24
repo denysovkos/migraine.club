@@ -31,7 +31,7 @@ func New(d *app.Deps, opts Options) http.Handler {
 	r.Use(compress)
 	r.Use(middleware.GetHead)
 	r.Use(forwardedHeaders(d.Cfg.Port))
-	r.Use(securityHeaders)
+	r.Use(securityHeaders(d.Cfg.CSPEnforce))
 
 	var resolver auth.Resolver = d.Clerk
 	if d.Cfg.E2EMockAuth {

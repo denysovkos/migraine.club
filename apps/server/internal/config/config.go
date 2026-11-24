@@ -53,7 +53,10 @@ type Config struct {
 	// ServerSentryDSN is the server's own Sentry project (SENTRY_DSN);
 	// SentryDSN is the browser's, which the /monitoring tunnel forwards to.
 	ServerSentryDSN string
-	NodeEnv         string
+	// CSPEnforce sends the Content-Security-Policy enforced instead of
+	// report-only (CSP_ENFORCE=true).
+	CSPEnforce bool
+	NodeEnv    string
 }
 
 // coerceBool mirrors zod's z.coerce.boolean(): Boolean(value), so any
@@ -97,6 +100,7 @@ func Load() (*Config, error) {
 		AppURL:           os.Getenv("NEXT_PUBLIC_APP_URL"),
 		SentryDSN:        os.Getenv("NEXT_PUBLIC_SENTRY_DSN"),
 		ServerSentryDSN:  os.Getenv("SENTRY_DSN"),
+		CSPEnforce:       os.Getenv("CSP_ENFORCE") == "true",
 		NodeEnv:          os.Getenv("NODE_ENV"),
 	}
 
