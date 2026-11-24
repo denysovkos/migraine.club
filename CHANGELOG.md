@@ -1,3 +1,9 @@
+# [1.9.0](https://github.com/denysovkos/migraine.club/compare/v1.8.0...v1.9.0) (2026-11-24)
+
+### Features
+
+* **server:** rate limit the API per user, or per address when signed out ([#23](https://github.com/denysovkos/migraine.club/issues/23)) ([c76b551](https://github.com/denysovkos/migraine.club/commit/c76b5518f167ecb4393abcdc96ca820a456d68df))
+
 # [1.8.0](https://github.com/denysovkos/migraine.club/compare/v1.7.1...v1.8.0) (2026-11-24)
 
 ### Features
