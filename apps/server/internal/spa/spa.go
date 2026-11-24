@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/denysovkos/migraine.club/internal/auth"
+	"github.com/denysovkos/migraine.club/internal/cspnonce"
 	"github.com/denysovkos/migraine.club/internal/httpx"
 )
 
@@ -41,10 +42,13 @@ type Handler struct {
 	// server runs. gzipped holds the compressible ones, compressed once.
 	files   map[string][]byte
 	gzipped map[string][]byte
-	shell   string
-	heads   map[string]map[string]string
-	routes  []Route
-	config  string
+	// brotli holds the build's own Brotli copies (name.br, written by
+	// apps/client/scripts/compress.mts), keyed by the original name.
+	brotli map[string][]byte
+	shell  string
+	heads  map[string]map[string]string
+	routes []Route
+	config string
 }
 
 // nextVary is the Vary header Next put on what it rendered.
@@ -60,7 +64,7 @@ func New(dist fs.FS, cfg Config) (*Handler, error) {
 		return nil, err
 	}
 	h := &Handler{shell: string(shell)}
-	if h.files, h.gzipped, err = loadFiles(dist); err != nil {
+	if h.files, h.gzipped, h.brotli, err = loadFiles(dist); err != nil {
 		return nil, err
 	}
 	for name, dst := range map[string]any{"heads.json": &h.heads, "routes.json": &h.routes} {
@@ -105,8 +109,8 @@ const GzipLevel = 5
 
 // loadFiles reads every file the handler serves as is, and gzips those the
 // compression middleware would gzip on every request.
-func loadFiles(dist fs.FS) (files, gzipped map[string][]byte, err error) {
-	files, gzipped = map[string][]byte{}, map[string][]byte{}
+func loadFiles(dist fs.FS) (files, gzipped, brotli map[string][]byte, err error) {
+	files, gzipped, brotli = map[string][]byte{}, map[string][]byte{}, map[string][]byte{}
 	err = fs.WalkDir(dist, ".", func(name string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return err
@@ -117,6 +121,10 @@ func loadFiles(dist fs.FS) (files, gzipped map[string][]byte, err error) {
 		b, err := fs.ReadFile(dist, name)
 		if err != nil {
 			return err
+		}
+		if original, ok := strings.CutSuffix(name, ".br"); ok {
+			brotli[original] = b
+			return nil
 		}
 		files[name] = b
 		if httpx.Compressible(contentType(name)) {
@@ -135,7 +143,12 @@ func loadFiles(dist fs.FS) (files, gzipped map[string][]byte, err error) {
 		}
 		return nil
 	})
-	return files, gzipped, err
+	for name := range brotli {
+		if _, ok := gzipped[name]; !ok {
+			delete(brotli, name) // only for files the server would compress
+		}
+	}
+	return files, gzipped, brotli, err
 }
 
 func contentType(name string) string {
@@ -143,6 +156,18 @@ func contentType(name string) string {
 		return ct
 	}
 	return "application/octet-stream"
+}
+
+// acceptsBrotli reports whether the client lists br (not with q=0).
+func acceptsBrotli(r *http.Request) bool {
+	for _, v := range strings.Split(r.Header.Get("Accept-Encoding"), ",") {
+		name, params, _ := strings.Cut(strings.TrimSpace(v), ";")
+		if strings.EqualFold(strings.TrimSpace(name), "br") {
+			q := strings.ReplaceAll(strings.ToLower(params), " ", "")
+			return q != "q=0" && q != "q=0.0" && q != "q=0.00" && q != "q=0.000"
+		}
+	}
+	return false
 }
 
 // acceptsGzip is the compression middleware's choice of gzip: any listed
@@ -169,6 +194,13 @@ func (h *Handler) static(w http.ResponseWriter, r *http.Request, name string, bo
 		w.Header().Set("Cache-Control", "public, max-age=0")
 	}
 	w.Header().Set("Content-Type", ct)
+	if br, ok := h.brotli[name]; ok && r.Method == http.MethodGet && acceptsBrotli(r) {
+		w.Header().Set("Content-Encoding", "br")
+		w.Header().Add("Vary", "Accept-Encoding")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(br)
+		return
+	}
 	if gz, ok := h.gzipped[name]; ok && r.Method == http.MethodGet && acceptsGzip(r) {
 		// What the compression middleware would send, without compressing
 		// the same bytes on every request; it leaves encoded bodies alone.
@@ -261,7 +293,7 @@ func (h *Handler) serveRoute(w http.ResponseWriter, r *http.Request, rt Route, l
 		w.WriteHeader(http.StatusTemporaryRedirect)
 		return
 	}
-	h.page(w, http.StatusOK, h.heads[rt.Pattern][locale])
+	h.page(w, r, http.StatusOK, h.heads[rt.Pattern][locale])
 }
 
 // signInPath is getSignInPath (src/libs/AuthGuard.ts).
@@ -272,16 +304,29 @@ func signInPath(locale string) string {
 	return "/" + locale + "/sign-in"
 }
 
-func (h *Handler) page(w http.ResponseWriter, status int, head string) {
+func (h *Handler) page(w http.ResponseWriter, r *http.Request, status int, head string) {
 	w.Header().Set("Vary", nextVary)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "private, no-cache, no-store, max-age=0, must-revalidate")
 	w.WriteHeader(status)
 	html := strings.Replace(h.shell, "<!--app-head-->", head+`<script>window.__APP_CONFIG__=`+h.config+`</script>`, 1)
-	_, _ = w.Write([]byte(html))
+	_, _ = w.Write([]byte(withNonce(html, cspnonce.From(r.Context()))))
 }
 
-func (h *Handler) notFound(w http.ResponseWriter) { h.page(w, http.StatusNotFound, notFoundHead) }
+func (h *Handler) notFound(w http.ResponseWriter, r *http.Request) {
+	h.page(w, r, http.StatusNotFound, notFoundHead)
+}
+
+// withNonce stamps the Content-Security-Policy nonce on the page's scripts
+// and module preloads, the only ones the policy trusts directly.
+func withNonce(html, nonce string) string {
+	if nonce == "" {
+		return html
+	}
+	attr := ` nonce="` + nonce + `"`
+	html = strings.ReplaceAll(html, "<script", "<script"+attr)
+	return strings.ReplaceAll(html, `<link rel="modulepreload"`, `<link rel="modulepreload"`+attr)
+}
 
 // skipsMiddleware is where next-intl never ran: the Next proxy matcher's
 // exclusions (files with an extension, Next internals, monitoring, share
@@ -326,7 +371,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if skipsMiddleware.MatchString(p) || strings.HasPrefix(p, "/admin") {
 		rt, ok := h.match(p, false)
 		if !ok {
-			h.notFound(w)
+			h.notFound(w, r)
 			return
 		}
 		h.serveRoute(w, r, rt, DefaultLocale)
@@ -348,7 +393,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Link", res.links)
 	rt, ok := h.match(res.internal, true)
 	if !ok {
-		h.notFound(w)
+		h.notFound(w, r)
 		return
 	}
 	h.serveRoute(w, r, rt, res.locale)

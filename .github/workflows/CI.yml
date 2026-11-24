@@ -65,6 +65,12 @@ jobs:
       - name: Unit tests
         run: npx turbo run test --filter='!@migraine/server'
 
+      # Known vulnerabilities in what ships to users (the client bundle and
+      # the server's npm-installed tooling are dev dependencies). Dev-only
+      # tooling findings are left to the Dependabot updates.
+      - name: Audit runtime dependencies
+        run: npm audit --omit=dev --audit-level=high
+
       - name: Upload coverage
         if: always()
         uses: actions/upload-artifact@v4
@@ -125,6 +131,12 @@ jobs:
 
       - name: Tests
         run: npm run test -w @migraine/server
+
+      # Known vulnerabilities in the Go modules and the standard library
+      # that the server's code actually reaches.
+      - name: govulncheck
+        working-directory: apps/server
+        run: go run golang.org/x/vuln/cmd/govulncheck@v1.10.0 ./...
 
   build:
     name: Build

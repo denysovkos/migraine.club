@@ -1,0 +1,40 @@
+# Weekly dependency updates, grouped so they arrive as a few PRs a week
+# rather than one per package. CI (lint, tests, e2e, Docker) checks each.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-and-patch:
+        update-types: [minor, patch]
+    # Security updates are opened right away regardless of the schedule.
+
+  - package-ecosystem: gomod
+    directories: [/apps/server, /packages/locales]
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Berlin
+    groups:
+      go-modules:
+        patterns: ['*']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ['*']
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly

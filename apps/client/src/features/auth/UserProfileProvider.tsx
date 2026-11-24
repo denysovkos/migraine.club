@@ -106,6 +106,10 @@ export function UserProfileProvider({
     setThemePreference(nextTheme);
   }, []);
 
+  // The profile is fetched once per signed-in user. Clerk hands out a new
+  // user object on every session refresh, and pages change without the
+  // profile changing, so neither refetches it.
+  const userId = user?.id;
   useEffect(() => {
     // Only proceed once Clerk has loaded
     if (!isUserLoaded) {
@@ -113,43 +117,47 @@ export function UserProfileProvider({
     }
 
     // Skip for non-authenticated users
-    if (!isSignedIn || !user) {
+    if (!isSignedIn || !userId) {
       setIsLoading(false);
       return;
     }
 
-    // Fetch the profile and optionally redirect to preferred locale
-    const initProfile = async () => {
-      const profile = await fetchProfile();
-      setIsLoading(false);
-
-      // Only redirect once per session and if locale doesn't match
-      if (profile && !hasRedirected && profile.preferredLanguage !== currentLocale) {
-        const supportedLocales = AppConfig.locales.map(l => l.id);
-
-        if (supportedLocales.includes(profile.preferredLanguage)) {
-          // Redirect to the user's preferred locale
-          const pathParts = pathname.split('/');
-          const localeInPath = pathParts[1];
-
-          // Check if there's a locale prefix in the path
-          if (localeInPath && supportedLocales.includes(localeInPath)) {
-            // Replace the existing locale
-            pathParts[1] = profile.preferredLanguage;
-          } else if (profile.preferredLanguage !== AppConfig.defaultLocale) {
-            // Add locale prefix only if not default
-            pathParts.splice(1, 0, profile.preferredLanguage);
-          }
-
-          const newPath = pathParts.join('/') || '/';
-          setHasRedirected(true);
-          router.replace(newPath);
-        }
+    let cancelled = false;
+    fetchProfile().then(() => {
+      if (!cancelled) {
+        setIsLoading(false);
       }
+    });
+    return () => {
+      cancelled = true;
     };
+  }, [isUserLoaded, isSignedIn, userId, fetchProfile]);
 
-    initProfile();
-  }, [isUserLoaded, isSignedIn, user, currentLocale, pathname, router, hasRedirected, fetchProfile]);
+  // Redirect to the preferred locale, once per session, if it differs.
+  useEffect(() => {
+    if (isLoading || !preferredLanguage || hasRedirected || preferredLanguage === currentLocale) {
+      return;
+    }
+    const supportedLocales = AppConfig.locales.map(l => l.id);
+    if (!supportedLocales.includes(preferredLanguage)) {
+      return;
+    }
+    const pathParts = pathname.split('/');
+    const localeInPath = pathParts[1];
+
+    // Check if there's a locale prefix in the path
+    if (localeInPath && supportedLocales.includes(localeInPath)) {
+      // Replace the existing locale
+      pathParts[1] = preferredLanguage;
+    } else if (preferredLanguage !== AppConfig.defaultLocale) {
+      // Add locale prefix only if not default
+      pathParts.splice(1, 0, preferredLanguage);
+    }
+
+    const newPath = pathParts.join('/') || '/';
+    setHasRedirected(true);
+    router.replace(newPath);
+  }, [isLoading, preferredLanguage, currentLocale, pathname, router, hasRedirected]);
 
   const contextValue = useMemo(() => ({
     displayName,

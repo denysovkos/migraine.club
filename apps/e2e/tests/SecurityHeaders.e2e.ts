@@ -13,8 +13,18 @@ test.describe('security headers', () => {
     expect(headers['x-frame-options']).toBe('DENY');
     expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
     expect(headers['permissions-policy']).toContain('camera=()');
-    expect(headers['content-security-policy-report-only']).toContain('report-uri /api/csp-report');
-    expect(headers['content-security-policy']).toBeUndefined();
+
+    // The e2e server enforces the policy (CSP_ENFORCE), as production should.
+    const csp = headers['content-security-policy'];
+
+    expect(csp).toMatch(/script-src 'nonce-[\w+/=]+' 'strict-dynamic'/);
+    expect(csp).toContain('report-uri /api/csp-report');
+
+    // The page's own scripts carry the nonce the policy names.
+    const nonce = /'nonce-([\w+/=]+)'/.exec(csp!)![1];
+    const html = await res!.text();
+
+    expect(html).toContain(`<script nonce="${nonce}" type="module"`);
 
     await expect(page.getByRole('heading', { name: /Hi,\s*E2E\./i })).toBeVisible();
 
@@ -23,6 +33,29 @@ test.describe('security headers', () => {
 
       expect(r.headers()['x-content-type-options'], path).toBe('nosniff');
       expect(r.headers()['x-frame-options'], path).toBe('DENY');
+    }
+  });
+
+  test('the app runs under the enforced policy without violations', async ({ page }) => {
+    await page.addInitScript(() => {
+      (window as any).__cspViolations = [];
+      document.addEventListener('securitypolicyviolation', (e) => {
+        (window as any).__cspViolations.push(`${e.effectiveDirective} ${e.blockedURI}`);
+      });
+    });
+
+    for (const path of ['/', '/dashboard', '/dashboard/diary', '/dashboard/settings']) {
+      await page.goto(path);
+
+      // Rendered: the router has run and the page has filled its <main>.
+      await expect(page.locator('main').first()).not.toBeEmpty();
+
+      // Zod probes eval once to pick its fastest parser and falls back
+      // quietly when the policy forbids it; nothing else may be blocked.
+      const blocked = (await page.evaluate(() => (window as any).__cspViolations as string[]))
+        .filter(v => v !== 'script-src eval');
+
+      expect(blocked, path).toEqual([]);
     }
   });
 

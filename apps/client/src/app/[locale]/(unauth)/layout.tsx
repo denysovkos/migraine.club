@@ -1,9 +1,9 @@
 'use client';
 
-import { enUS, frFR } from '@clerk/localizations';
 import { ClerkProvider } from '@clerk/nextjs';
 import { use } from 'react';
 
+import { clerkLocalization } from '@/libs/clerkLocalization';
 import { AppConfig } from '@/utils/AppConfig';
 
 export default function UnauthLayout(props: {
@@ -12,14 +12,14 @@ export default function UnauthLayout(props: {
 }) {
   const params = use(props.params);
   const { children } = props;
-  let clerkLocale = enUS;
+  let clerkLocale = clerkLocalization('en');
   let signInUrl = '/sign-in';
   let signUpUrl = '/sign-up';
   let dashboardUrl = '/dashboard';
   let afterSignOutUrl = '/';
 
   if (params.locale === 'fr') {
-    clerkLocale = frFR;
+    clerkLocale = clerkLocalization('fr');
   }
 
   if (params.locale !== AppConfig.defaultLocale) {

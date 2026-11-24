@@ -72,6 +72,12 @@ services:
         sync: false
       - key: LOGTAIL_ENDPOINT
         sync: false
+      # The server's own Sentry project (errors and panics).
+      - key: SENTRY_DSN
+        sync: false
+      # Enforce the Content-Security-Policy (otherwise report-only).
+      - key: CSP_ENFORCE
+        value: 'true'
       # Doctor verification uploads, on the persistent disk.
       - key: FILES_STORAGE_PATH
         sync: false

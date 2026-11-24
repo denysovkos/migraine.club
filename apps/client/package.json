@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsx scripts/prerender.mts",
+    "build": "vite build && tsx scripts/prerender.mts && tsx scripts/compress.mts",
     "lint": "eslint .",
     "check-types": "tsc --noEmit --pretty",
     "test": "vitest run",

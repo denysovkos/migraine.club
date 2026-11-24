@@ -24,13 +24,14 @@ func New(d *app.Deps, opts Options) http.Handler {
 	// Outermost, so it also sees the 500 of a recovered panic.
 	r.Use(requestLog(d.Log))
 	r.Use(middleware.Recoverer)
+	r.Use(reportPanics)
 	r.Use(knownMethods)
 	r.Use(nextNormalize)
 	r.Use(routeVary(r))
 	r.Use(compress)
 	r.Use(middleware.GetHead)
 	r.Use(forwardedHeaders(d.Cfg.Port))
-	r.Use(securityHeaders)
+	r.Use(securityHeaders(d.Cfg.CSPEnforce))
 
 	var resolver auth.Resolver = d.Clerk
 	if d.Cfg.E2EMockAuth {

@@ -54,6 +54,9 @@ export default defineConfig({
       NEXT_PUBLIC_E2E_MOCK_AUTH: 'true',
       // Doctor verification uploads are stored on disk.
       FILES_STORAGE_PATH: E2E_FILES_STORAGE_PATH,
+      // The Content-Security-Policy enforced, as production should run it:
+      // every spec then fails if the app loads a script the policy blocks.
+      CSP_ENFORCE: 'true',
     },
   },
 

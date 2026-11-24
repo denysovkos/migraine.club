@@ -70,7 +70,13 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	log := logx.New(cfg)
+	environment := "development"
+	if os.Getenv("RENDER") != "" {
+		environment = "production"
+	}
+	hub, flushSentry := logx.InitSentry(cfg.ServerSentryDSN, environment, os.Getenv("RENDER_GIT_COMMIT"))
+	defer flushSentry()
+	log := logx.New(cfg, hub)
 	slog.SetDefault(log)
 
 	if cfg.DatabaseURL == "" {

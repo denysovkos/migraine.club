@@ -5,12 +5,15 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { applyMetadata } from './metadata';
 import { routes } from './routes';
-import { initSentry } from './sentry';
 import { installSessionRefresh } from './sessionRefresh';
 import '@/styles/global.css';
 
-initSentry();
 installSessionRefresh();
+// Sentry (about half the size of the app's own bundle) loads in a chunk of
+// its own once the page has started, when a DSN is configured.
+if (import.meta.env.NEXT_PUBLIC_SENTRY_DSN) {
+  void import('./sentry').then(m => m.initSentry());
+}
 
 const router = createBrowserRouter(routes());
 
