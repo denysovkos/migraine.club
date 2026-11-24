@@ -78,3 +78,44 @@ func TestStaticFilesAreServedPrecompressed(t *testing.T) {
 
 	require.Equal(t, http.StatusNotFound, get(http.MethodGet, "/routes.json", "gzip").Code, "build metadata is not served")
 }
+
+// The client build ships Brotli copies (name.br); browsers that accept br
+// get them, the rest gzip as before.
+func TestStaticFilesPreferTheBuildsBrotli(t *testing.T) {
+	js := strings.Repeat("console.log('migraine');\n", 200)
+	dist := fstest.MapFS{
+		"index.html":           {Data: []byte("<!doctype html><html><head><!--app-head--></head><body></body></html>")},
+		"heads.json":           {Data: []byte(`{}`)},
+		"routes.json":          {Data: []byte(`[]`)},
+		"assets/index-1.js":    {Data: []byte(js)},
+		"assets/index-1.js.br": {Data: []byte("BROTLI")},
+		"logo.png":             {Data: []byte("png")},
+		"logo.png.br":          {Data: []byte("not for images")},
+	}
+	h, err := spa.New(dist, spa.Config{})
+	require.NoError(t, err)
+	srv := compress(h)
+	get := func(path, accept string) *httptest.ResponseRecorder {
+		req := httptest.NewRequest(http.MethodGet, path, nil)
+		req.Header.Set("Accept-Encoding", accept)
+		w := httptest.NewRecorder()
+		srv.ServeHTTP(w, req)
+		return w
+	}
+
+	br := get("/assets/index-1.js", "gzip, deflate, br, zstd")
+	require.Equal(t, "br", br.Header().Get("Content-Encoding"))
+	require.Equal(t, []string{"Accept-Encoding"}, br.Header().Values("Vary"))
+	require.Equal(t, "public, max-age=31536000, immutable", br.Header().Get("Cache-Control"))
+	require.Equal(t, "BROTLI", br.Body.String())
+
+	gz := get("/assets/index-1.js", "gzip")
+	require.Equal(t, "gzip", gz.Header().Get("Content-Encoding"))
+	require.Equal(t, "gzip", get("/assets/index-1.js", "br;q=0, gzip").Header().Get("Content-Encoding"))
+
+	png := get("/logo.png", "br")
+	require.Empty(t, png.Header().Get("Content-Encoding"), "only files the server would compress")
+	require.Equal(t, "png", png.Body.String())
+
+	require.Equal(t, http.StatusNotFound, get("/assets/index-1.js.br", "").Code, "the .br copies are not files of their own")
+}

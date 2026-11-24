@@ -3,6 +3,8 @@
 // config provided on the server).
 import type { AbstractIntlMessages } from 'use-intl';
 
+import { loadClerkLocalization } from '@/libs/clerkLocalization';
+
 export const LOCALES = ['en', 'fr', 'uk'] as const;
 export const DEFAULT_LOCALE = 'en';
 
@@ -18,7 +20,8 @@ const loaders: Record<string, () => Promise<{ default: AbstractIntlMessages }>> 
 export async function loadLocale(locale: string): Promise<{ locale: string; messages: AbstractIntlMessages }> {
   const safe = (LOCALES as readonly string[]).includes(locale) ? locale : DEFAULT_LOCALE;
   if (!cache.has(safe)) {
-    cache.set(safe, (await loaders[safe]!()).default);
+    const [messages] = await Promise.all([loaders[safe]!(), loadClerkLocalization(safe)]);
+    cache.set(safe, messages.default);
   }
   current = { locale: safe, messages: cache.get(safe)! };
   return current;

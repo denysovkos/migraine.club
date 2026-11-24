@@ -65,7 +65,10 @@ describe('ErrorBoundary', () => {
     });
 
     expect(await screen.findByRole('heading', { level: 2 })).toHaveTextContent('Application error: a client-side exception has occurred (see the browser console for more information).');
-    expect(captureException).toHaveBeenCalledWith(boom);
+
+    // Sentry loads in its own chunk, so the report arrives a tick later.
+    await vi.waitFor(() => expect(captureException).toHaveBeenCalledWith(boom));
+
     expect(document.documentElement).toHaveAttribute('lang', 'fr');
     expect(document.title).toBe('');
   });

@@ -42,6 +42,9 @@ type Handler struct {
 	// server runs. gzipped holds the compressible ones, compressed once.
 	files   map[string][]byte
 	gzipped map[string][]byte
+	// brotli holds the build's own Brotli copies (name.br, written by
+	// apps/client/scripts/compress.mts), keyed by the original name.
+	brotli map[string][]byte
 	shell   string
 	heads   map[string]map[string]string
 	routes  []Route
@@ -61,7 +64,7 @@ func New(dist fs.FS, cfg Config) (*Handler, error) {
 		return nil, err
 	}
 	h := &Handler{shell: string(shell)}
-	if h.files, h.gzipped, err = loadFiles(dist); err != nil {
+	if h.files, h.gzipped, h.brotli, err = loadFiles(dist); err != nil {
 		return nil, err
 	}
 	for name, dst := range map[string]any{"heads.json": &h.heads, "routes.json": &h.routes} {
@@ -106,8 +109,8 @@ const GzipLevel = 5
 
 // loadFiles reads every file the handler serves as is, and gzips those the
 // compression middleware would gzip on every request.
-func loadFiles(dist fs.FS) (files, gzipped map[string][]byte, err error) {
-	files, gzipped = map[string][]byte{}, map[string][]byte{}
+func loadFiles(dist fs.FS) (files, gzipped, brotli map[string][]byte, err error) {
+	files, gzipped, brotli = map[string][]byte{}, map[string][]byte{}, map[string][]byte{}
 	err = fs.WalkDir(dist, ".", func(name string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return err
@@ -118,6 +121,10 @@ func loadFiles(dist fs.FS) (files, gzipped map[string][]byte, err error) {
 		b, err := fs.ReadFile(dist, name)
 		if err != nil {
 			return err
+		}
+		if original, ok := strings.CutSuffix(name, ".br"); ok {
+			brotli[original] = b
+			return nil
 		}
 		files[name] = b
 		if httpx.Compressible(contentType(name)) {
@@ -136,7 +143,12 @@ func loadFiles(dist fs.FS) (files, gzipped map[string][]byte, err error) {
 		}
 		return nil
 	})
-	return files, gzipped, err
+	for name := range brotli {
+		if _, ok := gzipped[name]; !ok {
+			delete(brotli, name) // only for files the server would compress
+		}
+	}
+	return files, gzipped, brotli, err
 }
 
 func contentType(name string) string {
@@ -144,6 +156,18 @@ func contentType(name string) string {
 		return ct
 	}
 	return "application/octet-stream"
+}
+
+// acceptsBrotli reports whether the client lists br (not with q=0).
+func acceptsBrotli(r *http.Request) bool {
+	for _, v := range strings.Split(r.Header.Get("Accept-Encoding"), ",") {
+		name, params, _ := strings.Cut(strings.TrimSpace(v), ";")
+		if strings.EqualFold(strings.TrimSpace(name), "br") {
+			q := strings.ReplaceAll(strings.ToLower(params), " ", "")
+			return q != "q=0" && q != "q=0.0" && q != "q=0.00" && q != "q=0.000"
+		}
+	}
+	return false
 }
 
 // acceptsGzip is the compression middleware's choice of gzip: any listed
@@ -170,6 +194,13 @@ func (h *Handler) static(w http.ResponseWriter, r *http.Request, name string, bo
 		w.Header().Set("Cache-Control", "public, max-age=0")
 	}
 	w.Header().Set("Content-Type", ct)
+	if br, ok := h.brotli[name]; ok && r.Method == http.MethodGet && acceptsBrotli(r) {
+		w.Header().Set("Content-Encoding", "br")
+		w.Header().Add("Vary", "Accept-Encoding")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(br)
+		return
+	}
 	if gz, ok := h.gzipped[name]; ok && r.Method == http.MethodGet && acceptsGzip(r) {
 		// What the compression middleware would send, without compressing
 		// the same bytes on every request; it leaves encoded bodies alone.
