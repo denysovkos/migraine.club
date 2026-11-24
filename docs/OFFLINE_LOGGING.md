@@ -30,7 +30,7 @@ Pages and data the user has opened online before are available offline. A page t
             flushOutbox() / sw.js replayOutbox()  ──► same API, same Idempotency-Key
 ```
 
-**Client** (`src/libs/offline/outbox.ts`). `sendOrQueue` tries the request with a 15 s timeout. On a network error, a timeout, or when the device reports offline, it stores the request in IndexedDB and returns `{ queued: true }`. The UI then shows "Saved on this device". While earlier entries are still waiting, new writes join the queue instead of overtaking them.
+**Client** (`apps/client/src/libs/offline/outbox.ts`). `sendOrQueue` tries the request with a 15 s timeout. On a network error, a timeout, or when the device reports offline, it stores the request in IndexedDB and returns `{ queued: true }`. The UI then shows "Saved on this device". While earlier entries are still waiting, new writes join the queue instead of overtaking them.
 
 **Replay**. Entries are sent strictly in capture order:
 
@@ -45,11 +45,11 @@ Pages and data the user has opened online before are available offline. A page t
 
 Stopping on transient errors keeps the order intact, so a dose taken during an attack is never sent before the attack itself.
 
-**Service worker** (`public/sw.js`). On browsers with Background Sync (Chrome, Edge, Android), the `mc-outbox-sync` tag replays the queue even after the app is closed. The SW copy of the replay logic mirrors `flushOutbox`, so keep the two in sync. Safari and Firefox don't support Background Sync, so there the queue flushes the next time the app is opened or regains focus. A Web Lock (`mc-outbox`) keeps the page and the SW from replaying at the same time.
+**Service worker** (`apps/client/public/sw.js`). On browsers with Background Sync (Chrome, Edge, Android), the `mc-outbox-sync` tag replays the queue even after the app is closed. The SW copy of the replay logic mirrors `flushOutbox`, so keep the two in sync. Safari and Firefox don't support Background Sync, so there the queue flushes the next time the app is opened or regains focus. A Web Lock (`mc-outbox`) keeps the page and the SW from replaying at the same time.
 
 ## Server guarantees
 
-**Idempotency** (`src/app/api/_helpers/idempotency.ts`, table `idempotent_request`). Every outbox write carries `Idempotency-Key` (the outbox entry id). The first request reserves the key, runs, and stores its 2xx response. A replay gets the stored response back with `Idempotent-Replayed: true` and creates nothing. Errors release the key so a retry can run. A reservation older than 2 minutes without a response is treated as abandoned. Requests without the header behave as before.
+**Idempotency** (`apps/server/internal/api/idem`, table `idempotent_request`). Every outbox write carries `Idempotency-Key` (the outbox entry id). The first request reserves the key, runs, and stores its 2xx response. A replay gets the stored response back with `Idempotent-Replayed: true` and creates nothing. Errors release the key so a retry can run. A reservation older than 2 minutes without a response is treated as abandoned. Requests without the header behave as before.
 
 **Right account.** Each entry carries `X-Offline-User`, the Clerk user id that was signed in when it was captured. If a different account is signed in at sync time, the server answers `409 OFFLINE_USER_MISMATCH` and the entry waits for its owner.
 
@@ -83,13 +83,13 @@ The outbox and the SW caches (`migrennity-user-pages`, `migrennity-user-api`) ho
 
 | Layer | File | What it pins down |
 | --- | --- | --- |
-| Outbox | `src/libs/offline/outbox.test.ts` | Queue/send decisions, FIFO replay, stop-on-transient, retry cap, per-user isolation, Web Lock, Background Sync registration, subscriber notifications |
-| Service worker | `src/libs/offline/sw.test.ts` | Runs the real `public/sw.js` in a VM with fake IndexedDB/Cache Storage. Covers Background Sync replay (order, per-user blocking, retry semantics), caching strategies, offline fallbacks, cache wipe on sign-out and on upgrade |
-| Idempotency | `src/app/api/_helpers/idempotency.test.ts` | Replay returns the stored response, in-flight 409, release on error or throw, account mismatch, capture-time window |
-| Routes | `src/app/api/quick-add/*/route.test.ts`, `src/app/api/episodes/[id]/route.test.ts` | Device times honoured and validated, combined intake and acute dose, 400 instead of 500 for bad payloads, `endedAt` bounds |
-| Services | `src/services/QuickAddService.test.ts`, `src/services/episodes/EpisodeService.test.ts` | A late dose links only to an attack that had started by then, `lastUsedAt` never moves backwards, end-time clamping |
-| Client APIs and UI | `src/features/quickAdd/offlineApis.test.ts`, `src/features/offline/*.test.tsx`, `TakeMedicationSheet.test.tsx`, `TodayActions.offline.test.tsx`, `src/features/diary/diaryApi.offline.test.ts` | Payloads carry device time, queued results surface as "saved on this device", Undo removes queued entries, indicator states, provider user handling, stale cached "today" |
-| End to end | `tests/e2e/OfflineLogging.e2e.ts` | In real Chromium against Postgres: offline logging survives reopening the app, syncs in order with original times, dedupes concurrent replays, refuses another account's entries, handles stale reservations, reviews rejected entries, and replays through Background Sync with the app closed |
+| Outbox | `apps/client/src/libs/offline/outbox.test.ts` | Queue/send decisions, FIFO replay, stop-on-transient, retry cap, per-user isolation, Web Lock, Background Sync registration, subscriber notifications |
+| Service worker | `apps/client/src/libs/offline/sw.test.ts` | Runs the real `apps/client/public/sw.js` in a VM with fake IndexedDB/Cache Storage. Covers Background Sync replay (order, per-user blocking, retry semantics), caching strategies, offline fallbacks, cache wipe on sign-out and on upgrade |
+| Idempotency | `apps/server/internal/api/episodes/episodes_test.go` | Replay returns the stored response, in-flight 409, release on error or throw, account mismatch, capture-time window |
+| Routes | `apps/server/internal/api/episodes/episodes_test.go`, `apps/server/internal/api/meds/meds_test.go` | Device times honoured and validated, combined intake and acute dose, 400 instead of 500 for bad payloads, `endedAt` bounds |
+| Services | `apps/server/internal/service/episodes/pure_test.go` | A late dose links only to an attack that had started by then, `lastUsedAt` never moves backwards, end-time clamping |
+| Client APIs and UI | `apps/client/src/features/quickAdd/offlineApis.test.ts`, `apps/client/src/features/offline/*.test.tsx`, `TakeMedicationSheet.test.tsx`, `TodayActions.offline.test.tsx`, `apps/client/src/features/diary/diaryApi.offline.test.ts` | Payloads carry device time, queued results surface as "saved on this device", Undo removes queued entries, indicator states, provider user handling, stale cached "today" |
+| End to end | `apps/e2e/tests/OfflineLogging.e2e.ts` | In real Chromium against Postgres: offline logging survives reopening the app, syncs in order with original times, dedupes concurrent replays, refuses another account's entries, handles stale reservations, reviews rejected entries, and replays through Background Sync with the app closed |
 
 ## Testing manually
 

@@ -2,21 +2,23 @@
 #
 # Runs on every pull request and on pushes to main.
 #
-# The app is a Go server (cmd/server, internal/) that serves the API and the
-# Vite build of the frontend (web/, rendering the React pages in src/app).
+# The repository is an npm workspace driven by Turborepo: the Go server
+# (apps/server) serves the API and the Vite build of the frontend
+# (apps/client), with the Playwright suite in apps/e2e and the shared
+# packages in packages/.
 #
 # The verify job needs no secrets: vitest reads its env from `.vitest-env`
-# (see vitest.config.mts), not from `.env`, so the suite runs green on a clean
-# checkout. The go job runs the Go tests against a throwaway Postgres.
+# (see apps/client/vitest.config.mts), not from `.env`, so the suite runs
+# green on a clean checkout. The go job runs the Go tests against a throwaway Postgres.
 #
 # The build and e2e jobs need the variables the server and the frontend
-# build read (internal/config, src/libs/Env.ts). The placeholders below exist
+# build read (apps/server/internal/config, apps/client/src/libs/Env.ts). The placeholders below exist
 # purely so they start: NEXT_PUBLIC_* values are inlined into the frontend
 # bundle at build time, so nothing built here is deployable or uploaded.
 #
 # The e2e job runs the Playwright suite against the production build (the Go
-# binary serving web/dist) with Clerk swapped for the mock in
-# src/libs/MockClerk.tsx (E2E_MOCK_AUTH, at build time and at runtime),
+# binary serving apps/client/dist) with Clerk swapped for the mock in
+# apps/client/src/libs/MockClerk.tsx (E2E_MOCK_AUTH, at build time and at runtime),
 # backed by a throwaway Postgres service. No real Clerk or Stripe calls are
 # made. A production build matters: the service worker (offline sync specs)
 # only registers outside dev mode.
@@ -53,21 +55,22 @@ jobs:
 
       - run: npm ci
 
+      # Everything but the Go server, which the go job covers.
       - name: Lint
-        run: npm run lint
+        run: npm run lint:root && npx turbo run lint --filter='!@migraine/server'
 
       - name: Type check
-        run: npm run check-types
+        run: npx turbo run check-types
 
       - name: Unit tests
-        run: npm run test -- --coverage
+        run: npx turbo run test --filter='!@migraine/server'
 
       - name: Upload coverage
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage/
+          path: apps/client/coverage/
           if-no-files-found: ignore
           retention-days: 7
 
@@ -101,7 +104,7 @@ jobs:
 
       - uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          go-version-file: apps/server/go.mod
 
       # The code generators (make gen) run a few TypeScript helpers.
       - uses: actions/setup-node@v4
@@ -112,16 +115,16 @@ jobs:
       - run: npm ci
 
       - name: Generated code is up to date
-        run: make check-gen
+        run: npm run check-gen -w @migraine/server
 
       - name: gofmt
-        run: test -z "$(gofmt -l cmd internal)" || { gofmt -l cmd internal; exit 1; }
+        run: test -z "$(gofmt -l apps/server)" || { gofmt -l apps/server; exit 1; }
 
       - name: Lint
-        run: make lint
+        run: npm run lint -w @migraine/server
 
       - name: Tests
-        run: make test
+        run: npm run test -w @migraine/server
 
   build:
     name: Build
@@ -147,7 +150,7 @@ jobs:
 
       - uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          go-version-file: apps/server/go.mod
 
       - run: npm ci
 
@@ -222,7 +225,7 @@ jobs:
 
       - uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          go-version-file: apps/server/go.mod
 
       - run: npm ci
 
@@ -235,13 +238,13 @@ jobs:
       # The server applies migrations on boot (RUN_MIGRATIONS_ON_BOOT), and the
       # `seeded` fixture resets and seeds the e2e user before every test.
       - name: E2E tests
-        run: npx playwright test --project=${{ matrix.browser }}
+        run: npm run test:e2e -w @migraine/e2e -- --project=${{ matrix.browser }}
 
       - name: Upload traces and videos
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-${{ matrix.browser }}
-          path: test-results/
+          path: apps/e2e/test-results/
           if-no-files-found: ignore
           retention-days: 7

@@ -1,0 +1,24 @@
+{
+  "name": "@migraine/server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "dotenv -c -e ../../.env -- go run ./cmd/server",
+    "build": "make build",
+    "lint": "make lint",
+    "test": "make test",
+    "gen": "make gen",
+    "check-gen": "make check-gen",
+    "clean": "rimraf bin",
+    "check-types": "tsc --noEmit --pretty"
+  },
+  "devDependencies": {
+    "@migraine/db": "*",
+    "@migraine/locales": "*",
+    "dotenv-cli": "^11.1.0",
+    "drizzle-orm": "^0.45.4",
+    "rimraf": "^6.1.4",
+    "tsx": "^4.23.15",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  }
+}

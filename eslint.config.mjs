@@ -21,11 +21,12 @@ export default antfu({
   },
 
   ignores: [
-    'migrations/**/*',
-    'reestr.json',
-    // Go test fixtures.
-    'internal/**/testdata/**',
-    'bin/**',
+    // The Go server: only its scripts/ are JavaScript.
+    'apps/server/!(scripts)/**',
+    'apps/client/dist/**',
+    'packages/db/seed/*.json',
+    'packages/locales/**',
+    '**/.turbo/**',
   ],
 }, jsxA11y.flatConfigs.recommended, {
   plugins: {
@@ -34,6 +35,8 @@ export default antfu({
   rules: {
     ...nextPlugin.configs.recommended.rules,
     ...nextPlugin.configs['core-web-vitals'].rules,
+    // The SPA has no pages/ directory for this rule to read.
+    '@next/next/no-html-link-for-pages': 'off',
   },
 }, {
   files: [
@@ -41,6 +44,10 @@ export default antfu({
   ],
   ...testingLibrary.configs['flat/react'],
   ...jestDom.configs['flat/recommended'],
+}, {
+  // Seed scripts report progress on the console, like scripts/ elsewhere.
+  files: ['packages/db/seed/**', 'apps/e2e/seeds/**'],
+  rules: { 'no-console': 'off' },
 }, {
   files: [
     '**/*.spec.ts',

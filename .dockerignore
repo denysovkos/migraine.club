@@ -1,9 +1,11 @@
 .git
-node_modules
-bin
-coverage
-test-results
-playwright-report
-web/dist
+**/node_modules
+apps/server/bin
+**/coverage
+**/test-results
+**/playwright-report
+apps/client/dist
 .env
 .env.*
+.turbo
+**/.turbo

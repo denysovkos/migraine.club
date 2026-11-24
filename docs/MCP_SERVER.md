@@ -68,15 +68,16 @@ deletion stays in the app UI.
 
 ## Architecture
 
-Tools live in `src/server/mcp/tools/` and are pure translation: Zod schema in,
-text plus JSON out. They never touch `db` or the auth layer. All behaviour
-lives in `src/services/*`, which the REST routes call too, so an attack logged
+Tools live in `apps/server/internal/mcp` (`tools.go`, `tooldefs.go`) and are
+pure translation: schema in, text plus JSON out. They never touch the
+database or the auth layer. All behaviour lives in
+`apps/server/internal/service`, which the REST handlers call too, so an attack logged
 through Claude goes through the same invariants as one logged in the app —
 the one-ongoing-attack rule, the diary day recompute, the insights cache
 invalidation, and MOH dose counting.
 
-`src/server/mcp/defineTool.ts` wraps every tool with scope enforcement, audit
-and error mapping.
+`runTool` in `apps/server/internal/mcp/tools.go` wraps every tool with scope
+enforcement, audit and error mapping.
 
 ### Dose routing
 
@@ -87,15 +88,12 @@ thresholds; anything else becomes a `medication_intakes` row. New custom
 medications default to acute, so an unrecognised name is counted rather than
 silently excluded.
 
-### `src/proxy.ts`
+### Routing
 
-Two things there are load-bearing:
-
-- `/api/mcp` skips `auth.protect()` but **still runs `clerkMiddleware`** —
-  `auth()` throws without it, and the route would 401 every request regardless
-  of the token.
-- `.well-known` is excluded from the matcher so next-intl does not
-  locale-rewrite the discovery URLs.
+`/api/mcp` is mounted in `apps/server/internal/api/mcpapi`. It authenticates
+the OAuth access token itself instead of the app's session cookie, and the
+`.well-known` discovery URLs are served outside the locale routing
+(`apps/server/internal/mcp/wellknown.go`).
 
 ## Audit
 
