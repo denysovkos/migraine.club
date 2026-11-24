@@ -1,0 +1,70 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "stream",
+  "envMode": "loose",
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        "bin/**"
+      ],
+      "env": [
+        "NEXT_PUBLIC_*",
+        "E2E_MOCK_AUTH",
+        "E2E_MOCK_USER_ID",
+        "NODE_ENV"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/eslint.config.mjs"
+      ]
+    },
+    "check-types": {
+      "dependsOn": [
+        "^check-types"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/tsconfig.base.json"
+      ]
+    },
+    "test": {
+      "outputs": [
+        "coverage/**"
+      ],
+      "env": [
+        "TEST_DATABASE_URL",
+        "CI"
+      ]
+    },
+    "test:e2e": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": false
+    },
+    "gen": {
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "//#lint:root": {
+      "inputs": [
+        "*.ts",
+        "*.mjs",
+        "*.js",
+        ".github/**"
+      ]
+    }
+  }
+}

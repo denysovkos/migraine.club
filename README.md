@@ -64,15 +64,15 @@ It does not diagnose, recommend treatment or predict attacks. It summarises what
 | Layer | Choice |
 | --- | --- |
 | Server | Go 1.27 (chi, pgx, sqlc): the API, the MCP endpoint, scheduled jobs, push delivery, and the frontend's pages |
-| Frontend | React 19 and TypeScript 6, built with Vite into a single-page app; pages and layouts live in `src/app` |
+| Frontend | React 19 and TypeScript 6, built with Vite into a single-page app; pages and layouts live in `apps/client/src/app` |
 | Styling | Tailwind CSS 4, shadcn/ui components on Radix |
 | Auth | Clerk, which is also the OAuth 2.1 server for the MCP endpoint |
-| Database | Postgres, queries through sqlc ([`internal/db/queries`](internal/db/queries)), 40+ migrations in [`migrations/`](migrations), schema authored in `src/models/Schema.ts` with drizzle-kit |
+| Database | Postgres, queries through sqlc ([`apps/server/internal/db/queries`](apps/server/internal/db/queries)), 40+ migrations in [`apps/server/migrations/`](apps/server/migrations), schema authored in `packages/db/src/schema.ts` with drizzle-kit |
 | Billing | Stripe |
-| i18n | next-intl in the browser, locale routing in the Go server (`internal/spa`), routes under `src/app/[locale]` |
+| i18n | next-intl in the browser, locale routing in the Go server (`apps/server/internal/spa`), routes under `apps/client/src/app/[locale]` |
 | Charts and PDF | Recharts, `@react-pdf/renderer` |
 | Validation | Zod in the frontend; the server ports the same schemas (`internal/zod`), env validated in `internal/config` |
-| Notifications | Web Push with VAPID keys (`internal/service/push`), service worker in `public/sw.js` |
+| Notifications | Web Push with VAPID keys (`internal/service/push`), service worker in `apps/client/public/sw.js` |
 | Observability | Sentry in the browser (tunnelled through `/monitoring`), structured logs to Better Stack (Logtail) |
 | Testing | Go tests (with a throwaway Postgres), Vitest and React Testing Library, Playwright for end-to-end |
 
@@ -86,7 +86,7 @@ flowchart LR
         Cron[Scheduler]
     end
 
-    subgraph Go["Go server (cmd/server)"]
+    subgraph Go["Go server (apps/server)"]
         SPA["internal/spa<br/>pages, locale routing"]
         API["internal/api<br/>REST handlers, cron endpoints"]
         MCP["internal/mcp<br/>MCP tools"]
@@ -94,7 +94,7 @@ flowchart LR
         DBQ["internal/db<br/>sqlc queries"]
     end
 
-    WEB["web/ + src/<br/>React pages (Vite build)"]
+    WEB["apps/client<br/>React pages (Vite build)"]
 
     PWA --> SPA
     SPA -.->|serves| WEB
@@ -114,26 +114,25 @@ The REST routes and the MCP tools are thin: they validate input and call the sam
 
 ### Repository layout
 
+An npm workspace driven by [Turborepo](https://turborepo.com): `npm run build`, `dev`, `lint`, `check-types` and `test` at the root run the task in every package that has it, in dependency order and with caching. Add `--filter=@migraine/client` (or any package name) to run one.
+
 ```
-cmd/server/       The server binary
-internal/
-  api/            REST handlers, cron endpoints
-  mcp/            MCP endpoint and tools
-  service/        Domain services shared by REST and MCP
-  spa/            Serves the frontend build: heads, locale routing, redirects
-  db/             Migrations runner, sqlc queries (queries/) and generated code (q/)
-  auth/           Clerk sessions, OAuth tokens, e2e mock auth
-  server/         Routing and Next-compatible URL handling
-web/              Vite app that renders the pages in src/app (router, shims)
-src/
-  app/            Pages and layouts ([locale]/ for the localised UI)
-  features/       Feature UI and client logic (episodes, diary, insights, ...)
-  locales/        en.json, fr.json, uk.json (also embedded in the server)
-  models/         Schema (drizzle-kit) and shared types
-migrations/       SQL migrations, embedded in the server
-content/          Program texts, embedded in the server
-tests/            Playwright e2e specs and fixtures
-scripts/          Seeding and maintenance scripts
+apps/
+  server/         Go server (@migraine/server): API, MCP, cron endpoints, serves the client build
+    cmd/server/     The server binary
+    internal/       api/ handlers, service/ domain logic, db/ queries and sqlc code,
+                    mcp/, spa/ (heads, locale routing, redirects), auth/, server/ (routing)
+    migrations/     SQL migrations, embedded in the binary
+    content/        Program texts, embedded in the binary
+  client/         React frontend (@migraine/client), built with Vite
+    src/            Pages (app/), feature UI (features/), components, hooks
+    spa/            The SPA runtime: entry, router, shims for the next/* modules the pages use
+    public/         Static files and the service worker
+  e2e/            Playwright suite (@migraine/e2e): tests/ and the seeds/ it runs
+packages/
+  db/             Database schema (drizzle-kit generates the migrations from it) and the
+                  medication catalog seed (@migraine/db)
+  locales/        en.json, fr.json, uk.json, shared by the client and the server (@migraine/locales)
 docs/             Feature notes
 ```
 
@@ -181,7 +180,7 @@ npm install
 
 ### Environment
 
-Create `.env.local` in the project root. The server validates its variables on start (`internal/config`) and will not start if a required one is missing. `NEXT_PUBLIC_*` values are also inlined into the frontend when it is built.
+Create `.env.local` in the project root. The server validates its variables on start (`apps/server/internal/config`) and will not start if a required one is missing. `NEXT_PUBLIC_*` values are also inlined into the frontend when it is built.
 
 ```bash
 # Required
@@ -213,8 +212,7 @@ LOGTAIL_SOURCE_TOKEN=
 Go 1.27 and Node 26 are needed.
 
 ```bash
-npm run dev:server   # the Go server on :3000 (reads .env*)
-npm run dev          # the frontend with hot reload on :3002, API calls go to :3000
+npm run dev          # the Go server on :3000 and the frontend with hot reload on :3002
 ```
 
 Open http://localhost:3002. Pending migrations are applied when the server starts. To run the production build locally: `npm run build && npm start`, then open http://localhost:3000.
@@ -223,17 +221,15 @@ Open http://localhost:3002. Pending migrations are applied when the server start
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Frontend dev server (Vite) |
-| `npm run dev:server` | Go server |
-| `npm run build` | Production build: the frontend into `web/dist`, the server into `bin/server` |
+| `npm run dev` | Go server and frontend dev server (Vite); `-- --filter=@migraine/client` for one |
+| `npm run build` | Production build: the frontend into `apps/client/dist`, the server into `apps/server/bin/server` |
 | `npm start` | Run the production build |
-| `make test` / `make lint` | Go tests (set `TEST_DATABASE_URL` for the database-backed ones) and golangci-lint |
-| `make gen` | Regenerate the schema snapshot and the sqlc query layer |
-| `npm run lint` | ESLint |
+| `npm run lint` | ESLint, and golangci-lint for the server |
 | `npm run check-types` | TypeScript check |
-| `npm test` | Unit and component tests (Vitest) |
+| `npm run gen` | Regenerate the schema snapshot and the sqlc query layer (`apps/server`) |
+| `npm test` | Unit and component tests (Vitest) and the Go tests (set `TEST_DATABASE_URL` for the database-backed ones) |
 | `npm run test:e2e` | Playwright end-to-end tests with mocked auth |
-| `npm run db:generate` | Generate a migration after a schema change (then `make gen`) |
+| `npm run db:generate` | Generate a migration after a schema change (then `npm run gen`) |
 | `npm run db:migrate` | Apply migrations |
 | `npm run db:seed` | Seed reference data, including the medication catalogue |
 | `npm run db:studio` | Open Drizzle Studio |
@@ -245,7 +241,7 @@ Open http://localhost:3002. Pending migrations are applied when the server start
 
 Go tests sit next to the code as `*_test.go`; the database-backed ones create a throwaway database from `TEST_DATABASE_URL`. Frontend unit and component tests sit next to the code they cover as `*.test.ts(x)`. They do not read `.env`, so they need no secrets.
 
-End-to-end tests are in [`tests/e2e`](tests/e2e) and run against a mocked Clerk session (`E2E_MOCK_AUTH=true`). Seed and reset the e2e database with `npm run e2e:seed` and `npm run e2e:reset`.
+End-to-end tests are in [`apps/e2e/tests`](apps/e2e/tests) and run against a mocked Clerk session (`E2E_MOCK_AUTH=true`). Seed and reset the e2e database with `npm run e2e:seed -w @migraine/e2e` and `npm run e2e:reset -w @migraine/e2e`.
 
 ## AI connector (MCP)
 
@@ -264,17 +260,17 @@ There are no delete tools. Every call is audited without storing arguments or pa
 - Every personal-data endpoint requires authentication. Share links are tokenised, scoped to a date range and expire.
 - Health-data consent is recorded explicitly, and writes through the MCP server fail without it.
 - Weather context is optional and only computed once a location is set.
-- Account deletion and self-service data export are available from privacy settings. `GET /api/user/export?format=json` returns every user-owned record in one file; `format=csv` returns a ZIP with one CSV per table. Share-link tokens, push keys, payment-provider IDs and staff-only moderation fields are left out. When adding a user-scoped table, add it to `Tables` in `internal/service/dataexport/dataexport.go`.
+- Account deletion and self-service data export are available from privacy settings. `GET /api/user/export?format=json` returns every user-owned record in one file; `format=csv` returns a ZIP with one CSV per table. Share-link tokens, push keys, payment-provider IDs and staff-only moderation fields are left out. When adding a user-scoped table, add it to `Tables` in `apps/server/internal/service/dataexport/dataexport.go`.
 
 ## Internationalisation
 
-All UI copy lives in `src/locales`. `en.json` is the source of truth; `fr.json` and `uk.json` follow it. Do not hardcode user-facing strings. `scripts/scan-i18n.mjs` finds missing keys.
+All UI copy lives in `packages/locales`. `en.json` is the source of truth; `fr.json` and `uk.json` follow it. Do not hardcode user-facing strings. `npm run i18n:scan -w @migraine/client` finds missing keys.
 
 ## Deployment
 
 The app ships as one Docker image ([`Dockerfile`](Dockerfile)): the Go binary and the frontend build. Pass the `NEXT_PUBLIC_*` variables as build arguments (they are inlined into the frontend) and everything else as runtime environment, point `DATABASE_URL` at hosted Postgres, and set `NEXT_PUBLIC_APP_URL` to the public URL so metadata and the sitemap are correct. Migrations run once per server process on boot under an advisory lock, so a rolling deploy is safe. The image runs as root so it can write to a persistent disk mounted for `FILES_STORAGE_PATH`; the server listens on `PORT`.
 
-Without Docker (a native Node service, as on Render): the build needs Go next to Node. Build command `curl -fsSL https://go.dev/dl/go1.27.4.linux-amd64.tar.gz | tar -xz -C /tmp && export PATH=/tmp/go/bin:$PATH && npm ci && npm run build`, start command `npm run start` (the Go binary serving `web/dist`).
+Without Docker (a native Node service, as on Render): the build needs Go next to Node. Build command `curl -fsSL https://go.dev/dl/go1.27.4.linux-amd64.tar.gz | tar -xz -C /tmp && export PATH=/tmp/go/bin:$PATH && npm ci && npm run build`, start command `npm run start` (the Go binary serving `apps/client/dist`).
 
 Scheduled work is exposed as HTTP endpoints under `/api/cron/*` (daily risk, insights, medication reminders, program reminders, solar activity, stale-attack reminders). Call them from your scheduler with `CRON_SECRET`.
 

@@ -1,0 +1,32 @@
+{
+  "name": "@migraine/db",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The database schema (drizzle-kit authors the migrations from it) and the medication catalog seed.",
+  "exports": {
+    "./schema": "./src/schema.ts",
+    "./appointmentPrep": "./src/appointmentPrep.ts"
+  },
+  "scripts": {
+    "generate": "drizzle-kit generate",
+    "migrate": "dotenv -e ../../.env.production -- drizzle-kit migrate",
+    "seed": "dotenv -e ../../.env.production -- tsx seed/db-seed.ts",
+    "studio": "dotenv -e ../../.env.production -- drizzle-kit studio",
+    "lint": "eslint .",
+    "check-types": "tsc --noEmit --pretty",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.4"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "dotenv-cli": "^11.1.0",
+    "drizzle-kit": "^0.31.11",
+    "pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vitest": "^5.1.0"
+  }
+}
