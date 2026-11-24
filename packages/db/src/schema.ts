@@ -1011,6 +1011,11 @@ export const solarActivitySnapshotSchema = pgTable(
         table.timestampUtc,
         table.source,
       ),
+      // The latest reading of one source (the Kp aggregate reads five).
+      sourceTimestampIdx: index('solar_activity_source_timestamp_idx').on(
+        table.source,
+        table.timestampUtc,
+      ),
     };
   },
 );
@@ -1043,6 +1048,11 @@ export const weatherPainIndexSnapshotSchema = pgTable(
       userIdTimestampIdx: index('wpi_snapshot_user_id_timestamp_idx').on(
         table.userId,
         table.timestampLocal,
+      ),
+      // A user's latest snapshot (the current WPI).
+      userIdCreatedAtIdx: index('wpi_snapshot_user_id_created_at_idx').on(
+        table.userId,
+        table.createdAt,
       ),
     };
   },
@@ -1559,10 +1569,6 @@ export const dailyDiaryEntrySchema = pgTable(
   (table) => {
     return {
       userLocalDateUidx: uniqueIndex('daily_diary_entry_user_id_local_date_uidx').on(
-        table.userId,
-        table.localDate,
-      ),
-      userLocalDateIdx: index('daily_diary_entry_user_id_local_date_idx').on(
         table.userId,
         table.localDate,
       ),

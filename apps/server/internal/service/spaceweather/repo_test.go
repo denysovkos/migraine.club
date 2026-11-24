@@ -93,3 +93,26 @@ func TestAggregateWithEmptyDatabase(t *testing.T) {
 	out, _ := httpx.Marshal(spaceweather.AggregateJSON(agg))
 	require.Equal(t, `{"avgKp":null,"sourcesUsed":0,"computedAt":"2025-12-20T10:30:00.000Z","minKp":null,"maxKp":null,"spread":null,"noaaScale":null,"lastStorm":null,"error":"Kp not available","readings":[]}`, string(out))
 }
+
+// Each source contributes its latest row; older rows of the same source and
+// rows of other sources (the WPI's kp_aggregate) are ignored.
+func TestAggregateReadsTheLatestRowOfEachSource(t *testing.T) {
+	pool := testdb.New(t)
+	repo := &spaceweather.Repo{Q: q.New(pool)}
+	ctx := context.Background()
+	now := ts("2025-12-20T10:30:00Z")
+	insert := func(source string, at time.Time, kp float64) {
+		_, err := pool.Exec(ctx, `INSERT INTO solar_activity_snapshot (timestamp_utc, kp_index, source, raw, created_at) VALUES ($1, $2, $3, '{}', $4)`, at, kp, source, at.UTC())
+		require.NoError(t, err)
+	}
+	insert("noaa_now", now.Add(-30*time.Minute), 1)
+	insert("noaa_now", now.Add(-5*time.Minute), 3)
+	insert("gfz", now.Add(-2*time.Hour), 5)
+	insert("gfz", now.Add(-time.Hour), 4)
+	insert("kp_aggregate", now.Add(-time.Minute), 9)
+
+	agg, err := repo.AggregateFromDB(ctx, now)
+	require.NoError(t, err)
+	require.Equal(t, 2, agg.SourcesUsed)
+	require.InDelta(t, (3.0+4.0)/2, *agg.AvgKp, 1e-9)
+}

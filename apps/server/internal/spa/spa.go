@@ -4,6 +4,8 @@
 package spa
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"io/fs"
 	"net/http"
@@ -12,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/denysovkos/migraine.club/internal/auth"
+	"github.com/denysovkos/migraine.club/internal/httpx"
 )
 
 // Route is one page pattern of routes.json.
@@ -34,11 +37,14 @@ type Config struct {
 
 // Handler serves the SPA.
 type Handler struct {
-	dist   fs.FS
-	shell  string
-	heads  map[string]map[string]string
-	routes []Route
-	config string
+	// The build's files, read once: the build does not change while the
+	// server runs. gzipped holds the compressible ones, compressed once.
+	files   map[string][]byte
+	gzipped map[string][]byte
+	shell   string
+	heads   map[string]map[string]string
+	routes  []Route
+	config  string
 }
 
 // nextVary is the Vary header Next put on what it rendered.
@@ -53,7 +59,10 @@ func New(dist fs.FS, cfg Config) (*Handler, error) {
 	if err != nil {
 		return nil, err
 	}
-	h := &Handler{dist: dist, shell: string(shell)}
+	h := &Handler{shell: string(shell)}
+	if h.files, h.gzipped, err = loadFiles(dist); err != nil {
+		return nil, err
+	}
 	for name, dst := range map[string]any{"heads.json": &h.heads, "routes.json": &h.routes} {
 		b, err := fs.ReadFile(dist, name)
 		if err != nil {
@@ -87,20 +96,70 @@ var contentTypes = map[string]string{
 }
 
 func (h *Handler) file(name string) ([]byte, bool) {
-	if name == "" || name == "index.html" || name == "heads.json" || name == "routes.json" {
-		return nil, false
+	b, ok := h.files[name]
+	return b, ok
+}
+
+// GzipLevel is the compression level of the server's gzip responses.
+const GzipLevel = 5
+
+// loadFiles reads every file the handler serves as is, and gzips those the
+// compression middleware would gzip on every request.
+func loadFiles(dist fs.FS) (files, gzipped map[string][]byte, err error) {
+	files, gzipped = map[string][]byte{}, map[string][]byte{}
+	err = fs.WalkDir(dist, ".", func(name string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
+			return err
+		}
+		if name == "index.html" || name == "heads.json" || name == "routes.json" {
+			return nil
+		}
+		b, err := fs.ReadFile(dist, name)
+		if err != nil {
+			return err
+		}
+		files[name] = b
+		if httpx.Compressible(contentType(name)) {
+			var buf bytes.Buffer
+			zw, err := gzip.NewWriterLevel(&buf, GzipLevel)
+			if err != nil {
+				return err
+			}
+			if _, err := zw.Write(b); err != nil {
+				return err
+			}
+			if err := zw.Close(); err != nil {
+				return err
+			}
+			gzipped[name] = buf.Bytes()
+		}
+		return nil
+	})
+	return files, gzipped, err
+}
+
+func contentType(name string) string {
+	if ct := contentTypes[path.Ext(name)]; ct != "" {
+		return ct
 	}
-	b, err := fs.ReadFile(h.dist, name)
-	return b, err == nil
+	return "application/octet-stream"
+}
+
+// acceptsGzip is the compression middleware's choice of gzip: any listed
+// encoding containing "gzip" (it prefers gzip to deflate).
+func acceptsGzip(r *http.Request) bool {
+	for _, v := range strings.Split(strings.ToLower(r.Header.Get("Accept-Encoding")), ",") {
+		if strings.Contains(v, "gzip") {
+			return true
+		}
+	}
+	return false
 }
 
 // static serves a build file: hashed bundles for a year, public/ files as
 // Next did (public, max-age=0), robots.txt and sitemap.xml as metadata routes.
 func (h *Handler) static(w http.ResponseWriter, r *http.Request, name string, body []byte) {
-	ct := contentTypes[path.Ext(name)]
-	if ct == "" {
-		ct = "application/octet-stream"
-	}
+	ct := contentType(name)
 	switch {
 	case strings.HasPrefix(name, "assets/"):
 		w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
@@ -110,6 +169,15 @@ func (h *Handler) static(w http.ResponseWriter, r *http.Request, name string, bo
 		w.Header().Set("Cache-Control", "public, max-age=0")
 	}
 	w.Header().Set("Content-Type", ct)
+	if gz, ok := h.gzipped[name]; ok && r.Method == http.MethodGet && acceptsGzip(r) {
+		// What the compression middleware would send, without compressing
+		// the same bytes on every request; it leaves encoded bodies alone.
+		w.Header().Set("Content-Encoding", "gzip")
+		w.Header().Add("Vary", "Accept-Encoding")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(gz)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	if r.Method == http.MethodHead {
 		return

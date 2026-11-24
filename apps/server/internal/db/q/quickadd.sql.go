@@ -305,30 +305,38 @@ func (q *Queries) PatchIntake(ctx context.Context, arg PatchIntakeParams) error 
 	return err
 }
 
-const recentIntakesForMed = `-- name: RecentIntakesForMed :many
-SELECT dose, unit, unit_is_custom, taken_at FROM medication_intakes
-WHERE user_id = $1 AND user_medication_id = $2 AND taken_at >= $3
-ORDER BY taken_at DESC
-LIMIT 200
+const recentIntakesForMeds = `-- name: RecentIntakesForMeds :many
+SELECT user_medication_id::text AS user_medication_id, dose, unit, unit_is_custom, taken_at FROM (
+  SELECT user_medication_id, dose, unit, unit_is_custom, taken_at,
+    row_number() OVER (PARTITION BY user_medication_id ORDER BY taken_at DESC) AS n
+  FROM medication_intakes
+  WHERE user_id = $1 AND user_medication_id = ANY($2::uuid[]) AND taken_at >= $3
+) recent
+WHERE n <= 200
+ORDER BY user_medication_id, taken_at DESC
 `
 
-type RecentIntakesForMedRow struct {
-	Dose         *string       `json:"dose"`
-	Unit         *string       `json:"unit"`
-	UnitIsCustom bool          `json:"unitIsCustom"`
-	TakenAt      jsontime.Time `json:"takenAt"`
+type RecentIntakesForMedsRow struct {
+	UserMedicationID string        `json:"userMedicationId"`
+	Dose             *string       `json:"dose"`
+	Unit             *string       `json:"unit"`
+	UnitIsCustom     bool          `json:"unitIsCustom"`
+	TakenAt          jsontime.Time `json:"takenAt"`
 }
 
-func (q *Queries) RecentIntakesForMed(ctx context.Context, userID string, userMedicationID *string, windowStart jsontime.Time) ([]RecentIntakesForMedRow, error) {
-	rows, err := q.db.Query(ctx, recentIntakesForMed, userID, userMedicationID, windowStart)
+// The latest 200 intakes of each of the medications, newest first: one
+// query for all the suggestions instead of one per medication.
+func (q *Queries) RecentIntakesForMeds(ctx context.Context, userID string, ids []string, windowStart jsontime.Time) ([]RecentIntakesForMedsRow, error) {
+	rows, err := q.db.Query(ctx, recentIntakesForMeds, userID, ids, windowStart)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []RecentIntakesForMedRow{}
+	items := []RecentIntakesForMedsRow{}
 	for rows.Next() {
-		var i RecentIntakesForMedRow
+		var i RecentIntakesForMedsRow
 		if err := rows.Scan(
+			&i.UserMedicationID,
 			&i.Dose,
 			&i.Unit,
 			&i.UnitIsCustom,

@@ -18,11 +18,17 @@ FROM user_medications um
 LEFT JOIN medications_catalog mc ON um.catalog_medication_id = mc.id
 WHERE um.user_id = @user_id AND um.id = ANY(@ids::uuid[]);
 
--- name: RecentIntakesForMed :many
-SELECT dose, unit, unit_is_custom, taken_at FROM medication_intakes
-WHERE user_id = @user_id AND user_medication_id = @user_medication_id AND taken_at >= @window_start
-ORDER BY taken_at DESC
-LIMIT 200;
+-- name: RecentIntakesForMeds :many
+-- The latest 200 intakes of each of the medications, newest first: one
+-- query for all the suggestions instead of one per medication.
+SELECT user_medication_id::text AS user_medication_id, dose, unit, unit_is_custom, taken_at FROM (
+  SELECT user_medication_id, dose, unit, unit_is_custom, taken_at,
+    row_number() OVER (PARTITION BY user_medication_id ORDER BY taken_at DESC) AS n
+  FROM medication_intakes
+  WHERE user_id = @user_id AND user_medication_id = ANY(@ids::uuid[]) AND taken_at >= @window_start
+) recent
+WHERE n <= 200
+ORDER BY user_medication_id, taken_at DESC;
 
 -- name: UserMedForCatalog :one
 SELECT id FROM user_medications WHERE user_id = @user_id AND catalog_medication_id = @catalog_medication_id LIMIT 1;

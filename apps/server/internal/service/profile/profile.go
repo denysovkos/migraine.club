@@ -53,6 +53,10 @@ type Hints struct {
 	AcceptLanguage                *string
 }
 
+// HintsFunc looks the hints up. GetOrCreate calls it only when it needs
+// them: for a new record, or a record without a display name.
+type HintsFunc func(context.Context) (Hints, error)
+
 func deref(s *string) string {
 	if s == nil {
 		return ""
@@ -112,10 +116,14 @@ type Service struct {
 func (s *Service) now() jsontime.Time { return jsontime.New(s.Now()) }
 
 // GetOrCreate is getOrCreateProfile.
-func (s *Service) GetOrCreate(ctx context.Context, userID string, h Hints) (Profile, error) {
+func (s *Service) GetOrCreate(ctx context.Context, userID string, hints HintsFunc) (Profile, error) {
 	existing, err := s.Q.GetUser(ctx, userID)
 	if err == nil {
 		if existing.DisplayName == "" {
+			h, err := hints(ctx)
+			if err != nil {
+				return Profile{}, err
+			}
 			name := DeriveDisplayName(userID, deref(h.FirstName), deref(h.LastName), deref(h.Username))
 			updated, err := s.Q.SetUserDisplayName(ctx, name, s.now(), userID)
 			if err == nil {
@@ -132,6 +140,10 @@ func (s *Service) GetOrCreate(ctx context.Context, userID string, h Hints) (Prof
 		return Profile{}, err
 	}
 
+	h, err := hints(ctx)
+	if err != nil {
+		return Profile{}, err
+	}
 	name := DeriveDisplayName(userID, deref(h.FirstName), deref(h.LastName), deref(h.Username))
 	lang := DetectPreferredLanguage(deref(h.ClerkLocale), deref(h.AcceptLanguage))
 
