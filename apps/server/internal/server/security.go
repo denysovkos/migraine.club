@@ -10,8 +10,8 @@ import (
 // analytics script, geocoding). Enforcing a guess could break sign-in.
 var contentSecurityPolicy = strings.Join([]string{
 	"default-src 'self'",
-	"script-src 'self' https://migraine.club https://*.clerk.accounts.dev https://clerk.migraine.club https://challenges.cloudflare.com",
-	"connect-src 'self' https://migraine.club https://*.clerk.accounts.dev https://clerk.migraine.club https://nominatim.openstreetmap.org",
+	"script-src 'self' https://migraine.club https://*.clerk.accounts.dev https://clerk.migraine.club https://challenges.cloudflare.com https://www.googletagmanager.com",
+	"connect-src 'self' https://migraine.club https://*.clerk.accounts.dev https://clerk.migraine.club https://nominatim.openstreetmap.org https://www.google-analytics.com https://*.google-analytics.com",
 	"img-src 'self' data: blob: https://img.clerk.com",
 	"style-src 'self' 'unsafe-inline'",
 	"font-src 'self' data:",

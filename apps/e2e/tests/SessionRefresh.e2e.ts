@@ -44,7 +44,10 @@ test('API calls wait for a fresh session token when the cookie has expired', asy
   const stale = jwt({ iat: now - 600, exp: now - 540 });
   const cookieHeaders: Promise<string>[] = [];
   const onRequest = (req: import('@playwright/test').Request) => {
-    if (new URL(req.url()).pathname.startsWith('/api/')) {
+    // The app's own API calls. CSP violation reports are sent by the
+    // browser itself, outside the page's fetch, so the guard cannot hold them.
+    const { pathname } = new URL(req.url());
+    if (pathname.startsWith('/api/') && pathname !== '/api/csp-report') {
       cookieHeaders.push(req.allHeaders().then(h => h.cookie ?? '', () => ''));
     }
   };
