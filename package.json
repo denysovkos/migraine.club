@@ -1,11 +1,11 @@
 {
   "name": "migraine-club",
   "version": "1.7.1",
+  "private": true,
+  "packageManager": "npm@11.20.0",
   "engines": {
     "node": ">=26.13.0"
   },
-  "private": true,
-  "packageManager": "npm@11.20.0",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -77,7 +77,12 @@
           "npmPublish": false
         }
       ],
-      "@semantic-release/git",
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version} [skip ci] [skip render]\n\n${nextRelease.notes}"
+        }
+      ],
       "@semantic-release/github"
     ]
   },
