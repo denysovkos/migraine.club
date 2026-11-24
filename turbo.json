@@ -63,6 +63,8 @@
         "*.ts",
         "*.mjs",
         "*.js",
+        "turbo.json",
+        "render.yaml",
         ".github/**"
       ]
     }

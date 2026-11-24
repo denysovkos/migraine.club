@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "dotenv -c -e ../../.env -- go run ./cmd/server",
+    "migrate": "dotenv -c -e ../../.env -- go run ./cmd/server migrate",
     "build": "make build",
     "lint": "make lint",
     "test": "make test",

@@ -1,0 +1,79 @@
+# Render Blueprint for production: the Docker image from ./Dockerfile (the Go
+# server with the client build), as CI builds and tests it.
+#
+# Render cannot switch an existing service from the Node runtime to Docker, so
+# this describes a new service; docs/DEPLOY.md has the steps to move over.
+#
+# Migrations run when the server starts (under an advisory lock). Secrets are
+# never stored here: every variable is `sync: false`, so Render asks for its
+# value when the Blueprint is applied. NEXT_PUBLIC_* values are passed to the
+# Docker build as build arguments, since they are inlined into the client.
+services:
+  - type: web
+    name: migraine-club
+    runtime: docker
+    repo: https://github.com/denysovkos/migraine.club
+    branch: main
+    region: frankfurt
+    plan: starter
+    # The persistent disk can only be attached to a single instance.
+    numInstances: 1
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    # Changes that cannot affect the image do not trigger a deploy.
+    buildFilter:
+      ignoredPaths:
+        - docs/**
+        - '**/*.md'
+        - apps/e2e/**
+        - .github/**
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      # Build time and runtime (inlined into the client, read by the server).
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_SIGN_IN_URL
+        value: /sign-in
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: NEXT_PUBLIC_VAPID_PUBLIC_KEY
+        sync: false
+      - key: NEXT_PUBLIC_SENTRY_DSN
+        sync: false
+      # Runtime only.
+      - key: DATABASE_URL
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: BILLING_PLAN_ENV
+        sync: false
+      - key: CRON_SECRET
+        sync: false
+      - key: OPENWEATHERMAP_API_KEY
+        sync: false
+      - key: NASA_API_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        sync: false
+      - key: LOGTAIL_SOURCE_TOKEN
+        sync: false
+      - key: LOGTAIL_ENDPOINT
+        sync: false
+      # Doctor verification uploads, on the persistent disk.
+      - key: FILES_STORAGE_PATH
+        sync: false
+      - key: ENABLE_STALE_EPISODE_REMINDER
+        sync: false
