@@ -39,7 +39,7 @@ type goldenCase struct {
 }
 
 // TestEngineGolden compares byte for byte with computeInsightsForUser's
-// payloads (scripts/insights-golden.mts), runtimeMs zeroed.
+// payloads (recorded by scripts/insights-golden.mts, now in git history), runtimeMs zeroed.
 func TestEngineGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/engine.json")
 	require.NoError(t, err)

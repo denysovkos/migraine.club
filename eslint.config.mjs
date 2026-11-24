@@ -22,9 +22,8 @@ export default antfu({
 
   ignores: [
     'migrations/**/*',
-    'next-env.d.ts',
     'reestr.json',
-    // Go code and goldens generated from the TS implementation.
+    // Go test fixtures.
     'internal/**/testdata/**',
     'bin/**',
   ],

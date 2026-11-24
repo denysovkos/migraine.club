@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// goldenSchemas are the Go equivalents of the schemas in scripts/zod-golden.mts.
+// goldenSchemas are the Go equivalents of the schemas in scripts/zod-golden.mts (now in git history).
 var goldenSchemas = map[string]Schema{
 	"string":                 String(),
 	"string_min_max":         String().Min(2).Max(4),

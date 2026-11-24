@@ -26,31 +26,10 @@ These instructions apply to the entire repository unless a deeper `AGENTS.md` ov
 - `src/app/[locale]`: localized UI routes.
 - `src/components`: shared UI building blocks.
 - `src/features`: feature-specific UI and logic.
-- `src/services`, `src/repositories`: shared types and client-side helpers; the server logic is in `internal/service`.
+- `src/services`: API response types and client-side helpers; the server logic is in `internal/service`.
 - `src/models`: schema (drizzle-kit) and related types.
 - `tests`: automated tests, including Playwright coverage.
 - `scripts`: maintenance and utility scripts.
-
-## Cursor Personas
-The `.cursor` folder exists and currently contains these persona/rule files:
-
-- `.cursor/backend-engineer.rule`: use for API design, services, repositories, database boundaries, privacy-aware backend logic, and observability decisions.
-- `.cursor/frontend-engineer.rule`: use for React/Next.js UI work, component structure, state handling, responsiveness, and accessibility.
-- `.cursor/design-ui-ux.rule`: use for visual design, layout, design tokens, component presentation, and migraine-friendly UX choices.
-- `.cursor/product-manager.rule`: use for feature scoping, PRD-lite work, user stories, acceptance criteria, and product tradeoff framing.
-- `.cursor/qa.rule`: use for test strategy, regression planning, risk-based coverage, and automation guidance.
-- `.cursor/translations.rule`: use for any user-facing copy changes, translation-key additions, and i18n consistency checks.
-
-## Persona Usage
-- Pick the persona that matches the task before making substantial changes.
-- Combine personas when needed:
-  - frontend + design-ui-ux for UI implementation;
-  - frontend + translations for visible copy changes;
-  - backend + qa for endpoint and service changes;
-  - product-manager before large feature scoping or ambiguous requests.
-- Treat `translations.rule` as mandatory whenever a change adds or edits user-facing text.
-- If a rule conflicts with the live repository setup, follow the repository implementation while preserving the rule's intent.
-- When summarizing work, mention which persona guidance shaped the solution if it materially affected the approach.
 
 ## Common Commands
 - Install dependencies: `npm install`

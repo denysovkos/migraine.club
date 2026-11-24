@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestJSONSyntaxMessageGolden compares against V8 (scripts/json-syntax-golden.mts).
+// TestJSONSyntaxMessageGolden compares against V8 (recorded by scripts/json-syntax-golden.mts, now in git history).
 func TestJSONSyntaxMessageGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/json_syntax.json")
 	require.NoError(t, err)

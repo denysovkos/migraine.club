@@ -14,25 +14,6 @@
     "dashboard": "Tableau de bord",
     "mcp": "MCP"
   },
-  "Hero": {
-    "follow_twitter": "Suivez Migrennity",
-    "title": "Migrennity – là où le suivi des migraines rencontre une communauté bienveillante.",
-    "description": "Suivez vos migraines, comprenez vos déclencheurs et obtenez le soutien de personnes et de médecins qui comprennent vraiment. Pas juste un autre tracker – une famille migraine.",
-    "primary_button": "Commencer avec Migrennity",
-    "secondary_button": "Voir comment ça marche",
-    "tagline": "Suivez, apprenez, connectez, épanouissez-vous – Migrennity est plus qu'une app, c'est une famille migraine.",
-    "preview_title": "Douleur et météo d'aujourd'hui",
-    "preview_subtitle": "Saisie rapide • Indice de Douleur Météo • Déclencheurs",
-    "preview_wpi_badge": "IPD {score} / 10",
-    "preview_last7_title": "7 derniers jours",
-    "preview_last7_value": "4 attaques • surtout pendant les tempêtes",
-    "preview_top_triggers_label": "Déclencheurs principaux",
-    "preview_top_triggers_value": "Météo • Stress • Sommeil",
-    "community_checkin_title": "Check-in communauté",
-    "community_checkin_quote": "\"Vous n'êtes pas seul(e). Voilà comment je me prépare les jours à haut risque...\"",
-    "community_doctor_reply": "Dr Lee a répondu en 5 min"
-  },
-  "MarketingHome": {},
   "TrustBar": {
     "evidence_first": "Fondé sur les preuves",
     "privacy_first": "Confidentialité d'abord",
@@ -87,45 +68,6 @@
     "desktop_step3": "Confirmez pour créer l'app de bureau.",
     "troubleshooting_title": "Dépannage",
     "troubleshooting_item2": "Notifications manquantes ? Vérifiez les autorisations du navigateur."
-  },
-  "Sponsors": {
-    "title": "Sponsorisé par"
-  },
-  "Features": {
-    "section_subtitle": "Fonctionnalités",
-    "section_title": "Débloquer le plein potentiel du SaaS Template",
-    "section_description": "Un template gratuit et open-source de landing page pour votre entreprise SaaS, construit avec React, TypeScript, Shadcn UI et Tailwind CSS.",
-    "feature1_title": "Node.js",
-    "feature2_title": "React",
-    "feature3_title": "Tailwind CSS",
-    "feature4_title": "TypeScript",
-    "feature5_title": "Shadcn UI",
-    "feature6_title": "ESLint",
-    "feature_description": "Un template gratuit et open-source de landing page pour votre entreprise SaaS, construit avec React, TypeScript, Shadcn UI et Tailwind CSS."
-  },
-  "Pricing": {
-    "section_subtitle": "Fonctionnalités",
-    "section_title": "Débloquer le plein potentiel du SaaS Template",
-    "section_description": "Un template gratuit et open-source de landing page pour votre entreprise SaaS, construit avec React, TypeScript, Shadcn UI et Tailwind CSS.",
-    "button_text": "Démarrer"
-  },
-  "PricingPlan": {
-    "feature_team_member": "{number} membres",
-    "feature_website": "{number} sites internet",
-    "feature_storage": "{number} Go de stockage",
-    "feature_transfer": "{number} TB de transfert",
-    "feature_email_support": "Support par e-mail",
-    "plan_interval_month": "mois",
-    "plan_interval_year": "an"
-  },
-  "FAQ": {
-    "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam enim dui, id consequat turpis ullamcorper ac. Mauris id quam dolor. Nullam eu egestas turpis. Proin risus elit, sollicitudin in mi a, accumsan euismod turpis. In euismod mi sed diam tristique hendrerit."
-  },
-  "CTA": {
-    "title": "Prêt à commencer le suivi avec Migrennity ?",
-    "description": "Enregistrez vos épisodes rapidement, comprenez vos déclencheurs et apportez des rapports clairs à vos consultations médicales.",
-    "button_text": "Commencer avec Migrennity"
   },
   "Footer": {
     "product": "Produit",
@@ -1083,29 +1025,11 @@
     "bed_time": "Heure de coucher",
     "wake_time": "Heure de lever"
   },
-  "AcuteMedTimingStatusCard": {
-    "header": "Timing des médicaments aigus · cible {minutes} min après le début",
-    "how_it_works": "Enregistré automatiquement quand vous notez une attaque et une dose aiguë. Aucune action quotidienne nécessaire.",
-    "view_progress": "Voir les progrès"
-  },
-  "AttackTimingChip": {
-    "not_taken_yet": "Prenez le médicament aigu dans les {minutes} min après le début",
-    "within_target": "{minutes} min après le début · dans la cible de {target} min",
-    "past_target": "{minutes} min après le début · au-delà de la cible de {target} min"
-  },
   "ProgramSuggestion": {
     "label": "Programme suggéré",
     "see_program": "Voir le programme",
     "not_now": "Pas maintenant",
     "dismiss": "Ignorer"
-  },
-  "ProgramDailyChip": {
-    "header": "Régularité du sommeil · cible {bed}–{wake}",
-    "on_target": "Dans la cible",
-    "off_track": "Hors cible",
-    "skip": "Passer",
-    "saved": "Enregistré",
-    "save_failed": "Impossible d'enregistrer"
   },
   "ProgramProgress": {
     "loading": "Chargement...",
@@ -1272,13 +1196,6 @@
     "msq_blueprint_ef": "Emotional (Q12–Q14) : impact émotionnel (frustration, se sentir un fardeau, peur de décevoir).",
     "msq_summary": "Dernier MSQ (0–100) : {score}",
     "msq_summary_empty": "Optionnel : remplissez MSQ pour suivre la QoL."
-  },
-  "DashboardIndex": {
-    "title_bar": "Tableau de bord",
-    "title_bar_description": "Bienvenue sur votre tableau de bord",
-    "log_episode_button": "Enregistrer une attaque",
-    "recent_episodes_title": "Attaques récentes",
-    "recent_episodes_description": "Visualisez et gérez vos attaques de migraine"
   },
   "DashboardHome": {
     "today_title_generic": "Comment se passe votre journée ?",
@@ -1475,60 +1392,8 @@
     "close_menu": "Fermer le menu",
     "quick_log": "Journal rapide"
   },
-  "episodes": {
-    "quickLog": {
-      "title": "Enregistrement rapide",
-      "description": "Enregistrez le niveau de douleur maintenant. Vous pouvez ajouter les détails plus tard.",
-      "intensity_label": "Niveau de douleur (1–5)",
-      "start_now": "Début : Maintenant",
-      "ongoing_toggle": "En cours",
-      "log_now": "Enregistrer",
-      "logging": "Enregistrement...",
-      "error_generic": "Une erreur s'est produite. Veuillez réessayer."
-    },
-    "ongoingBanner": {
-      "in_progress_since": "Attaque en cours depuis {time}",
-      "type_migraine": "Migraine",
-      "type_headache": "Céphalée",
-      "pain_level_label": "Niveau de douleur :",
-      "edit_details": "Modifier les détails",
-      "end_now": "Terminer l'attaque",
-      "ending": "Fin en cours...",
-      "error_generic": "Échec de la fin de l'attaque. Veuillez réessayer."
-    }
-  },
-  "UserProfile": {
-    "title_bar": "Profil utilisateur",
-    "title_bar_description": "Afficher et gérer votre profil utilisateur"
-  },
-  "Billing": {
-    "title_bar": "Facturation",
-    "title_bar_description": "Gérer votre facturation et votre abonnement"
-  },
-  "BillingOptions": {},
-  "CheckoutConfirmation": {
-    "title_bar": "Confirmation du paiement"
-  },
   "DataTable": {
     "no_results": "Aucun résultat."
-  },
-  "Todos": {
-    "title_bar": "Liste de Todos",
-    "title_bar_description": "Afficher et gérer votre liste de todos"
-  },
-  "TodoTableColumns": {
-    "edit": "Modifier",
-    "delete": "Supprimer"
-  },
-  "AddTodo": {
-    "title_bar": "Ajouter une todo"
-  },
-  "EditTodo": {
-    "title_bar": "Editer le todo"
-  },
-  "TodoForm": {
-    "title_label": "Titre",
-    "submit_button": "Envoyer"
   },
   "Episodes": {
     "type_migraine": "Migraine",
@@ -1753,28 +1618,6 @@
     "uvi": "IUV",
     "education": "L'Indice de Douleur Météo combine la pression, l'humidité et d'autres facteurs en un seul score. Des scores plus élevés signifient des conditions météo plus susceptibles de contribuer aux crises de migraine chez certaines personnes."
   },
-  "WeatherSettings": {
-    "title": "Paramètres Météo",
-    "description": "Configurez votre emplacement pour les prédictions de migraine basées sur la météo",
-    "location_label": "Nom du lieu",
-    "timezone_label": "Fuseau horaire",
-    "units_label": "Unités",
-    "units_metric": "Métrique",
-    "units_imperial": "Impérial",
-    "save_button": "Enregistrer",
-    "saving": "Enregistrement..."
-  },
-  "ForecastAlert": {
-    "title": "Alerte Tempête Solaire",
-    "activity_title": "Avertissement d'activité solaire",
-    "solar_storm_warning": "Tempête géomagnétique attendue",
-    "high_activity_warning": "Activité solaire élevée détectée",
-    "kp_forecast": "Prévision Kp: {kp}",
-    "observed_time": "Observé: {time} UTC",
-    "migraine_risk": "Risque de migraine plus élevé possible",
-    "prepare_message": "Pensez à préparer vos médicaments",
-    "dismiss": "Fermer"
-  },
   "Community": {
     "nav_title": "Communauté",
     "feed_title": "Fil de la communauté",
@@ -1851,12 +1694,6 @@
     "error_loading": "Échec du chargement. Veuillez réessayer.",
     "empty_feed": "Pas encore de posts. Soyez le premier à partager !",
     "empty_comments": "Pas encore de commentaires. Lancez la conversation !"
-  },
-  "DashboardCommunity": {
-    "preview_title": "Communauté",
-    "preview_description": "Découvrez ce que partagent les autres",
-    "see_all": "Voir tout",
-    "join_conversation": "Rejoindre la conversation"
   },
   "Reports": {
     "title": "Rapports",
@@ -2448,16 +2285,6 @@
     "spread": "Écart : {spread}",
     "last_storm_peak": "Dernier pic de tempête : Kp {kp} à {time}"
   },
-  "WpiChart": {
-    "title": "IPD & Activité solaire",
-    "title_with_days": "IPD & Activité solaire ({days} derniers jours)",
-    "no_data": "Pas encore de données IPD. Les données apparaîtront avec l'utilisation.",
-    "wpi_label": "IPD :",
-    "kp_label": "Kp :",
-    "migraine_pain": "Migraine : Douleur {intensity}",
-    "migraine_episode": "Épisode de migraine",
-    "kp_index_legend": "Indice Kp"
-  },
   "WeatherSettingsForm": {
     "use_current_location": "Utiliser la position actuelle",
     "auto_detect_description": "Détecter automatiquement votre position via votre navigateur",
@@ -2485,25 +2312,6 @@
     "error_position_unavailable": "Les informations de localisation ne sont pas disponibles.",
     "error_timeout": "La demande de localisation a expiré.",
     "error_generic": "Une erreur s'est produite lors de la détection de votre position."
-  },
-  "LatestEpisodesWithWpi": {
-    "title": "Attaques récentes",
-    "view_all": "Voir tout",
-    "no_episodes": "Aucune attaque enregistrée.",
-    "log_first_episode": "Enregistrer votre première attaque →",
-    "ongoing": "En cours",
-    "pain_label": "Douleur :",
-    "wpi_label": "IPD :",
-    "kp_label": "Kp :",
-    "delta_pressure": "ΔP :",
-    "humidity": "Humidité :",
-    "temp_swing": "Variation temp :",
-    "level_low": "Faible",
-    "level_moderate": "Modéré",
-    "level_high": "Élevé",
-    "level_very_high": "Très élevé",
-    "error_fetch": "Impossible de récupérer les attaques.",
-    "error_generic": "Une erreur est survenue."
   },
   "DoctorVerification": {
     "important_title": "Important",

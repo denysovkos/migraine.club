@@ -26,7 +26,7 @@ type goldenCase struct {
 }
 
 // TestScheduleGolden runs the TS schedule functions' recorded results
-// (scripts/preventives-golden.mts) against the Go port.
+// (recorded by scripts/preventives-golden.mts, now in git history) against the Go port.
 func TestScheduleGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/schedule.json")
 	require.NoError(t, err)

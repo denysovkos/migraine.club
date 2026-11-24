@@ -18,9 +18,6 @@ export default defineConfig({
   testDir: './tests',
   // Look for files with the .spec.js or .e2e.js extension
   testMatch: '*.@(spec|e2e).?(c|m)[jt]s?(x)',
-  // Checkly tests (*.check.e2e.ts) target deployed environments and assume
-  // production-only content. Skip them in local + CI runs.
-  testIgnore: '**/*.check.e2e.ts',
   // Timeout per test
   timeout: 30 * 1000,
   // Fail the build on CI if you accidentally left test.only in the source code.
@@ -72,25 +69,15 @@ export default defineConfig({
   },
 
   projects: [
-    // `setup` and `teardown` are used to run code before and after all E2E tests.
-    // These functions can be used to configure Clerk for testing purposes. For example, bypassing bot detection.
-    // In the `setup` file, you can create an account in `Test mode`.
-    // For each test, an organization can be created within this account to ensure total isolation.
-    // After all tests are completed, the `teardown` file can delete the account and all associated organizations.
-    // You can find the `setup` and `teardown` files at: https://nextjs-boilerplate.com/pro-saas-starter-kit
-    { name: 'setup', testMatch: /.*\.setup\.ts/, teardown: 'teardown' },
-    { name: 'teardown', testMatch: /.*\.teardown\.ts/ },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['setup'],
     },
     ...(process.env.CI
       ? [
           {
             name: 'firefox',
             use: { ...devices['Desktop Firefox'] },
-            dependencies: ['setup'],
           },
         ]
       : []),

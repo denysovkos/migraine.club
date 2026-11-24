@@ -15,7 +15,7 @@ type sortItem struct {
 	V  any `json:"v"`
 }
 
-// Goldens from scripts/js-sort-golden.mts (V8).
+// Goldens recorded from V8 by scripts/js-sort-golden.mts (now in git history).
 func TestSortJSGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/sort.json")
 	require.NoError(t, err)
