@@ -38,6 +38,8 @@ func New(d *app.Deps, opts Options) http.Handler {
 		resolver = auth.Mock{UserID: d.Cfg.MockUserID()}
 	}
 	r.Use(auth.Middleware(resolver))
+	// After auth, so a signed-in user is limited as one client.
+	r.Use(rateLimits(d.Cfg.RateLimitFactor, d.Clock))
 
 	r.Get("/healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)

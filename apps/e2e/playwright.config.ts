@@ -57,6 +57,9 @@ export default defineConfig({
       // The Content-Security-Policy enforced, as production should run it:
       // every spec then fails if the app loads a script the policy blocks.
       CSP_ENFORCE: 'true',
+      // Rate limits 20 times the production ones: the whole suite runs as
+      // one mock user, faster than any person clicks.
+      RATE_LIMIT_FACTOR: '20',
     },
   },
 
