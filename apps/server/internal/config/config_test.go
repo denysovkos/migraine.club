@@ -62,3 +62,22 @@ func TestDefaults(t *testing.T) {
 	require.False(t, c.RunMigrationsBoot)
 	require.EqualValues(t, 7, c.DatabasePoolMax)
 }
+
+func TestRateLimitFactor(t *testing.T) {
+	setRequired(t)
+	t.Setenv("RATE_LIMIT_FACTOR", "")
+	c, err := Load()
+	require.NoError(t, err)
+	require.Equal(t, 1, c.RateLimitFactor)
+
+	t.Setenv("RATE_LIMIT_FACTOR", "20")
+	c, err = Load()
+	require.NoError(t, err)
+	require.Equal(t, 20, c.RateLimitFactor)
+
+	for _, bad := range []string{"0", "-1", "lots"} {
+		t.Setenv("RATE_LIMIT_FACTOR", bad)
+		_, err = Load()
+		require.ErrorContains(t, err, "RATE_LIMIT_FACTOR", bad)
+	}
+}

@@ -204,6 +204,8 @@ RUN_MIGRATIONS_ON_BOOT=         # set to "false" to skip startup migrations
 FILES_STORAGE_PATH=             # doctor verification uploads
 LOGTAIL_SOURCE_TOKEN=
 SENTRY_DSN=                     # the server's Sentry project: errors and panics, scrubbed of user data
+CSP_ENFORCE=                    # "true" enforces the Content-Security-Policy, otherwise report-only
+RATE_LIMIT_FACTOR=              # multiplies the API rate limits (default 1, the e2e run uses 20)
 ```
 
 `DATABASE_URL` is marked optional in the schema, but the app has no fallback database, so set it.

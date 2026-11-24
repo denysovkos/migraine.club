@@ -56,7 +56,11 @@ type Config struct {
 	// CSPEnforce sends the Content-Security-Policy enforced instead of
 	// report-only (CSP_ENFORCE=true).
 	CSPEnforce bool
-	NodeEnv    string
+	// RateLimitFactor multiplies every rate limit (RATE_LIMIT_FACTOR,
+	// default 1). The e2e run raises it: its one mock user makes a whole
+	// suite of requests in a few minutes.
+	RateLimitFactor int
+	NodeEnv         string
 }
 
 // coerceBool mirrors zod's z.coerce.boolean(): Boolean(value), so any
@@ -101,6 +105,7 @@ func Load() (*Config, error) {
 		SentryDSN:        os.Getenv("NEXT_PUBLIC_SENTRY_DSN"),
 		ServerSentryDSN:  os.Getenv("SENTRY_DSN"),
 		CSPEnforce:       os.Getenv("CSP_ENFORCE") == "true",
+		RateLimitFactor:  1,
 		NodeEnv:          os.Getenv("NODE_ENV"),
 	}
 
@@ -123,6 +128,13 @@ func Load() (*Config, error) {
 			errs = append(errs, "OPENWEATHERMAP_TIMEOUT_MS: Expected number")
 		}
 		c.OpenWeatherMapTimeoutMs = n
+	}
+	if v := os.Getenv("RATE_LIMIT_FACTOR"); v != "" {
+		n, err := strconv.Atoi(v)
+		if err != nil || n < 1 {
+			errs = append(errs, "RATE_LIMIT_FACTOR: Expected a whole number of at least 1")
+		}
+		c.RateLimitFactor = n
 	}
 	switch c.NodeEnv {
 	case "", "test", "development", "production":
