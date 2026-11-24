@@ -119,6 +119,14 @@ func (s *Service) Suggestions(ctx context.Context, userID string) (*httpx.Object
 	for _, m := range medsRows {
 		byID[m.ID] = m
 	}
+	recent, err := s.Q.RecentIntakesForMeds(ctx, userID, ids, jsontime.New(windowStart))
+	if err != nil {
+		return nil, err
+	}
+	intakesByMed := map[string][]q.RecentIntakesForMedsRow{}
+	for _, r := range recent {
+		intakesByMed[r.UserMedicationID] = append(intakesByMed[r.UserMedicationID], r)
+	}
 	out := []any{}
 	for _, agg := range top {
 		if agg.UserMedicationID == nil {
@@ -128,10 +136,7 @@ func (s *Service) Suggestions(ctx context.Context, userID string) (*httpx.Object
 		if !ok {
 			continue
 		}
-		intakes, err := s.Q.RecentIntakesForMed(ctx, userID, agg.UserMedicationID, jsontime.New(windowStart))
-		if err != nil {
-			return nil, err
-		}
+		intakes := intakesByMed[*agg.UserMedicationID]
 		dose, unit, custom := med.DefaultDose, med.DefaultUnit, med.DefaultUnitIsCustom
 		empty := func() bool { return (dose == nil || *dose == "") && (unit == nil || *unit == "") }
 		if empty() {
@@ -161,9 +166,9 @@ func (s *Service) Suggestions(ctx context.Context, userID string) (*httpx.Object
 
 // mostCommon is mostCommonDoseUnit: the most frequent (dose, unit, custom)
 // triple, first seen wins ties (Array.prototype.sort is stable).
-func mostCommon(rows []q.RecentIntakesForMedRow) *q.RecentIntakesForMedRow {
+func mostCommon(rows []q.RecentIntakesForMedsRow) *q.RecentIntakesForMedsRow {
 	type entry struct {
-		row q.RecentIntakesForMedRow
+		row q.RecentIntakesForMedsRow
 		n   int
 		idx int
 	}

@@ -10,6 +10,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	"github.com/denysovkos/migraine.club/internal/httpx"
+	"github.com/denysovkos/migraine.club/internal/spa"
 )
 
 // What the Next server did before any route: its URL normalisation, the
@@ -190,7 +193,7 @@ func isRouteHandler(router chi.Routes, r *http.Request) bool {
 // It added Vary: Accept-Encoding whenever the type qualified, HEAD
 // included, but had nothing to compress for HEAD.
 func compress(next http.Handler) http.Handler {
-	gz := middleware.Compress(5, compressible...)(next)
+	gz := middleware.Compress(compressionLevel, httpx.CompressibleTypes...)(next)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodHead {
 			next.ServeHTTP(&headVary{ResponseWriter: w}, r)
@@ -209,7 +212,7 @@ func (h *headVary) WriteHeader(code int) {
 	if !h.done {
 		h.done = true
 		ct, _, _ := strings.Cut(h.Header().Get("Content-Type"), ";")
-		for _, c := range compressible {
+		for _, c := range httpx.CompressibleTypes {
 			if strings.EqualFold(strings.TrimSpace(ct), c) {
 				h.Header().Add("Vary", "Accept-Encoding")
 				break
@@ -226,14 +229,9 @@ func (h *headVary) Write(b []byte) (int, error) {
 	return h.ResponseWriter.Write(b)
 }
 
-// compressible is what Next's compression middleware gzipped among the
-// types this server sends. Event streams set no-transform, which it
-// respected, so they stay uncompressed.
-var compressible = []string{
-	"text/html", "text/css", "text/plain", "text/javascript", "text/xml",
-	"application/javascript", "application/json", "application/xml",
-	"application/manifest+json", "image/svg+xml", "image/x-icon",
-}
+// compressionLevel is the gzip level for responses; the client build's
+// files are compressed once at the same level (spa.GzipLevel).
+const compressionLevel = spa.GzipLevel
 
 // routeMethods answers a route handler path with a method it does not
 // export, as Next's app route module did: OPTIONS lists the methods (204),

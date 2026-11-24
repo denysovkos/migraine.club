@@ -1,6 +1,7 @@
 package user
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
@@ -60,17 +61,20 @@ func (h profileHandlers) get(w http.ResponseWriter, r *http.Request) {
 		httpx.Error(w, http.StatusInternalServerError, "Failed to fetch profile")
 	}
 
-	u, err := h.d.Users.Get(r.Context(), userID)
-	if err != nil {
-		fail(err)
-		return
-	}
-	hints := profile.Hints{AcceptLanguage: optHeader(r, "accept-language")}
-	if u != nil {
-		hints.FirstName, hints.LastName, hints.Username = u.FirstName, u.LastName, u.Username
-		if loc, ok := u.PublicMetadata["locale"].(string); ok {
-			hints.ClerkLocale = &loc
+	// The Clerk user is fetched only when the record needs a name.
+	hints := func(ctx context.Context) (profile.Hints, error) {
+		u, err := h.d.Users.Get(ctx, userID)
+		if err != nil {
+			return profile.Hints{}, err
 		}
+		hints := profile.Hints{AcceptLanguage: optHeader(r, "accept-language")}
+		if u != nil {
+			hints.FirstName, hints.LastName, hints.Username = u.FirstName, u.LastName, u.Username
+			if loc, ok := u.PublicMetadata["locale"].(string); ok {
+				hints.ClerkLocale = &loc
+			}
+		}
+		return hints, nil
 	}
 	p, err := h.svc.GetOrCreate(r.Context(), userID, hints)
 	if err != nil {

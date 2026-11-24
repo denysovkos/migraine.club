@@ -1,11 +1,13 @@
 package user_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
 	"github.com/denysovkos/migraine.club/internal/apitest"
+	"github.com/denysovkos/migraine.club/internal/auth"
 )
 
 func TestProfileGetCreatesTheRecord(t *testing.T) {
@@ -76,4 +78,36 @@ func TestProfileNotFoundAndIsolation(t *testing.T) {
 	res = e.Do(apitest.Request{Path: "/api/user/profile", User: "bob"})
 	require.Equal(t, "light", res.Map(t)["themePreference"])
 	require.Equal(t, 401, e.Do(apitest.Request{Path: "/api/user/profile"}).Status)
+}
+
+// countingUsers counts the Clerk user lookups.
+type countingUsers struct {
+	auth.MockUsers
+	gets int
+}
+
+func (c *countingUsers) Get(ctx context.Context, id string) (*auth.User, error) {
+	c.gets++
+	return c.MockUsers.Get(ctx, id)
+}
+
+// The Clerk user only feeds the name and language of a new record (or a
+// name for a record without one), so a profile that exists needs no call
+// to Clerk: it was one network round trip on every page load.
+func TestProfileGetAsksClerkOnlyForWhatItCreates(t *testing.T) {
+	e := newEnv(t)
+	users := &countingUsers{}
+	e.Deps.Users = users
+
+	require.Equal(t, 200, e.Do(apitest.Request{Path: "/api/user/profile", User: "user_c"}).Status)
+	require.Equal(t, 1, users.gets, "a new record takes its name from Clerk")
+
+	res := e.Do(apitest.Request{Path: "/api/user/profile", User: "user_c"})
+	require.Equal(t, 200, res.Status)
+	require.Equal(t, "E2E User", res.Map(t)["displayName"])
+	require.Equal(t, 1, users.gets, "an existing record is returned without asking Clerk")
+
+	e.Exec(`UPDATE "user" SET display_name = '' WHERE id = 'user_c'`)
+	require.Equal(t, "E2E User", e.Do(apitest.Request{Path: "/api/user/profile", User: "user_c"}).Map(t)["displayName"])
+	require.Equal(t, 2, users.gets, "a record without a name asks Clerk for one")
 }

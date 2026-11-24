@@ -3,7 +3,6 @@ package spaceweather
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -11,8 +10,6 @@ import (
 	"os"
 	"sync"
 	"time"
-
-	"github.com/jackc/pgx/v5"
 
 	"github.com/denysovkos/migraine.club/internal/db/q"
 	"github.com/denysovkos/migraine.club/internal/httpx"
@@ -121,27 +118,20 @@ func rowToLastStorm(row q.SolarActivitySnapshot) *Storm {
 	return &Storm{StartTime: start, EndTime: end, PeakKp: peakKp, PeakTime: peakT}
 }
 
-func (r *Repo) latest(ctx context.Context, source string) (*q.SolarActivitySnapshot, error) {
-	row, err := r.Q.LatestSolarBySource(ctx, source)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-	return &row, nil
-}
-
 // AggregateFromDB is getAggregateFromDb.
 func (r *Repo) AggregateFromDB(ctx context.Context, now time.Time) (Aggregate, error) {
 	sources := []string{"noaa_now", "noaa_forecast", "gfz", "nasa", "gfz_laststorm"}
+	latest, err := r.Q.LatestSolarBySources(ctx, sources)
+	if err != nil {
+		return Aggregate{}, err
+	}
 	rows := make([]*q.SolarActivitySnapshot, len(sources))
 	for i, s := range sources {
-		row, err := r.latest(ctx, s)
-		if err != nil {
-			return Aggregate{}, err
+		for j := range latest {
+			if latest[j].Source == s {
+				rows[i] = &latest[j]
+			}
 		}
-		rows[i] = row
 	}
 	noaaNow, noaaForecast, gfz, nasa, lastStorm := rows[0], rows[1], rows[2], rows[3], rows[4]
 

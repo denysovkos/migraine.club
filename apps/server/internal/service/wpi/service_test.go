@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/require"
 
 	"github.com/denysovkos/migraine.club/internal/db/q"
@@ -33,11 +34,16 @@ func owm(t *testing.T, body string, status int) (*httptest.Server, *int32) {
 }
 
 func newService(t *testing.T, url string) (*wpi.Service, *q.Queries) {
+	s, qs, _ := newServiceWithPool(t, url)
+	return s, qs
+}
+
+func newServiceWithPool(t *testing.T, url string) (*wpi.Service, *q.Queries, *pgxpool.Pool) {
 	pool := testdb.New(t)
 	qs := q.New(pool)
 	now := time.Date(2026, 3, 10, 12, 0, 0, 0, time.UTC)
 	return &wpi.Service{Q: qs, HTTP: http.DefaultClient, APIKey: "key", Now: func() time.Time { return now },
-		OneCallURL: url, BaseURL: url}, qs
+		OneCallURL: url, BaseURL: url}, qs, pool
 }
 
 func TestFetchWeatherAggregatesHourly(t *testing.T) {
@@ -98,3 +104,51 @@ func TestComputeStoreAndCache(t *testing.T) {
 }
 
 func wpiDate(t time.Time) jsontime.Date { return jsontime.NewDate(t) }
+
+// When a Kp reading goes stale the aggregate changes without any new row,
+// so its time (the newest source row) stays the same. The recomputed WPI
+// must point at a solar row with the Kp it was computed from: before, it
+// reused the earlier aggregate row of that time, so every later read saw a
+// Kp mismatch and recomputed (and stored) the WPI again.
+func TestCurrentRecomputesOnceWhenTheKpAggregateChanges(t *testing.T) {
+	srv, _ := owm(t, oneCall, 200)
+	s, _, pool := newServiceWithPool(t, srv.URL)
+	ctx := context.Background()
+	start := s.Now()
+	now := start
+	s.Now = func() time.Time { return now }
+	_, err := s.UpsertSettings(ctx, "u", 52.5163, 13.3777, nil, "Europe/Berlin", "metric")
+	require.NoError(t, err)
+
+	solar := func(source string, at time.Time, kp float64) {
+		_, err := pool.Exec(ctx, `INSERT INTO solar_activity_snapshot (timestamp_utc, kp_index, source, raw, created_at) VALUES ($1, $2, $3, '{}', $4)`, at, kp, source, at.UTC())
+		require.NoError(t, err)
+	}
+	solar("gfz", start.Add(-time.Hour), 5)
+	solar("noaa_now", start.Add(-5*time.Minute), 3)
+
+	first, err := s.ComputeAndStore(ctx, "u", now)
+	require.NoError(t, err)
+	require.InDelta(t, 4.0, *first.KpIndex, 1e-9, "both readings are fresh")
+
+	// Half an hour later the 1-minute NOAA reading is stale: only GFZ counts.
+	now = start.Add(30 * time.Minute)
+	cur, err := s.Current(ctx, "u")
+	require.NoError(t, err)
+	require.InDelta(t, 5.0, *cur.KpIndex, 1e-9)
+
+	snapshots := func() int {
+		var n int
+		require.NoError(t, pool.QueryRow(ctx, `SELECT count(*) FROM weather_pain_index_snapshot WHERE user_id = 'u'`).Scan(&n))
+		return n
+	}
+	require.Equal(t, 2, snapshots(), "the changed aggregate is computed once")
+
+	for range 3 {
+		now = now.Add(time.Minute)
+		again, err := s.Current(ctx, "u")
+		require.NoError(t, err)
+		require.Equal(t, cur.Result.Score, again.Result.Score)
+	}
+	require.Equal(t, 2, snapshots(), "and then served from the stored snapshot")
+}

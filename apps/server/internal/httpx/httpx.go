@@ -10,6 +10,8 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"slices"
+	"strings"
 
 	"github.com/denysovkos/migraine.club/internal/jsx"
 	"github.com/denysovkos/migraine.club/internal/zod"
@@ -177,3 +179,19 @@ func ParseBody(b []byte) (any, error) {
 // Unhandled is what Next sent when a route handler threw without catching:
 // status 500 with an empty body and no content type.
 func Unhandled(w http.ResponseWriter) { w.WriteHeader(http.StatusInternalServerError) }
+
+// CompressibleTypes are the media types the server gzips: what Next's
+// compression middleware gzipped among the types this server sends. Event
+// streams set no-transform, which it respected, so they stay uncompressed.
+var CompressibleTypes = []string{
+	"text/html", "text/css", "text/plain", "text/javascript", "text/xml",
+	"application/javascript", "application/json", "application/xml",
+	"application/manifest+json", "image/svg+xml", "image/x-icon",
+}
+
+// Compressible reports whether a Content-Type is one of CompressibleTypes,
+// matched the way the compression middleware does (parameters ignored).
+func Compressible(contentType string) bool {
+	mt, _, _ := strings.Cut(contentType, ";")
+	return slices.Contains(CompressibleTypes, mt)
+}

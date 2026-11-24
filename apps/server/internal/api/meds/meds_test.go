@@ -234,3 +234,58 @@ func TestQuickAddEpisodeIDBeyondInt4(t *testing.T) {
 	require.Equal(t, 500, res.Status)
 	require.Equal(t, `{"error":"Failed query: select \"id\" from \"episode\" where (\"episode\".\"user_id\" = $1 and \"episode\".\"id\" = $2) limit $3\nparams: u,99999999999,1"}`, string(res.Body))
 }
+
+// Suggestions for several medications: per medication, its default dose,
+// else the most common dose among its last 200 intakes, else the latest
+// intake with one. Ordered by use count, then most recent use.
+func TestSuggestionsForSeveralMedications(t *testing.T) {
+	e := newEnv(t)
+	med := func(name string, dose *string) string {
+		var id string
+		require.NoError(t, e.Deps.Pool.QueryRow(t.Context(), `INSERT INTO user_medications
+			(id, user_id, custom_name, default_dose, default_unit, default_unit_is_custom, is_pinned, created_at, medication_class, is_acute, last_used_unit_is_custom)
+			VALUES (gen_random_uuid(), 'u', $1, $2, CASE WHEN $2::text IS NULL THEN NULL ELSE 'mg' END, false, false, now(), 'other', true, false) RETURNING id`, name, dose).Scan(&id))
+		return id
+	}
+	// intakes adds n intakes of one medication, minutesAgo apart from start.
+	intakes := func(medID string, n int, startMinutesAgo int, dose, unit *string) {
+		e.Exec(`INSERT INTO medication_intakes (id, user_id, user_medication_id, taken_at, dose, unit, unit_is_custom, created_at)
+			SELECT gen_random_uuid(), 'u', $1, now() - make_interval(mins => $2 + g), $3, $4, false, now()
+			FROM generate_series(1, $5) g`, medID, startMinutesAgo, dose, unit, n)
+	}
+	s := func(v string) *string { return &v }
+
+	mode := med("Mode", nil)
+	intakes(mode, 2, 0, s("10"), s("mg"))
+	intakes(mode, 1, 10, s("20"), s("mg"))
+
+	def := med("Default", s("50"))
+	intakes(def, 4, 20, s("75"), s("mg"))
+
+	bare := med("Bare", nil)
+	intakes(bare, 1, 30, nil, nil)
+
+	// Of 221 intakes only the latest 200 count: 101 of 7 mg, 99 of 5 mg.
+	capped := med("Capped", nil)
+	intakes(capped, 101, 1000, s("7"), s("mg"))
+	intakes(capped, 120, 2000, s("5"), s("mg"))
+
+	other := med("Other user's", nil)
+	e.Exec(`UPDATE user_medications SET user_id = 'other' WHERE id = $1`, other)
+
+	res := e.Do(apitest.Request{Path: "/api/quick-add/suggestions", User: "u"})
+	require.Equal(t, 200, res.Status)
+	top := res.Map(t)["topMeds"].([]any)
+	type sug struct{ label, dose, unit any }
+	var got []sug
+	for _, x := range top {
+		m := x.(map[string]any)
+		got = append(got, sug{m["label"], m["suggestedDose"], m["suggestedUnit"]})
+	}
+	require.Equal(t, []sug{
+		{"Capped", "7", "mg"},
+		{"Default", "50", "mg"},
+		{"Mode", "10", "mg"},
+		{"Bare", nil, nil},
+	}, got)
+}

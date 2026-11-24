@@ -44,24 +44,58 @@ func (q *Queries) InsertSolarSnapshot(ctx context.Context, timestampUtc jsontime
 	return items, nil
 }
 
-const latestSolarBySource = `-- name: LatestSolarBySource :one
-SELECT id, timestamp_utc, kp_index, source, raw, created_at FROM solar_activity_snapshot
-WHERE source = $1
-ORDER BY timestamp_utc DESC
-LIMIT 1
+const latestSolarBySources = `-- name: LatestSolarBySources :many
+SELECT latest.id, latest.timestamp_utc, latest.kp_index, latest.source, latest.raw, latest.created_at FROM unnest($1::text[]) AS src(name)
+CROSS JOIN LATERAL (
+  SELECT id, timestamp_utc, kp_index, source, raw, created_at FROM solar_activity_snapshot
+  WHERE source = src.name
+  ORDER BY timestamp_utc DESC
+  LIMIT 1
+) latest
 `
 
-func (q *Queries) LatestSolarBySource(ctx context.Context, source string) (SolarActivitySnapshot, error) {
-	row := q.db.QueryRow(ctx, latestSolarBySource, source)
-	var i SolarActivitySnapshot
-	err := row.Scan(
-		&i.ID,
-		&i.TimestampUtc,
-		&i.KpIndex,
-		&i.Source,
-		&i.Raw,
-		&i.CreatedAt,
-	)
+// The latest row of each source, in one round trip (rows only for sources
+// that have one).
+func (q *Queries) LatestSolarBySources(ctx context.Context, sources []string) ([]SolarActivitySnapshot, error) {
+	rows, err := q.db.Query(ctx, latestSolarBySources, sources)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []SolarActivitySnapshot{}
+	for rows.Next() {
+		var i SolarActivitySnapshot
+		if err := rows.Scan(
+			&i.ID,
+			&i.TimestampUtc,
+			&i.KpIndex,
+			&i.Source,
+			&i.Raw,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const solarReadingBySourceAt = `-- name: SolarReadingBySourceAt :one
+SELECT id, kp_index FROM solar_activity_snapshot WHERE source = $1 AND timestamp_utc = $2 LIMIT 1
+`
+
+type SolarReadingBySourceAtRow struct {
+	ID      string  `json:"id"`
+	KpIndex float64 `json:"kpIndex"`
+}
+
+func (q *Queries) SolarReadingBySourceAt(ctx context.Context, source string, timestampUtc jsontime.Time) (SolarReadingBySourceAtRow, error) {
+	row := q.db.QueryRow(ctx, solarReadingBySourceAt, source, timestampUtc)
+	var i SolarReadingBySourceAtRow
+	err := row.Scan(&i.ID, &i.KpIndex)
 	return i, err
 }
 
