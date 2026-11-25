@@ -1,6 +1,8 @@
 package server
 
 import (
+	"context"
+	"errors"
 	"log/slog"
 	"net"
 	"net/http"
@@ -33,10 +35,13 @@ func requestLog(log *slog.Logger) func(http.Handler) http.Handler {
 				status = http.StatusOK
 			}
 			level := slog.LevelInfo
-			if status >= 500 {
+			// A client that left before the answer (context canceled) makes
+			// handlers fail, not the server.
+			canceled := errors.Is(r.Context().Err(), context.Canceled)
+			if status >= 500 && !canceled {
 				level = slog.LevelError
 			}
-			log.Log(r.Context(), level, "request",
+			attrs := []any{
 				"method", r.Method,
 				"path", logPath(r),
 				"status", status,
@@ -44,7 +49,11 @@ func requestLog(log *slog.Logger) func(http.Handler) http.Handler {
 				"ms", time.Since(start).Milliseconds(),
 				"net", clientNetwork(r),
 				"ua", truncate(r.UserAgent(), 160),
-			)
+			}
+			if canceled {
+				attrs = append(attrs, "canceled", true)
+			}
+			log.Log(r.Context(), level, "request", attrs...)
 		})
 	}
 }

@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"log/slog"
 	"net/http"
@@ -66,4 +67,23 @@ func TestRequestLog(t *testing.T) {
 	require.Nil(t, do("/healthz", ""), "health checks are not logged")
 	require.Nil(t, do("/assets/index-abc.js", ""), "nor the hashed bundles")
 	require.False(t, strings.Contains(buf.String(), "user"))
+}
+
+// The client went away before the answer: the handler's 500 is not the
+// server's fault, so the line is INFO and marks the request as canceled.
+func TestRequestLogCanceledByClient(t *testing.T) {
+	var buf bytes.Buffer
+	log := slog.New(slog.NewJSONHandler(&buf, nil))
+	h := requestLog(log)(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+	}))
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	h.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest(http.MethodGet, "/api/intake", nil).WithContext(ctx))
+
+	var m map[string]any
+	require.NoError(t, json.Unmarshal(buf.Bytes(), &m))
+	require.Equal(t, "INFO", m["level"])
+	require.Equal(t, true, m["canceled"])
+	require.EqualValues(t, 500, m["status"])
 }

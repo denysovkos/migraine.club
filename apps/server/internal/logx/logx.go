@@ -20,8 +20,14 @@ func New(cfg *config.Config, hub *sentry.Hub) *slog.Logger {
 	if cfg.LogtailSourceToken != "" {
 		h = newBetterStack(h, cfg.LogtailSourceToken)
 	}
+	return slog.New(chain(h, hub))
+}
+
+// chain adds to h the handlers every record passes through: canceled
+// requests lowered to INFO first, then Sentry for what is still an error.
+func chain(h slog.Handler, hub *sentry.Hub) slog.Handler {
 	if hub != nil {
 		h = newSentryHandler(h, hub)
 	}
-	return slog.New(h)
+	return newCanceledHandler(h)
 }
