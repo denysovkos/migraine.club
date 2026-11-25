@@ -17,7 +17,7 @@ import (
 // the page may connect or load images from stays open, since analytics
 // alone uses a dozen Google hosts.
 func contentSecurityPolicy(nonce string) string {
-	return "script-src 'nonce-" + nonce + "' 'strict-dynamic' 'wasm-unsafe-eval' https: 'unsafe-inline'; " +
+	return "script-src 'nonce-" + nonce + "' 'strict-dynamic' 'wasm-unsafe-eval' 'report-sample' https: 'unsafe-inline'; " +
 		"object-src 'none'; base-uri 'self'; frame-ancestors 'none'; report-uri /api/csp-report"
 }
 

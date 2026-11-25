@@ -48,3 +48,37 @@ func TestCSPReports(t *testing.T) {
 	require.Equal(t, http.StatusBadRequest, post(`{"csp-report":{}}`))
 	require.Equal(t, http.StatusRequestEntityTooLarge, post(`{"csp-report":{"x":"`+strings.Repeat("a", 20<<10)+`"}}`))
 }
+
+// To find what injects a script into production pages: a script from the
+// site itself is logged with its path, and an inline one with the start of
+// its code, which the policy asks for with 'report-sample'.
+func TestCSPReportsNameSameOriginScriptsAndInlineSamples(t *testing.T) {
+	var buf bytes.Buffer
+	h := newCSPReports(slog.New(slog.NewTextHandler(&buf, nil)), time.Now)
+	post := func(body string) string {
+		buf.Reset()
+		h.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest(http.MethodPost, "/api/csp-report", strings.NewReader(body)))
+		return buf.String()
+	}
+
+	out := post(`{"csp-report":{"document-uri":"https://www.migraine.club/dashboard","effective-directive":"script-src-elem","blocked-uri":"https://www.migraine.club/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js?v=1"}}`)
+	require.Contains(t, out, "blocked=https://www.migraine.club/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js")
+	require.NotContains(t, out, "v=1")
+
+	out = post(`{"csp-report":{"document-uri":"https://www.migraine.club/share/AbCdEfGhIjKlMnOpQrStUvWx","effective-directive":"script-src-elem","blocked-uri":"https://www.migraine.club/share/AbCdEfGhIjKlMnOpQrStUvWx/x.js"}}`)
+	require.Contains(t, out, "blocked=https://www.migraine.club/share/:id/x.js", "tokens in the path are replaced")
+
+	out = post(`{"csp-report":{"document-uri":"https://www.migraine.club/dashboard","effective-directive":"script-src-elem","blocked-uri":"https://other.example/a/b.js"}}`)
+	require.Contains(t, out, "blocked=https://other.example ")
+
+	out = post(`{"csp-report":{"document-uri":"https://www.migraine.club/","effective-directive":"script-src-elem","blocked-uri":"inline","script-sample":"(function(){window.__CF$cv$params={r:'8e2' and much more code"}}`)
+	require.Contains(t, out, "blocked=inline")
+	require.Contains(t, out, `sample="(function(){window.__CF$cv$params={r:'8e"`)
+
+	out = post(`{"csp-report":{"document-uri":"https://www.migraine.club/dashboard","effective-directive":"script-src","blocked-uri":"eval","script-sample":"{\"note\":\"took ibuprofen\"}"}}`)
+	require.Contains(t, out, "blocked=eval")
+	require.NotContains(t, out, "ibuprofen", "eval'd code can carry data: no sample")
+
+	out = post(`{"csp-report":{"document-uri":"https://www.migraine.club/","effective-directive":"script-src-elem","blocked-uri":"inline","script-sample":"(function(){window.__CF$cv$params={r:'8e2' and much more code"}}`)
+	require.Empty(t, out, "the same inline script is logged once an hour")
+}

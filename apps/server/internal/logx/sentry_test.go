@@ -1,9 +1,13 @@
 package logx
 
 import (
+	"bytes"
+	"context"
 	"errors"
+	"fmt"
 	"io"
 	"log/slog"
+	"strings"
 	"testing"
 
 	"github.com/getsentry/sentry-go"
@@ -72,4 +76,25 @@ func TestNewWithAndWithoutSentry(t *testing.T) {
 	hub, transport := testHub(t)
 	New(&config.Config{}, hub).Error("boom")
 	require.Len(t, transport.Events(), 1)
+}
+
+// A request the client gave up on fails with context.Canceled: nothing went
+// wrong on the server, so it is logged as INFO and not reported.
+func TestCanceledRequestsAreNotErrors(t *testing.T) {
+	hub, transport := testHub(t)
+	var buf bytes.Buffer
+	log := slog.New(chain(slog.NewJSONHandler(&buf, nil), hub))
+
+	log.Error("Error fetching user role", "error", context.Canceled)
+	log.Error("Error fetching intake", "error", fmt.Errorf("query: %w", context.Canceled))
+	log.Error("Error from a driver", "error", errors.New("failed to receive message: context canceled"))
+
+	require.Empty(t, transport.Events())
+	for _, line := range strings.Split(strings.TrimSpace(buf.String()), "\n") {
+		require.Contains(t, line, `"level":"INFO"`)
+		require.Contains(t, line, `"canceled":true`)
+	}
+
+	log.Error("Error fetching user role", "error", context.DeadlineExceeded)
+	require.Len(t, transport.Events(), 1, "a timeout is still an error")
 }
