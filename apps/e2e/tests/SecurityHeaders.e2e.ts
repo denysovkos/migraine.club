@@ -18,6 +18,9 @@ test.describe('security headers', () => {
     const csp = headers['content-security-policy'];
 
     expect(csp).toMatch(/script-src 'nonce-[\w+/=]+' 'strict-dynamic'/);
+
+    // Reports of blocked inline code carry its first characters.
+    expect(csp).toContain('\'report-sample\'');
     expect(csp).toContain('report-uri /api/csp-report');
 
     // The page's own scripts carry the nonce the policy names.

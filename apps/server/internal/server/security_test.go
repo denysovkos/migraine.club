@@ -37,7 +37,7 @@ func TestSecurityHeaders(t *testing.T) {
 
 	csp := https.Get("Content-Security-Policy-Report-Only")
 	require.Empty(t, https.Get("Content-Security-Policy"), "report-only unless CSP_ENFORCE")
-	m := regexp.MustCompile(`script-src 'nonce-([A-Za-z0-9+/=]{24})' 'strict-dynamic' 'wasm-unsafe-eval' https: 'unsafe-inline'`).FindStringSubmatch(csp)
+	m := regexp.MustCompile(`script-src 'nonce-([A-Za-z0-9+/=]{24})' 'strict-dynamic' 'wasm-unsafe-eval' 'report-sample' https: 'unsafe-inline'`).FindStringSubmatch(csp)
 	require.NotNil(t, m, csp)
 	require.Equal(t, seen, m[1], "the handler gets the nonce the policy names")
 	for _, d := range []string{"object-src 'none'", "base-uri 'self'", "frame-ancestors 'none'", "report-uri /api/csp-report"} {
